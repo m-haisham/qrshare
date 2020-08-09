@@ -14,6 +14,9 @@ setup(
     long_description=long_description,
     long_description_content_type='text/markdown',
 
+    entry_points={
+        "console_scripts": ["qrshare=qrshare.__main__:serve"]
+    },
     install_requires=[
         'flask',
         'waitress',
@@ -28,9 +31,9 @@ setup(
     license="MIT license",
     keywords='qr share localhost',
 
-    url='',
+    url='https://github.com/mHaisham/qrshare',
     project_urls={
-        'Source code': ''
+        'Source code': 'https://github.com/mHaisham/qrshare'
     },
     packages=find_packages(),
     python_requires='>=3.6'
