@@ -20,7 +20,8 @@ setup(
     install_requires=[
         'flask',
         'waitress',
-        'qrcode'
+        'qrcode',
+        'click'
     ],
 
     classifiers=[
