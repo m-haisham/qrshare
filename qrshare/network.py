@@ -29,7 +29,7 @@ class Network:
         return app, share_url
 
     @staticmethod
-    def serve(path: str, port: int):
+    def serve(path: str, port: int = 4000):
         app, url = Network.app(path, port)
 
         print(QRCode(url))
