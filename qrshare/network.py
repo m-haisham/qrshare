@@ -14,12 +14,27 @@ class Network:
 
     @staticmethod
     def app(path: str, port: int) -> Tuple[Flask, str]:
+        """
+        :param path: absolute path to file you want to share
+        :param port: port where server runs
+        :return: app, url to file
+        """
+        # ensure path exists and and is a file and is absolute
+        file = Path(path)
+        if not file.exists():
+            raise FileNotFoundError(f'"{path}" does not exist')
+        elif not file.is_file():
+            raise FileNotFoundError(f'"{path}" is not a file')
+        if not file.is_absolute():
+            file = file.resolve()
+
+        # create route paths
         local_ip = Network.local_ip()
 
-        file = Path(path)
         share_route = f'file/{quote(file.stem)}'
         share_url = f'{local_ip}:{port}/{share_route}'
 
+        # create app and access point
         app = Flask(__name__)
 
         @app.route(f'/file/{file.stem}')
@@ -30,6 +45,13 @@ class Network:
 
     @staticmethod
     def serve(path: str, port: int = 4000):
+        """
+        Creates and runs a waitress server where file[path] exposed
+
+        :param path: absolute path to file you want to share
+        :param port: port where server runs
+        :return:
+        """
         app, url = Network.app(path, port)
 
         print(QRCode(url))
