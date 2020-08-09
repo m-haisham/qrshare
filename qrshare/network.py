@@ -19,14 +19,15 @@ class Network:
         :param port: port where server runs
         :return: app, url to file
         """
-        # ensure path exists and and is a file and is absolute
+        # ensure path exists and and is a file
         file = Path(path)
         if not file.exists():
             raise FileNotFoundError(f'"{path}" does not exist')
         elif not file.is_file():
             raise FileNotFoundError(f'"{path}" is not a file')
-        if not file.is_absolute():
-            file = file.resolve()
+
+        # get absolute path to file
+        file = file.resolve()
 
         # create route paths
         local_ip = Network.local_ip()
