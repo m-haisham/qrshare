@@ -7,6 +7,7 @@ from waitress import serve
 
 from .qr import QRCode
 
+
 class Network:
     LOCALHOST_ADDRESS = "127.0.0.1"
 
