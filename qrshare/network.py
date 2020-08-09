@@ -1,4 +1,5 @@
 from pathlib import Path
+from urllib.parse import quote
 from socket import socket, AF_INET, SOCK_DGRAM
 from typing import Tuple
 
@@ -16,12 +17,12 @@ class Network:
         local_ip = Network.local_ip()
 
         file = Path(path)
-        share_route = f'file'
+        share_route = f'file/{quote(file.stem)}'
         share_url = f'{local_ip}:{port}/{share_route}'
 
         app = Flask(__name__)
 
-        @app.route('/file')
+        @app.route(f'/file/{file.stem}')
         def transfer_file():
             return send_file(file)
 
