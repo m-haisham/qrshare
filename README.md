@@ -5,16 +5,16 @@ Serve a file on local network and give the url in qrcode form on console
 ## Install
 
 ```bash
-git clone "https://github.com/mHaisham/qrshare.git"
-
-cd qrshare
-
-python setup.py install
+pip install qrshare
 ```
 
 ## Usage
 
 ### Commandline
+
+```bash
+qrshare --help
+```
 
 ```bash
 Usage: __main__.py [OPTIONS] PATH
@@ -24,7 +24,7 @@ Options:
   --help          Show this message and exit.
 ```
 
-### Example
+### Code Example
 
 ```python
 from qrshare import Network
