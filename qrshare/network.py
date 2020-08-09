@@ -1,33 +1,39 @@
 from pathlib import Path
 from socket import socket, AF_INET, SOCK_DGRAM
 from typing import Tuple
-from urllib.parse import quote
 
-from tornado.web import Application
+from flask import Flask, send_file
+from waitress import serve
 
-from .handlers import MimedStaticFileHandler
-
+from .qr import QRCode
 
 class Network:
     LOCALHOST_ADDRESS = "127.0.0.1"
 
     @staticmethod
-    def app(path: str, port: int) -> Tuple[Application, str]:
+    def app(path: str, port: int) -> Tuple[Flask, str]:
         local_ip = Network.local_ip()
 
         file = Path(path)
-        share_route = f'file/{quote(file.stem)}'
+        share_route = f'file'
         share_url = f'{local_ip}:{port}/{share_route}'
 
-        # Create file route with appropriate path and mime type
-        file_handler = (
-            f'/{share_route}()', MimedStaticFileHandler, {
-                "path": path,
-                "mime_type": "application/octet-stream"
-            }
-        )
+        app = Flask(__name__)
 
-        return Application(handlers=[file_handler]), share_url
+        @app.route('/file')
+        def transfer_file():
+            return send_file(file)
+
+        return app, share_url
+
+    @staticmethod
+    def serve(path: str, port: int):
+        app, url = Network.app(path, port)
+
+        print(QRCode(url))
+        print("Scan the QR code above.")
+
+        serve(app, port=port)
 
     @staticmethod
     def local_ip() -> str:
