@@ -55,7 +55,7 @@ class Network:
         """
         app, url = Network.app(path, port)
 
-        print(QRCode(url))
+        print(QRCode(url.encode('utf-8')))
         print("Scan the QR code above.")
 
         serve(app, port=port)
