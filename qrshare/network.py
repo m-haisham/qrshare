@@ -3,10 +3,11 @@ from urllib.parse import quote
 from socket import socket, AF_INET, SOCK_DGRAM
 from typing import Tuple
 
-from flask import Flask, render_template, send_file
+from flask import Flask, render_template_string, send_file
 from waitress import serve
 
 from .qr import QRCode
+from .template import shared_template
 
 
 class Network:
@@ -45,7 +46,7 @@ class Network:
 
         @app.route(f'/{shared}')
         def share_home():
-            return render_template('shared.html', links=files.values())
+            return render_template_string(shared_template, links=files.values())
 
         @app.route(f'/{shared}/<filename>')
         def share_file(filename):

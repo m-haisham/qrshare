@@ -1,17 +1,3 @@
 {% extends 'base.html' %} {% block head %}
 <title>QRShare</title>
-{% endblock %} {% block body %}
-<div>
-  <h3>Shared files</h3>
-  <a href="#" id="da-btn">Download all</a>
-  <ul>
-    {% for link in links %}
-    <li>
-      <a href="/{{ link['route'] }}">
-        {{ link['file'].name }}
-      </a>
-    </li>
-    {% endfor %}
-  </ul>
-</div>
-{% endblock %}
+{% endblock %} {% block body %} {% endblock %}
