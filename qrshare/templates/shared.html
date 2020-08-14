@@ -1,0 +1,17 @@
+{% extends 'base.html' %} {% block head %}
+<title>Shared files</title>
+{% endblock %} {% block body %}
+<div>
+  <h3>Shared files</h3>
+
+  <ul>
+    {% for link in links %}
+    <li>
+      <a href="/{{ link['route'] }}">
+        {{ link['file'].name }}
+      </a>
+    </li>
+    {% endfor %}
+  </ul>
+</div>
+{% endblock %}

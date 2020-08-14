@@ -3,7 +3,7 @@ from urllib.parse import quote
 from socket import socket, AF_INET, SOCK_DGRAM
 from typing import Tuple
 
-from flask import Flask, send_file
+from flask import Flask, render_template, send_file
 from waitress import serve
 
 from .qr import QRCode
@@ -13,39 +13,53 @@ class Network:
     LOCALHOST_ADDRESS = "127.0.0.1"
 
     @staticmethod
-    def app(path: str, port: int) -> Tuple[Flask, str]:
+    def app(paths: str, port: int) -> Tuple[Flask, str]:
         """
         :param path: absolute path to file you want to share
         :param port: port where server runs
         :return: app, url to file
         """
-        # ensure path exists and and is a file
-        file = Path(path)
-        if not file.exists():
-            raise FileNotFoundError(f'"{path}" does not exist')
-        elif not file.is_file():
-            raise FileNotFoundError(f'"{path}" is not a file')
-
-        # get absolute path to file
-        file = file.resolve()
-
-        # create route paths
         local_ip = Network.local_ip()
 
-        share_route = f'file/{quote(file.stem)}'
-        share_url = f'{local_ip}:{port}/{share_route}'
-
-        # create app and access point
+        # create app
         app = Flask(__name__)
 
-        @app.route(f'/file/{file.stem}')
-        def transfer_file():
-            return send_file(file)
+        shared = 'shared'
+
+        # create file routes
+        files = {}
+        for path in paths:
+            # ensure path exists and and is a file
+            file = Path(path)
+            if not file.exists():
+                raise FileNotFoundError(f'"{path}" does not exist')
+            elif not file.is_file():
+                raise FileNotFoundError(f'"{path}" is not a file')
+
+            # get absolute path to file
+            file = file.resolve()
+
+            share_route = f'{shared}/{quote(file.name)}'
+
+            files[file.name] = ({'file': file, 'route': share_route})
+
+        @app.route(f'/{shared}')
+        def share_home():
+            return render_template('shared.html', links=files.values())
+
+        @app.route(f'/{shared}/<filename>')
+        def share_file(filename):
+            return send_file(files[filename]['file'])
+
+        if len(files) == 1:
+            share_url = f'{local_ip}:{port}/{files.values()[0]["route"]}'
+        else:
+            share_url = f'{local_ip}:{port}/{shared}'
 
         return app, share_url
 
     @staticmethod
-    def serve(path: str, port: int = 4000):
+    def serve(paths: str, port: int = 4000):
         """
         Creates and runs a waitress server where file[path] exposed
 
@@ -53,7 +67,7 @@ class Network:
         :param port: port where server runs
         :return:
         """
-        app, url = Network.app(path, port)
+        app, url = Network.app(paths, port)
 
         print(QRCode(url.encode('utf-8')))
         print("Scan the QR code above.")
