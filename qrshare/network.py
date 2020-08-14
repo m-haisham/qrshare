@@ -1,3 +1,5 @@
+from uuid import uuid4
+
 from pathlib import Path
 from urllib.parse import quote
 from socket import socket, AF_INET, SOCK_DGRAM
@@ -25,7 +27,7 @@ class Network:
         # create app
         app = Flask(__name__)
 
-        shared = 'shared'
+        shared = f'shared/{uuid4().fields[-1]}'
 
         # create file routes
         files = {}
@@ -40,8 +42,8 @@ class Network:
             # get absolute path to file
             file = file.resolve()
 
+            # add route
             share_route = f'{shared}/{quote(file.name)}'
-
             files[file.name] = ({'file': file, 'route': share_route})
 
         @app.route(f'/{shared}')
@@ -53,8 +55,10 @@ class Network:
             return send_file(files[filename]['file'])
 
         if len(files) == 1:
-            share_url = f'{local_ip}:{port}/{files.values()[0]["route"]}'
+            # directly download file
+            share_url = f'{local_ip}:{port}/{list(files.values())[0]["route"]}'
         else:
+            # go to home
             share_url = f'{local_ip}:{port}/{shared}'
 
         return app, share_url
