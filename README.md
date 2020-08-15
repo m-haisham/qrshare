@@ -10,6 +10,16 @@ pip install qrshare
 
 ## Usage
 
+### Send to
+
+Press `Windows` + `r` and enter `shell:sendto`
+
+> C:\Users\<user>\AppData\Roaming\Microsoft\Windows\SendTo
+
+Create shortcut with command `qrshare` in folder
+
+now option qrshare should appear when you right click to a file
+
 ### Commandline
 
 ```bash
@@ -31,4 +41,3 @@ from qrshare import Network
 
 Network.serve(ABS_PATH_TO_FILE, port=[OPTIONAL]PORT)
 ```
-
