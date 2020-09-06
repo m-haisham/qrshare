@@ -2,8 +2,8 @@
   font-family: sans-serif;
   --text-primary: #cfcfcf;
   --text-secondary: #e9e9e9;
-  --bg-primary: #333;
-  --bg-secondary: #272727;
+  --bg-primary: rgb(40, 40, 40);
+  --bg-secondary: rgb(30, 30, 30);
   --bg-accent: rgb(24, 24, 24);
 }
 
@@ -36,17 +36,14 @@ a {
   transition: 200ms ease-in;
 }
 
-li:nth-child(even) a {
-  background-color: var(--bg-secondary);
-}
-
 a:hover {
   color: var(--text-secondary);
 }
 
-#da-btn {
-  padding: 0.8rem;
-  font-size: 0.8rem;
-  font-weight: bold;
-  background-color: var(--bg-accent);
+li:nth-child(even) a {
+  background-color: var(--bg-secondary);
+}
+
+li:active {
+  background-color: azure;
 }

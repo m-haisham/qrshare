@@ -3,7 +3,7 @@ from uuid import uuid4
 from pathlib import Path
 from urllib.parse import quote
 from socket import socket, AF_INET, SOCK_DGRAM
-from typing import Tuple
+from typing import Tuple, List
 
 from flask import Flask, render_template_string, send_file
 from waitress import serve
@@ -24,9 +24,6 @@ class Network:
         """
         local_ip = Network.local_ip()
 
-        # create app
-        app = Flask(__name__)
-
         shared = f'shared/{uuid4().fields[-1]}'
 
         # create file routes
@@ -46,6 +43,9 @@ class Network:
             share_route = f'{shared}/{quote(file.name)}'
             files[file.name] = ({'file': file, 'route': share_route})
 
+        # create app
+        app = Flask(__name__)
+
         @app.route(f'/{shared}')
         def share_home():
             return render_template_string(shared_template, links=files.values())
@@ -55,16 +55,16 @@ class Network:
             return send_file(files[filename]['file'])
 
         if len(files) == 1:
-            # directly download file
+            # direct link download file
             share_url = f'{local_ip}:{port}/{list(files.values())[0]["route"]}'
         else:
-            # go to home
+            # go to file list
             share_url = f'{local_ip}:{port}/{shared}'
 
         return app, share_url
 
     @staticmethod
-    def serve(paths: str, port: int = 4000):
+    def serve(paths: List[str], port: int = 4000):
         """
         Creates and runs a waitress server where file[path] exposed
 
@@ -76,6 +76,7 @@ class Network:
 
         print(QRCode(url.encode('utf-8')))
         print("Scan the QR code above.")
+        print(f"local: http://{url}", end='\n\n')
 
         serve(app, port=port)
 
