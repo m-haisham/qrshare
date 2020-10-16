@@ -1,9 +1,8 @@
-from uuid import uuid4
-
 from pathlib import Path
-from urllib.parse import quote
 from socket import socket, AF_INET, SOCK_DGRAM
 from typing import Tuple, List
+from urllib.parse import quote
+from uuid import uuid4
 
 from flask import Flask, render_template_string, send_file
 from waitress import serve
@@ -16,15 +15,15 @@ class Network:
     LOCALHOST_ADDRESS = "127.0.0.1"
 
     @staticmethod
-    def app(paths: str, port: int) -> Tuple[Flask, str]:
+    def app(paths: List[str], port: int) -> Tuple[Flask, str, str]:
         """
-        :param path: absolute path to file you want to share
+        :param paths: absolute path to file you want to share (one or more)
         :param port: port where server runs
         :return: app, url to file
         """
         local_ip = Network.local_ip()
 
-        shared = f'shared/{uuid4().fields[-1]}'
+        ukey = str(uuid4().fields[-1])
 
         # create file routes
         files = {}
@@ -40,45 +39,47 @@ class Network:
             file = file.resolve()
 
             # add route
-            share_route = f'{shared}/{quote(file.name)}'
+            share_route = f'{ukey}/{quote(file.name)}'
             files[file.name] = ({'file': file, 'route': share_route})
 
         # create app
         app = Flask(__name__)
 
-        @app.route(f'/{shared}')
+        @app.route(f'/{ukey}')
         def share_home():
             return render_template_string(shared_template, links=files.values())
 
-        @app.route(f'/{shared}/<filename>')
+        @app.route(f'/{ukey}/<filename>')
         def share_file(filename):
             return send_file(files[filename]['file'])
 
+        link = f'{local_ip}:{port}/{ukey}'
         if len(files) == 1:
             # direct link download file
             share_url = f'{local_ip}:{port}/{list(files.values())[0]["route"]}'
         else:
             # go to file list
-            share_url = f'{local_ip}:{port}/{shared}'
+            share_url = link
 
-        return app, share_url
+        return app, share_url, link
 
     @staticmethod
     def serve(paths: List[str], port: int = 4000):
         """
         Creates and runs a waitress server where file[path] exposed
 
-        :param path: absolute path to file you want to share
+        :param paths: absolute path to file you want to share (one or more)
         :param port: port where server runs
         :return:
         """
-        app, url = Network.app(paths, port)
+        app, url, link = Network.app(paths, port)
 
         print(QRCode(url.encode('utf-8')))
         print("Scan the QR code above.")
-        print(f"local: http://{url}", end='\n\n')
+        print()
+        print(f"Sharing on http://{link}")
 
-        serve(app, port=port)
+        serve(app, port=port, _quiet=True)
 
     @staticmethod
     def local_ip() -> str:
