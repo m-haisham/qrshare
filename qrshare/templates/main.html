@@ -6,16 +6,18 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style/normalize.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='style/skeleton.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='style/style.css') }}" />
-    <title>Share</title>
+    <title>{{ name }}</title>
   </head>
   <body>
     <div class="container">
       <nav class="section section-nav">
         <div>
-          <h4 class="title line-clamp-2">Lorem ipsum dolor sit amet consectetur adipisicing  Officiis laborum obcaecati animi adipisci, vel labore assumenda placeat quae deleniti, qui ipsam iure officia, facilis recusandae? Repudiandae amet nihil corrupti magni.</h4>
-          <div class="subtitle line-clamp-2">~/</div>
+          <h4 class="title line-clamp-2">{{ name }}</h4>
+          {% if parent %}
+            <div class="subtitle line-clamp-2">~{{ parent.general_path() }}</div>
+          {% endif %}
         </div>
-        <a class="button" href="#">Zip</a>
+        <a class="button" href="{{ zip }}">Zip</a>
       </nav>
 
       <div class="divider"></div>
@@ -24,24 +26,30 @@
         <!-- list -->
       <div class="section section-list grid-item-list">
         <ul class="item-list">
-          <li>
-            <a class="button item-primary" href="#">...</a>
-          </li>
-          <li>
-            <a class="button item-primary mr-1" href="#">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam alias commodi delectus, voluptates dicta minima labore explicabo nihil cumque, consequuntur numquam, sapiente quis aliquid? Eligendi eveniet obcaecati error repellat porro.</a>
-            <a class="button" href="#">ZIP</a>
-          </li>
-          <li>
-            <a class="button item-primary" href="#">Lorem ipsum dolor sit amet.</a>
-          </li>
+
+          {% if parent %}
+            <li>
+              <a class="button item-primary" href="parent.general_path()">...</a>
+            </li>
+          {% endif %}
+
+          {% for route in routes %}
+            <li>
+              {% if route.is_file %}
+                <a class="button item-primary" href="{{ route.general_path() }}">{{ route.name }}</a>
+              {% else %}
+                <li>
+                  <a class="button item-primary mr-1" href="{{ route.general_path() }}">{{ route.name }}</a>
+                  <a class="button" href="{{ route.zip_path() }}">ZIP</a>
+                </li>
+              {% endif %}
+            </li>
+          {% endfor %}
         </ul>
       </div>
 
       <!-- qrcode -->
       <div class="section section-qr grid-item-qr">
-<!--        <svg class="qr" viewBox="0 0 16 16" class="bi bi-square-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">-->
-<!--          <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2z"/>-->
-<!--        </svg>-->
         {{ svg | safe }}
         <a href="#" class="tiny bold">127.0.0.1/13254363454</a>
       </div>
