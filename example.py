@@ -1,10 +1,14 @@
+from pathlib import Path
+
 from qrshare import App
 
 paths = [
-    r'C:\Users\User\Documents\Projects\Web\share\index.html',
+    Path(r'C:\Users\User\Documents\Projects\Web\share\index.html'),
+    Path(r'C:\Users\User\Documents'),
+    Path(r'C:\Users\User'),
 ]
 
 if __name__ == '__main__':
-    app = App([])
+    app = App(paths)
     app.serve(True)
 

@@ -1,4 +1,9 @@
+import re
+from io import BytesIO
 from socket import socket, AF_INET, SOCK_DGRAM
+
+import qrcode as qr
+from qrcode.image.svg import SvgPathImage
 
 
 class NetworkTools:
@@ -22,3 +27,24 @@ class NetworkTools:
                 "Verify that you are connected to a router.")
 
         return ip_address
+
+
+class QrTools:
+    @staticmethod
+    def to_bytesio(s: str) -> BytesIO:
+        handle = BytesIO()
+
+        img = qr.make(s, image_factory=SvgPathImage)
+        img.save(handle)
+
+        return handle
+
+    @staticmethod
+    def to_svg(s: str):
+        with QrTools.to_bytesio(s) as handler:
+            text = handler.getvalue().decode('utf-8')
+
+        text = re.sub(r'width=".+?"', '', text)
+        text = re.sub(r'height=".+?"', '', text)
+
+        return text

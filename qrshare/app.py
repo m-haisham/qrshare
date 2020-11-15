@@ -3,7 +3,9 @@ from typing import List
 
 import waitress
 from flask import Flask, render_template
+from markupsafe import Markup
 
+from .tools import QrTools
 
 class App:
     def __init__(self, paths: List[Path]):
@@ -14,7 +16,7 @@ class App:
 
         @self.app.route('/')
         def home():
-            return render_template('main.html')
+            return render_template('main.html', svg=Markup(QrTools.to_svg('asadsadas')))
 
     def create_path(self):
         pass
