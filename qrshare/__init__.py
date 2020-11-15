@@ -1,4 +1,3 @@
-from .qr import QRCode
-from .network import Network
+from .app import App
 
 __version__ = '0.2.4'

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='style/normalize.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style/skeleton.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style/style.css') }}" />
+    <title>Share</title>
+  </head>
+  <body>
+    <div class="container">
+      <nav class="section section-nav">
+        <div>
+          <h4 class="title line-clamp-2">Lorem ipsum dolor sit amet consectetur adipisicing  Officiis laborum obcaecati animi adipisci, vel labore assumenda placeat quae deleniti, qui ipsam iure officia, facilis recusandae? Repudiandae amet nihil corrupti magni.</h4>
+          <div class="subtitle line-clamp-2">~/</div>
+        </div>
+        <a class="button" href="#">Zip</a>
+      </nav>
+
+      <div class="divider"></div>
+
+      <div class="grid">
+        <!-- list -->
+      <div class="section section-list grid-item-list">
+        <ul class="item-list">
+          <li>
+            <a class="button item-primary" href="#">...</a>
+          </li>
+          <li>
+            <a class="button item-primary mr-1" href="#">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam alias commodi delectus, voluptates dicta minima labore explicabo nihil cumque, consequuntur numquam, sapiente quis aliquid? Eligendi eveniet obcaecati error repellat porro.</a>
+            <a class="button" href="#">ZIP</a>
+          </li>
+          <li>
+            <a class="button item-primary" href="#">Lorem ipsum dolor sit amet.</a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- qrcode -->
+      <div class="section section-qr grid-item-qr">
+        <svg class="qr" viewBox="0 0 16 16" class="bi bi-square-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2z"/>
+        </svg>
+        <a href="#" class="tiny bold">127.0.0.1/13254363454</a>
+      </div>
+      </div>
+    </div>
+
+    <footer>
+      <div class="container">
+        <div class="m-auto">
+          <a href="https://github.com/mHaisham/qrshare">
+            <img class="footer-logo" src="{{ url_for('static', filename='assets/github.svg') }}">
+          </a>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
