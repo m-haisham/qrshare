@@ -21,6 +21,11 @@ setup(
         "console_scripts": ["qrshare=qrshare.__main__:serve"]
     },
     install_requires=requirements,
+    package_data={
+        'qrshare': ['templates/*.html', 'static/assets/*.svg', 'static/style/*.css']
+    },
+    include_package_data=True,
+
     classifiers=[
         'License :: OSI Approved :: MIT License',
         'Programming Language :: Python :: 3.8',
