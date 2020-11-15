@@ -1,9 +1,14 @@
-from qrshare import Network
+from pathlib import Path
+
+from qrshare import App
 
 paths = [
-    r'C:\Users\User\Documents\Projects\Web\share\index.html',
-    r'C:\Users\User\Documents\Projects\Python\qrshare\requirements.txt'
+    Path(r'C:\Users\User\Documents\Projects\Web\share\index.html'),
+    Path(r'C:\Users\User\Documents\Projects\Web\share'),
+    # Path(r'C:\Users\User\Documents'),
+    # Path(r'C:\Users\User'),
 ]
 
 if __name__ == '__main__':
-    Network.serve(paths, 5000)
+    app = App(paths)
+    app.serve(True)

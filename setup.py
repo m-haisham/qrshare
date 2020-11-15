@@ -5,6 +5,9 @@ import qrshare
 with open('README.md', 'r') as f:
     long_description = f.read()
 
+with open('requirements.txt', 'r') as f:
+    requirements = f.readlines()
+
 setup(
     name='qrshare',
     version=qrshare.__version__,
@@ -17,13 +20,7 @@ setup(
     entry_points={
         "console_scripts": ["qrshare=qrshare.__main__:serve"]
     },
-    install_requires=[
-        'flask',
-        'waitress',
-        'qrcode',
-        'click'
-    ],
-
+    install_requires=requirements,
     classifiers=[
         'License :: OSI Approved :: MIT License',
         'Programming Language :: Python :: 3.8',

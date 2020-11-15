@@ -1,5 +1,7 @@
 # QR share
 
+[![PyPI version](https://badge.fury.io/py/qrshare.svg)](https://badge.fury.io/py/qrshare)
+
 Serve a file on local network and give the url in qrcode form on console
 
 ## Install
@@ -37,7 +39,8 @@ Options:
 ### Code Example
 
 ```python
-from qrshare import Network
+from qrshare import App
 
-Network.serve(ABS_PATH_TO_FILE, port=[OPTIONAL]PORT)
+app = App(paths)
+app.serve(True)
 ```
