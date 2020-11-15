@@ -48,10 +48,8 @@
               {% if route.is_file %}
                 <a class="button item-primary" href="{{ route.general_path() }}">{{ route.name }}</a>
               {% else %}
-                <li>
-                  <a class="button item-primary mr-1" href="{{ route.general_path() }}">{{ route.name }}</a>
-                  <a class="button" href="{{ route.zip_path() }}">ZIP</a>
-                </li>
+                <a class="button item-primary mr-1" href="{{ route.general_path() }}">{{ route.name }}</a>
+                <a class="button" href="{{ route.zip_path() }}">ZIP</a>
               {% endif %}
             </li>
           {% endfor %}
@@ -61,7 +59,7 @@
       <!-- qrcode -->
       <div class="section section-qr grid-item-qr">
         {{ svg | safe }}
-        <a href="#" class="tiny bold">127.0.0.1/13254363454</a>
+        <a href="http://{{ local_link }}" class="tiny bold">{{ local_link }}</a>
       </div>
       </div>
     </div>

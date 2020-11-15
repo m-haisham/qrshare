@@ -8,21 +8,19 @@ from ..tools import QrTools
 
 
 class Route:
-    def __init__(self, path, parent=None):
+    def __init__(self, qr, path, parent=None):
         self.path: Path = path
         self.parent: Route = parent
         self.sub_routes: Union[List[Route], None] = None
+        self.qr = qr
         self.is_root = False
 
     def populate(self):
         """
         :return: whether sub routes where populated this run
         """
-        if self.is_file:
-            return False
-
-        if self.sub_routes is None:
-            self.sub_routes = [Route(subdir, self) for subdir in self.path.iterdir()]
+        if not self.is_file and self.sub_routes is None:
+            self.sub_routes = [Route(self.qr, subdir, self) for subdir in self.path.iterdir()]
             self.sub_routes.sort(key=lambda r: (r.is_file, r.general_path()))
             return True
 
@@ -39,7 +37,8 @@ class Route:
                 routes=self.sub_routes,
                 parent=self.parent,
                 zip=self.zip_path(),
-                svg=Markup(QrTools.to_svg('asadsadas'))
+                svg=Markup(self.qr.svg),
+                local_link=str(self.qr)
             )
 
     def zip(self):
