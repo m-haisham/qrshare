@@ -13,26 +13,36 @@
       <nav class="section section-nav">
         <div>
           <h4 class="title line-clamp-2">{{ name }}</h4>
-          {% if parent %}
+
+          <!-- path of folder -->
+          {% if parent is not none %}
             <div class="subtitle line-clamp-2">~{{ parent.general_path() }}</div>
+          {% elif not is_root %}
+            <div class="subtitle line-clamp-2">~/</div>
           {% endif %}
         </div>
+
+        <!-- zip current -->
         <a class="button" href="{{ zip }}">Zip</a>
       </nav>
-
-      <div class="divider"></div>
 
       <div class="grid">
         <!-- list -->
       <div class="section section-list grid-item-list">
         <ul class="item-list">
 
+          <!-- back button -->
           {% if parent %}
             <li>
-              <a class="button item-primary" href="parent.general_path()">...</a>
+              <a class="button item-primary" href="{{ parent.general_path() }}">...</a>
+            </li>
+          {% elif not is_root %}
+            <li>
+              <a class="button item-primary" href="\">...</a>
             </li>
           {% endif %}
 
+          <!-- folders and files -->
           {% for route in routes %}
             <li>
               {% if route.is_file %}

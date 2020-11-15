@@ -23,6 +23,7 @@ class App:
             return render_template(
                 'main.html',
                 name='root',
+                is_root=True,
                 routes=self.routes,
                 parent=None,
                 zip='/zip',

@@ -2,7 +2,9 @@ from pathlib import Path
 from typing import List, Union
 from urllib.parse import quote
 
-from flask import send_file, render_template
+from flask import send_file, render_template, Markup
+
+from ..tools import QrTools
 
 
 class Route:
@@ -10,6 +12,7 @@ class Route:
         self.path: Path = path
         self.parent: Route = parent
         self.sub_routes: Union[List[Route], None] = None
+        self.is_root = False
 
     def populate(self):
         """
@@ -20,11 +23,20 @@ class Route:
 
         if self.sub_routes is None:
             # iterate through sub routes and add them
-            self.sub_routes = []
+            # they are separated so that folders will be on top
+            files = []
+            dirs = []
             for subdir in self.path.iterdir():
-                self.sub_routes.append(
-                    Route(subdir, self)
-                )
+                route = Route(subdir, self)
+                if subdir.is_file():
+                    files.append(route)
+                else:
+                    dirs.append(route)
+
+            files.sort(key=lambda r: r.path)
+            dirs.sort(key=lambda r: r.path)
+
+            self.sub_routes = dirs + files
 
             return True
 
@@ -34,7 +46,15 @@ class Route:
         if self.is_file:
             return send_file(self.path)
         else:
-            return render_template('main.html')
+            return render_template(
+                'main.html',
+                name=self.path.name,
+                is_root=self.is_root,
+                routes=self.sub_routes,
+                parent=self.parent,
+                zip=self.zip_path(),
+                svg=Markup(QrTools.to_svg('asadsadas'))
+            )
 
     def zip(self):
         if self.is_file:
@@ -60,4 +80,4 @@ class Route:
         return quote(f'{parent_route}/{self.path.name}')
 
     def zip_path(self):
-        return f'/zip{self.general_path()}'
+        return f'/zip{self.general_path().rstrip("/")}.zip'
