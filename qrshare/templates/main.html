@@ -16,7 +16,7 @@
 
           <!-- path of folder -->
           {% if parent is not none %}
-            <div class="subtitle line-clamp-2">~{{ parent.general_path() }}</div>
+            <div class="subtitle line-clamp-2">~{{ parent.general_path(False) }}</div>
           {% elif not is_root %}
             <div class="subtitle line-clamp-2">~/</div>
           {% endif %}

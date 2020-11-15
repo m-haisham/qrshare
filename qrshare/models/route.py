@@ -22,22 +22,8 @@ class Route:
             return False
 
         if self.sub_routes is None:
-            # iterate through sub routes and add them
-            # they are separated so that folders will be on top
-            files = []
-            dirs = []
-            for subdir in self.path.iterdir():
-                route = Route(subdir, self)
-                if subdir.is_file():
-                    files.append(route)
-                else:
-                    dirs.append(route)
-
-            files.sort(key=lambda r: r.path)
-            dirs.sort(key=lambda r: r.path)
-
-            self.sub_routes = dirs + files
-
+            self.sub_routes = [Route(subdir, self) for subdir in self.path.iterdir()]
+            self.sub_routes.sort(key=lambda r: (r.is_file, r.general_path()))
             return True
 
         return False
@@ -70,14 +56,15 @@ class Route:
     def is_file(self):
         return self.path.is_file()
 
-    def general_path(self):
+    def general_path(self, quoted=True):
         # root?
         if self.parent is None:
             parent_route = ''
         else:
             parent_route = self.parent.general_path()
 
-        return quote(f'{parent_route}/{self.path.name}')
+        path = f'{parent_route}/{self.path.name}'
+        return quote(path) if quoted else path
 
     def zip_path(self):
         return f'/zip{self.general_path().rstrip("/")}.zip'

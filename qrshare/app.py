@@ -1,4 +1,5 @@
 from pathlib import Path
+from urllib.parse import unquote
 from typing import List
 
 import waitress
@@ -12,9 +13,11 @@ class App:
     def __init__(self, paths: List[Path]):
         self.app = Flask(__name__)
         self.paths = paths
-        self.routes = [Route(path) for path in self.paths]
-        self.route_map = {route.general_path().lstrip('/'): route for route in self.routes}
-        self.accesspoint = '/accesspoint'
+        self.routes = sorted([Route(path) for path in self.paths], key=lambda r: (r.is_file, r.general_path()))
+        self.route_map = {
+            unquote(route.general_path().lstrip('/')): route
+            for route in self.routes
+        }
 
     def create_endpoints(self):
 
@@ -22,7 +25,7 @@ class App:
         def home():
             return render_template(
                 'main.html',
-                name='root',
+                name='~/',
                 is_root=True,
                 routes=self.routes,
                 parent=None,
@@ -45,7 +48,8 @@ class App:
             if route.populate():
                 # add newly explored routes to map
                 for sub_route in route.sub_routes:
-                    path = sub_route.general_path().lstrip('/')
+                    # make it english; remove the url specific encoding
+                    path = unquote(sub_route.general_path().lstrip('/'))
                     self.route_map[path] = sub_route
 
             return route.get()
