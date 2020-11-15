@@ -1,5 +1,5 @@
 import re
-from io import BytesIO
+from io import BytesIO, StringIO
 
 import qrcode as qr
 from qrcode.image.svg import SvgPathImage
@@ -8,9 +8,9 @@ from qrcode.image.svg import SvgPathImage
 class QRContainer:
     def __init__(self, s):
         self.string = s
-        self.svg = self._to_svg(s)
+        self.svg = self.to_svg(s)
 
-    def _to_svg(self, s):
+    def to_svg(self, s):
         with BytesIO() as handle:
             # create and save to svg
             img = qr.make(s, image_factory=SvgPathImage)
@@ -23,6 +23,14 @@ class QRContainer:
         text = re.sub(r'height=".+?"', '', text)
 
         return text
+
+    def to_ascii(self, s):
+        with StringIO() as handle:
+            code = qr.QRCode()
+            code.add_data(s)
+            code.print_ascii(handle)
+
+            return handle.getvalue()
 
     def __str__(self):
         return self.string

@@ -4,7 +4,7 @@ from urllib.parse import quote
 
 from flask import send_file, render_template, Markup
 
-from ..tools import QrTools
+from .zip import ZipContent
 
 
 class Route:
@@ -45,7 +45,11 @@ class Route:
         if self.is_file:
             return ValueError('path of type "file" cannot be zipped')
         else:
-            pass
+            zipper = ZipContent(self.path.iterdir())
+            zipper.write()
+            zipper.reset_hand()
+
+            return send_file(zipper.file, mimetype='application/zip')
 
     @property
     def name(self):

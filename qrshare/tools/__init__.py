@@ -27,17 +27,3 @@ class NetworkTools:
                 "Verify that you are connected to a router.")
 
         return ip_address
-
-
-class QrTools:
-    @staticmethod
-    def to_bytesio(s: str) -> BytesIO:
-
-
-        return handle
-
-    @staticmethod
-    def to_svg(s: str):
-
-
-        return text
