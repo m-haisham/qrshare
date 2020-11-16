@@ -1,6 +1,5 @@
 from pathlib import Path
 from typing import List
-from urllib.parse import unquote
 
 import waitress
 from flask import Flask, render_template, Markup, abort, send_file

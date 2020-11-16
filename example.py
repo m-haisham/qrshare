@@ -11,4 +11,5 @@ paths = [
 
 if __name__ == '__main__':
     app = App(paths)
+
     app.serve(True)
