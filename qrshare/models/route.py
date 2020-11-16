@@ -62,7 +62,7 @@ class Route:
     def general_path(self, quoted=True):
         # root?
         if self.parent is None:
-            parent_route = ''
+            parent_route = '/path'
         else:
             parent_route = self.parent.general_path()
 

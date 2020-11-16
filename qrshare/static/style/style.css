@@ -1,6 +1,7 @@
 :root {
   --text-secondary: #f1f1f1;
   --bg-secondary: #222222;
+  --color-warning: #cc3300;
 }
 
 a {
@@ -14,6 +15,11 @@ nav {
   flex-direction: column;
   justify-content: center;
   padding-bottom: 1rem;
+}
+
+nav > a {
+  margin-top: auto;
+  margin-bottom: 0;
 }
 
 ul > li {
@@ -133,11 +139,23 @@ footer > .container {
   margin-bottom: 0.5rem;
 }
 
+.warning {
+  color: var(--color-warning);
+}
+
 .bold {
   font-weight: bold;
 }
 
-.line-clamp-2 {
+.line-clamp {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1; /* number of lines to show */
+  -webkit-box-orient: vertical;
+}
+
+.line-clamp[wrap="2"] {
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
@@ -155,20 +173,8 @@ footer > .container {
 }
 
 /* MEDIA QUERY */
-
 /* Larger than phablet */
 @media (min-width: 550px) {
-  nav {
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  .title,
-  .subtitle {
-    text-align: start;
-  }
-
   .footer-logo {
     margin: 3rem 0;
   }
@@ -178,18 +184,5 @@ footer > .container {
 @media (min-width: 750px) {
   .footer-logo {
     margin: 4rem 0;
-  }
-}
-
-/* Larger than desktop */
-@media (min-width: 1000px) {
-  .grid {
-    grid-template-areas:
-      "list qr"
-      "list qr";
-  }
-
-  .section-list {
-    border-bottom: none;
   }
 }

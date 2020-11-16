@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='style/normalize.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='style/skeleton.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='style/style.css') }}" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='style/index.css') }}" />
     <title>{{ name }}</title>
   </head>
   <body>
@@ -16,9 +17,9 @@
 
           <!-- path of folder -->
           {% if parent is not none %}
-            <div class="subtitle line-clamp-2">~{{ parent.general_path(False) }}</div>
+            <div class="subtitle line-clamp" wrap="2">~{{ parent.general_path(False) }}</div>
           {% elif not is_root %}
-            <div class="subtitle line-clamp-2">~/</div>
+            <div class="subtitle line-clamp">~/</div>
           {% endif %}
         </div>
 
