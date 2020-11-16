@@ -59,15 +59,15 @@ class Route:
     def is_file(self):
         return self.path.is_file()
 
-    def general_path(self, quoted=True):
+    def general_path(self, quoted=True, clean=False):
         # root?
         if self.parent is None:
-            parent_route = '/path'
+            parent_route = '' if clean else '/path'
         else:
-            parent_route = self.parent.general_path()
+            parent_route = self.parent.general_path(quoted, clean)
 
         path = f'{parent_route}/{self.path.name}'
         return quote(path) if quoted else path
 
     def zip_path(self):
-        return f'/zip{self.general_path().rstrip("/")}.zip'
+        return f'/zip{self.general_path(clean=True).rstrip("/")}.zip'

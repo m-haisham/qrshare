@@ -13,7 +13,7 @@ from .tools import NetworkTools
 class App:
     def __init__(self, paths: List[Path], code=None, port=5000):
         self.app = self.init()
-        self.auth = Authentication(self.app, code='1234')
+        self.auth = Authentication(self.app, code)
 
         self.paths = paths
         self.port = port
@@ -21,7 +21,7 @@ class App:
         self.qr = QRContainer(f'{NetworkTools.local_ip()}:{self.port}')
         self.routes = sorted([Route(self.qr, path) for path in self.paths], key=lambda r: (r.is_file, r.general_path()))
         self.route_map = {
-            unquote(route.general_path().lstrip('/')): route
+            route.general_path(False, True).lstrip('/'): route
             for route in self.routes
         }
 
@@ -60,7 +60,7 @@ class App:
 
             return send_file(zipper.file, mimetype='application/zip')
 
-        @self.app.route('/<path:path>')
+        @self.app.route('/path/<path:path>')
         @self.auth.require_auth
         def general_access_point(path):
             try:
@@ -73,7 +73,7 @@ class App:
                 # add newly explored routes to map
                 for sub_route in route.sub_routes:
                     # make it english; remove the url specific encoding
-                    path = unquote(sub_route.general_path().lstrip('/'))
+                    path = sub_route.general_path(False, True).lstrip('/')
                     self.route_map[path] = sub_route
 
             return route.get()

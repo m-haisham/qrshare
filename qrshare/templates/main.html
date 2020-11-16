@@ -13,11 +13,11 @@
     <div class="container">
       <nav class="section section-nav">
         <div>
-          <h4 class="title line-clamp-2">{{ name }}</h4>
+          <h4 class="title line-clamp" wrap="2">{{ name }}</h4>
 
           <!-- path of folder -->
           {% if parent is not none %}
-            <div class="subtitle line-clamp" wrap="2">~{{ parent.general_path(False) }}</div>
+            <div class="subtitle line-clamp">~{{ parent.general_path(False, True) }}</div>
           {% elif not is_root %}
             <div class="subtitle line-clamp">~/</div>
           {% endif %}
