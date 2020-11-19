@@ -33,8 +33,8 @@ qrshare --help
 ```bash
 Usage: __main__.py [OPTIONS] PATHS...
 
-Options:
-  -p, --passcode TEXT  when provided every device require authentication
+Options:****
+  -p, --password TEXT  when provided every device require authentication
   --port INTEGER       waitress server port
   --help               Show this message and exit.
 ```

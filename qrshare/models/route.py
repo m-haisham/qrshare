@@ -64,7 +64,7 @@ class Route:
         if self.parent is None:
             parent_route = '' if clean else '/path'
         else:
-            parent_route = self.parent.general_path(quoted, clean)
+            parent_route = self.parent.general_path(False, clean)
 
         path = f'{parent_route}/{self.path.name}'
         return quote(path) if quoted else path
