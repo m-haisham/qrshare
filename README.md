@@ -2,6 +2,8 @@
 
 [![PyPI version](https://badge.fury.io/py/qrshare.svg)](https://badge.fury.io/py/qrshare)
 
+![ass](https://i.ibb.co/HKs83Zb/192168016-4000-i-Phone-X.jpg)
+
 Serve a file on local network and give the url in qrcode form on console
 
 For extra security provide a password `--password [password]`
