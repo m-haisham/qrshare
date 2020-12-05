@@ -4,6 +4,12 @@
   --color-warning: #cc3300;
 }
 
+body {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
 a {
   text-decoration: none;
 }
@@ -107,7 +113,7 @@ ul > li {
 /* FOOTER */
 
 footer {
-  flex: 1;
+  margin-top: auto;
   color: var(--text-secondary);
   background: var(--bg-secondary);
 }
