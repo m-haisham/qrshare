@@ -1,6 +1,7 @@
 from pathlib import Path
 from typing import List, Union
 from urllib.parse import quote
+from functools import lru_cache
 
 from flask import send_file, render_template, Markup
 
@@ -59,6 +60,7 @@ class Route:
     def is_file(self):
         return self.path.is_file()
 
+    @lru_cache(maxsize=4)
     def general_path(self, quoted=True, clean=False):
         # root?
         if self.parent is None:
