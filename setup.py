@@ -22,7 +22,13 @@ setup(
     },
     install_requires=requirements,
     package_data={
-        'qrshare': ['templates/*.html', 'static/assets/*.svg', 'static/style/*.css']
+        'qrshare': [
+            'client/public/*',
+            'client/scripts/*',
+            'client/src/**/*',
+            'client/src/*',
+            'client/*',
+        ]
     },
     include_package_data=True,
 
