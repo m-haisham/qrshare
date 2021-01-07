@@ -4,6 +4,13 @@
 </script>
 
 <style>
+	:global(:root) {
+		--color-light: #f1f1f1;
+		--color-light-dark: #ccc;
+		--color-dark: #222222;
+		--color-warning: #cc3300;
+	}
+
 	main {
 		height: 100vh;
 		display: flex;
