@@ -2,7 +2,7 @@ from pathlib import Path
 from typing import List
 
 import waitress
-from flask import Flask, render_template, Markup, abort, send_file
+from flask import Flask, send_from_directory, Markup, abort, send_file
 
 from .auth import Authentication
 from .models import Route, QRContainer, ZipContent
@@ -38,16 +38,11 @@ class App:
         @self.app.route('/')
         @self.auth.require_auth
         def home():
-            return render_template(
-                'main.html',
-                name='~/',
-                is_root=True,
-                routes=self.routes,
-                parent=None,
-                zip='/root.zip',
-                svg=Markup(self.qr.svg),
-                local_link=str(self.qr),
-            )
+            return send_from_directory('client/public', 'index.html')
+
+        @self.app.route('/<path:path>')
+        def depend(path):
+            return send_from_directory('client/public', path)
 
         @self.app.route('/root.zip')
         @self.auth.require_auth
