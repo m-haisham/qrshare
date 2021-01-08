@@ -1,6 +1,7 @@
 <script>
     export let show = false;
 
+    import Divider from "../Divider.svelte";
     import { MediaQuery, SizedBox } from "../utilities";
 
     $: toggleText = show ? "Hide" : "Menu";
@@ -44,9 +45,8 @@
             <!-- content -->
             <div class={show ? 'box' : 'box box-hide'}>
                 <slot />
-                <SizedBox height="1rem" />
+                <Divider percent="50" />
             </div>
-
             <!-- toggle button -->
             <button
                 class="button-primary"

@@ -1,14 +1,14 @@
 <script>
-    import { Header, HeaderExtension } from "../components/header";
+    import { Header, HeaderExtension, Search } from "../components/header";
     import Divider from "../components/Divider.svelte";
     import { SizedBox } from "../components/utilities";
 </script>
 
 <Header title="~/" subtitle="subtitle">
     <HeaderExtension>
-        <button class="u-full-width header-button">Home</button>
+        <Search onClick={(value) => console.log(value)} />
         <SizedBox width="2rem" />
-        <button class="u-full-width header-button">Home</button>
+        <button class="u-full-width header-button">Adv</button>
         <SizedBox width="2rem" />
         <button class="u-full-width header-button">Home</button>
     </HeaderExtension>
