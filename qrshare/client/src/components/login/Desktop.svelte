@@ -1,7 +1,7 @@
 <script>
     export let msg;
 
-    import { Title } from "../typography";
+    import { Title } from "../../typography";
     import { createEventDispatcher } from "svelte";
     const dispatch = createEventDispatcher();
 

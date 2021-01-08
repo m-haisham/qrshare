@@ -1,7 +1,7 @@
 <script>
     export let onClick;
 
-    import { SizedBox } from "../utilities";
+    import { SizedBox } from "../../utilities";
 
     let value = "";
 </script>

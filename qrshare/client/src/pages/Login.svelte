@@ -2,7 +2,7 @@
     import Global from "../components/Global.svelte";
     import Footer from "../components/Footer.svelte";
     import { Mobile, Desktop } from "../components/login";
-    import { MediaQuery } from "../components/utilities";
+    import { MediaQuery } from "../utilities";
 
     let msg = "";
     async function auth(e) {

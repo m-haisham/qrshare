@@ -2,7 +2,7 @@
     export let title;
     export let subtitle = null;
 
-    import { Title, Subtitle } from "../typography";
+    import { Title, Subtitle } from "../../typography";
 </script>
 
 <style>

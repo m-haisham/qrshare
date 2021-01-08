@@ -2,7 +2,7 @@
     export let show = false;
 
     import Divider from "../Divider.svelte";
-    import { MediaQuery, SizedBox } from "../utilities";
+    import { MediaQuery, SizedBox } from "../../utilities";
 
     $: toggleText = show ? "Hide" : "Menu";
 

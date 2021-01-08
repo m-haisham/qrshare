@@ -4,7 +4,7 @@
     export let path;
     export let isFile;
 
-    import { SizedBox } from "../utilities";
+    import { SizedBox } from "../../utilities";
     import { createEventDispatcher } from "svelte";
 
     const dispatch = createEventDispatcher();
