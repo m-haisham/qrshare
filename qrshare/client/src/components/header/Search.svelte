@@ -27,7 +27,7 @@
 
     @media (min-width: 550px) {
         form {
-            flex-direction: row-reverse;
+            flex-direction: row;
         }
 
         input {
