@@ -1,36 +1,8 @@
 <script>
-	import createRouter from "@spaceavocado/svelte-router";
-	import RouterView from "@spaceavocado/svelte-router/component/view.svelte";
+	import PageTest from "./pages/PageTest.svelte";
+	import { example as data } from "./ex.js";
 
-	// Views
-	import Page from "./pages/Page.svelte";
-
-	createRouter({
-		routes: [
-			{
-				path: "/",
-				name: "Home",
-				component: Page,
-				props: {
-					path: "root",
-				},
-			},
-			{
-				path: "/:path",
-				name: "File&Folder",
-				component: Page,
-				props: (route) => {
-					return {
-						path: route.params.path,
-					};
-				},
-			},
-			{
-				path: "*",
-				component: "Not Found",
-			},
-		],
-	});
+	console.log(data);
 </script>
 
-<RouterView />
+<PageTest {data} />

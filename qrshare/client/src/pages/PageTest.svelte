@@ -1,16 +1,9 @@
 <script>
-    export let path;
+    export let data;
 
     // UI components
     import Content from "./Content.svelte";
     import Footer from "../components/Footer.svelte";
-
-    import { onMount } from "svelte";
-
-    let response;
-    onMount(async () => {
-        response = fetch(`./${path}`).then((response) => response.json());
-    });
 </script>
 
 <style>
@@ -33,16 +26,10 @@
 </style>
 
 <main>
-    {#await response}
-        Loading...
-    {:then data}
-        <div>
-            <Content {data} />
-        </div>
-        <footer>
-            <Footer />
-        </footer>
-    {:catch error}
-        {error}
-    {/await}
+    <div>
+        <Content {data} />
+    </div>
+    <footer>
+        <Footer />
+    </footer>
 </main>
