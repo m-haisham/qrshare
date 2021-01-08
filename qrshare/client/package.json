@@ -4,6 +4,8 @@
   "scripts": {
     "build": "rollup -c",
     "dev": "rollup -c -w",
+    "dev-main": "rollup -c -w --config-main",
+    "dev-login": "rollup -c -w --config-login",
     "start": "sirv public"
   },
   "devDependencies": {
