@@ -7,8 +7,13 @@
     const dispatch = createEventDispatcher();
 
     let value;
-    function submit() {
-        if (value) dispatch("submit", { value });
+    function submit(e) {
+        e.preventDefault();
+        if (value) {
+            dispatch("submit", { value });
+        } else {
+            msg = "Required";
+        }
     }
 
     // error indicators
@@ -16,8 +21,6 @@
     function change() {
         if (value) {
             msg = "";
-        } else {
-            msg = "Required";
         }
     }
 
@@ -57,7 +60,7 @@
 <Header title="Auth" />
 <Divider />
 <div class="container">
-    <form>
+    <form on:submit={submit}>
         <input
             type="password"
             class:warn
@@ -66,8 +69,9 @@
             use:init />
         <h6>{msg}</h6>
         <button
-            type="button"
+            type="submit"
             class="button-primary"
+            value="Submit"
             on:click={submit}>Submit</button>
     </form>
 </div>

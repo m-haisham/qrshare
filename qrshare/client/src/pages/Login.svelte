@@ -9,14 +9,20 @@
         const { value } = e.detail;
 
         try {
-            let response = await fetch(`./login?passcode=${value}`, {
+            let response = await fetch(`./login?key=${value}`, {
                 method: "POST",
                 redirect: "follow",
             });
 
-            msg = (await response.json()).msg;
+            // redirect or
+            if (response.redirected) {
+                window.location.assign(response.url);
+            } else {
+                let data = await response.json();
+                msg = !data ? "The key does not match, try again." : data.msg;
+            }
         } catch (e) {
-            msg = response.text();
+            alert(e);
         }
     }
 </script>
