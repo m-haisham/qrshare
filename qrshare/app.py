@@ -70,13 +70,8 @@ class App:
 
         @self.app.route('/<path:path>')
         def depend(path):
-
-            # static resources
-            @after_this_request
-            def after(response):
-                response.cache_control.max_age = self.cache_timeout
-
-            return send_from_directory('client/public', path)
+            # TODO create a whitelist
+            return send_from_directory('client/public', path, cache_timeout=self.cache_timeout)
 
         @self.app.route('/path/<path:path>')
         @self.auth.require_auth
