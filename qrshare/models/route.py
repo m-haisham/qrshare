@@ -1,3 +1,4 @@
+import re
 from pathlib import Path
 from typing import List, Union
 from urllib.parse import quote
@@ -52,6 +53,16 @@ class Route:
             zipper.reset_hand()
 
             return send_file(zipper.file, mimetype='application/zip')
+
+    def search(self, words):
+        rx = re.compile(
+            '|'.join(words)
+        )
+
+        for path in self.path.rglob('**/*'):
+            result = rx.search(path.name)
+            if result:
+                yield path, result
 
     @property
     def name(self):

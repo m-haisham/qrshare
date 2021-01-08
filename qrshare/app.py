@@ -1,8 +1,9 @@
+import json
 from pathlib import Path
 from typing import List
 
 import waitress
-from flask import Flask, send_from_directory, abort, send_file, after_this_request, Response
+from flask import Flask, send_from_directory, abort, send_file, after_this_request, request, Response, stream_with_context
 
 from .auth import Authentication
 from .models import Route, QRContainer, ZipContent
@@ -55,7 +56,7 @@ class App:
         def depend(path):
 
             @after_this_request
-            def after(response: Response):
+            def after(response):
                 # cache for five minutes
                 response.cache_control.max_age = 300
 
@@ -100,6 +101,60 @@ class App:
             route.populate()
 
             return route.zip()
+
+        @self.app.route('/search')
+        @self.auth.require_auth
+        def search_point():
+            # query parameters
+            query = request.args.get('query')
+            path = request.args.get('path') or '/'
+            try:
+                limit = int(request.args.get('limit') or 200)
+            except ValueError as e:
+                return e
+
+            # get routes
+            search_routes = []
+            if path == '/':
+                search_routes.extend(self.routes)
+            else:
+                try:
+                    route = self.route_map[path]
+                    search_routes.append(route)
+                except KeyError:
+                    return abort(403)
+
+            # remove all file routes
+            search_routes = [route for route in search_routes if not route.path.is_file()]
+
+            # single char words would makes s... search complicated
+            words = [word for word in query.split(' ') if len(word) > 1]
+
+            def generate():
+                count = 0
+                for route in search_routes:
+                    for path, result in route.search(words):
+                        # add to route map
+                        route = Route(self.qr, path)
+                        relative_path = route.general_path(False, True).lstrip('/')
+                        try:
+                            # overriding existing route might delete existing parent connection
+                            self.route_map[relative_path]
+                        except KeyError:
+                            self.route_map[relative_path] = route
+
+                        # extract useful information
+                        data = route.to_dict()
+                        data['matches'] = result.regs
+
+                        yield json.dumps(data)
+
+                        # limit search space
+                        count += 1
+                        if count > limit:
+                            return
+
+            return Response(generate(), mimetype='text/json')
 
     def serve(self, debug=False):
         self.create_endpoints()
