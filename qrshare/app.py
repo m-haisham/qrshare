@@ -40,6 +40,17 @@ class App:
         def home():
             return send_from_directory('client/public', 'index.html')
 
+        @self.app.route('/root')
+        @self.auth.require_auth
+        def root():
+            return {
+                'name': '~/',
+                'isRoot': False,
+                'routes': [r.to_dict() for r in self.routes],
+                'parent': None,
+                'zip': '/root.zip',
+            }
+
         @self.app.route('/<path:path>')
         def depend(path):
             return send_from_directory('client/public', path)

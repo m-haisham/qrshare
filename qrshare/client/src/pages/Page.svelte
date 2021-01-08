@@ -1,6 +1,18 @@
 <script>
-    import Home from "./Home.svelte";
+    export let path;
+
+    // UI components
+    import Content from "./Content.svelte";
     import Footer from "../components/Footer.svelte";
+
+    import { onMount } from "svelte";
+
+    let response;
+    onMount(async () => {
+        response = fetch(`http://localhost:5000/${path}`).then((response) =>
+            response.json()
+        );
+    });
 </script>
 
 <style>
@@ -23,10 +35,16 @@
 </style>
 
 <main>
-    <div>
-        <Home />
-    </div>
-    <footer>
-        <Footer />
-    </footer>
+    {#await response}
+        Loading...
+    {:then data}
+        <div>
+            <Content {data} />
+        </div>
+        <footer>
+            <Footer />
+        </footer>
+    {:catch error}
+        {error}
+    {/await}
 </main>
