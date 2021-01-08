@@ -2,7 +2,7 @@ from pathlib import Path
 from typing import List
 
 import waitress
-from flask import Flask, send_from_directory, Markup, abort, send_file
+from flask import Flask, send_from_directory, abort, send_file, after_this_request, Response
 
 from .auth import Authentication
 from .models import Route, QRContainer, ZipContent
@@ -40,8 +40,25 @@ class App:
         def home():
             return send_from_directory('client/public', 'index.html')
 
+        @self.app.route('/root')
+        @self.auth.require_auth
+        def root():
+            return {
+                'name': '~/',
+                'isRoot': False,
+                'routes': [r.to_dict() for r in self.routes],
+                'parent': None,
+                'zip': '/root.zip',
+            }
+
         @self.app.route('/<path:path>')
         def depend(path):
+
+            @after_this_request
+            def after(response: Response):
+                # cache for five minutes
+                response.cache_control.max_age = 300
+
             return send_from_directory('client/public', path)
 
         @self.app.route('/root.zip')

@@ -31,16 +31,17 @@ class Route:
         if self.is_file:
             return send_file(self.path)
         else:
-            return render_template(
-                'main.html',
-                name=self.path.name,
-                is_root=self.is_root,
-                routes=self.sub_routes,
-                parent=self.parent,
-                zip=self.zip_path(),
-                svg=Markup(self.qr.svg),
-                local_link=str(self.qr)
-            )
+            parent_data = None
+            if self.parent:
+                parent_data = self.parent.to_dict()
+
+            return {
+                'name': self.path.name,
+                'isRoot': self.is_root,
+                'routes': [r.to_dict() for r in self.sub_routes],
+                'parent': parent_data,
+                'zip': self.zip_path(),
+            }
 
     def zip(self):
         if self.is_file:
@@ -73,3 +74,11 @@ class Route:
 
     def zip_path(self):
         return f'/zip{self.general_path(clean=True).rstrip("/")}.zip'
+
+    def to_dict(self):
+        return {
+            'name': self.name,
+            'path': self.general_path(False, False),
+            'href': self.general_path(False, True),
+            'isFile': self.is_file,
+        }
