@@ -1,5 +1,5 @@
 <script>
-	import PageTest from "../pages/PageTest.svelte";
+	import PageTest from "../views/PageTest.svelte";
 	import { example as data } from "../ex.js";
 
 	console.log(data);

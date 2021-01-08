@@ -43,8 +43,6 @@ export default (args) => {
 	}
 
 	let isSingleBundle = bundles.length === 1
-
-	// compilation instructions
 	let configs = []
 
 	// create configs
