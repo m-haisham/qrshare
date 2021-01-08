@@ -8,7 +8,11 @@ from qrcode.image.svg import SvgPathImage
 class QRContainer:
     def __init__(self, s):
         self.string = s
-        self.svg = self.to_svg(s)
+
+        self.svg_io = BytesIO()
+        img = qr.make(s, image_factory=SvgPathImage)
+        img.save(self.svg_io)
+        self.svg_io.seek(0)
 
     def to_svg(self, s):
         with BytesIO() as handle:

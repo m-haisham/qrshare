@@ -11,6 +11,8 @@ from .tools import NetworkTools
 
 
 class App:
+    cache_timeout = 300
+
     def __init__(self, paths: List[Path], code=None, port=5000):
         self.app = self.init()
         self.auth = Authentication(self.app, code)
@@ -52,16 +54,6 @@ class App:
                 'zip': '/root.zip',
             }
 
-        @self.app.route('/<path:path>')
-        def depend(path):
-
-            @after_this_request
-            def after(response):
-                # cache for five minutes
-                response.cache_control.max_age = 300
-
-            return send_from_directory('client/public', path)
-
         @self.app.route('/root.zip')
         @self.auth.require_auth
         def zip():
@@ -71,6 +63,20 @@ class App:
             zipper.reset_hand()
 
             return send_file(zipper.file, mimetype='application/zip')
+
+        @self.app.route('/svg')
+        def svg():
+            return send_file(self.qr.svg_io, mimetype='image/svg+xml', cache_timeout=self.cache_timeout)
+
+        @self.app.route('/<path:path>')
+        def depend(path):
+
+            # static resources
+            @after_this_request
+            def after(response):
+                response.cache_control.max_age = self.cache_timeout
+
+            return send_from_directory('client/public', path)
 
         @self.app.route('/path/<path:path>')
         @self.auth.require_auth
