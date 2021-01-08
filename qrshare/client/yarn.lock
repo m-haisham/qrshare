@@ -70,6 +70,18 @@
     estree-walker "^1.0.1"
     picomatch "^2.2.2"
 
+"@spaceavocado/svelte-router@^1.0.16":
+  version "1.0.16"
+  resolved "https://registry.yarnpkg.com/@spaceavocado/svelte-router/-/svelte-router-1.0.16.tgz#caaa2c3a8057afe1c2b3abcaad266bb443bda28f"
+  integrity sha512-Z9EW6wGU8gd8HBH0wZOAKzOER8AKqeBdMiAebs9wckkW1uDm+x9C0kRRVw9mdhfx7vSrbGlc7gWxtzjf1Leu7Q==
+  dependencies:
+    "@spaceavocado/type-check" "^1.0.2"
+
+"@spaceavocado/type-check@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@spaceavocado/type-check/-/type-check-1.0.2.tgz#c38e2f983f1534b28dca14ecba21a72f7d03d44a"
+  integrity sha512-NV5b5nzKZILqAIsOPGy2+dvfIolamghlAih2FACmGMUhtQi632/GbokdaZguMLZyqyQ+F36kK+rUoahgjxMX/w==
+
 "@types/estree@*":
   version "0.0.45"
   resolved "https://registry.yarnpkg.com/@types/estree/-/estree-0.0.45.tgz#e9387572998e5ecdac221950dab3e8c3b16af884"

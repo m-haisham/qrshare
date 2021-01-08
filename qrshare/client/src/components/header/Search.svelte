@@ -27,7 +27,7 @@
 
     @media (min-width: 550px) {
         form {
-            flex-direction: row;
+            flex-direction: row-reverse;
         }
 
         input {
@@ -39,7 +39,7 @@
 </style>
 
 <form>
-    <input type="text" bind:value name="query" />
+    <input type="text" bind:value placeholder="Query" />
     <SizedBox width="2rem" />
     <button
         class="header-button"
