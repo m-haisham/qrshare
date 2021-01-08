@@ -1,7 +1,7 @@
 import uuid
 from functools import wraps
 
-from flask import session, redirect, send_from_directory
+from flask import session, redirect, send_from_directory, request
 
 
 class Authentication:
@@ -13,11 +13,28 @@ class Authentication:
 
     def create_endpoints(self):
 
+        # to prevent usage of self in wrapper
+        code, ukey = self.code, self.ukey
+
         @self.app.route('/login', methods=['GET', 'POST'])
         def login():
-            # TODO authentication logic
+            if request.method == 'POST':
+                # validate submission
+                if request.args.get('key') == code:
+                    session['ukey'] = ukey
+                else:
+                    return {'ok': False, 'msg': 'The key does not match, try again.'}
 
-            return send_from_directory('client/public', 'login.html', cache_timeout=self.app.cache_timeout)
+            # check if already authenticated
+            try:
+                authenticated = session['ukey'] == ukey
+            except KeyError:
+                authenticated = False
+
+            if authenticated:
+                return redirect('/')
+
+            return send_from_directory('client/public', 'login.html')
 
     def require_auth(self, func):
 

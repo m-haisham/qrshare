@@ -8,6 +8,6 @@ paths = [
 ]
 
 if __name__ == '__main__':
-    app = App(paths)
+    app = App(paths, port=8080, code='1234')
 
     app.serve(True)

@@ -1,4 +1,6 @@
 <script>
+    export let msg;
+
     import { Title } from "../typography";
     import { createEventDispatcher } from "svelte";
     const dispatch = createEventDispatcher();
@@ -6,6 +8,16 @@
     let value;
     function submit() {
         if (value) dispatch("submit", { value });
+    }
+
+    // error indicators
+    $: warn = Boolean.valueOf(msg) && msg !== "";
+    function change() {
+        if (value) {
+            msg = "";
+        } else {
+            msg = "Required";
+        }
     }
 
     function init(e) {
@@ -16,10 +28,20 @@
 <style>
     form {
         margin-bottom: 1rem;
+        min-width: 300px;
     }
 
     input {
         width: 100%;
+        margin-bottom: 0.2rem;
+    }
+
+    .warn {
+        border-color: var(--color-warning);
+    }
+
+    h6 {
+        color: var(--color-warning);
     }
 
     @media (min-width: 550px) {
@@ -41,7 +63,13 @@
 <div class="content">
     <Title>Auth</Title>
     <form>
-        <input type="password" bind:value use:init />
+        <input
+            type="password"
+            class:warn
+            on:change={change}
+            bind:value
+            use:init />
+        <h6>{msg}</h6>
         <button
             type="button"
             class="button-primary"

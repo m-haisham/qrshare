@@ -71,7 +71,7 @@ class App:
         @self.app.route('/<path:path>')
         def depend(path):
             # TODO create a whitelist
-            return send_from_directory('client/public', path, cache_timeout=self.cache_timeout)
+            return send_from_directory('client/public', path)
 
         @self.app.route('/path/<path:path>')
         @self.auth.require_auth
@@ -162,6 +162,7 @@ class App:
 
         if debug:
             self.app.debug = True
-            self.app.run(port=self.port)
+            self.app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
+            self.app.run(port=self.port, use_reloader=False)
         else:
             waitress.serve(self.app, port=self.port, _quiet=True)

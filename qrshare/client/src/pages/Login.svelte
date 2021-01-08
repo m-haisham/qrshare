@@ -4,8 +4,20 @@
     import { Mobile, Desktop } from "../components/login";
     import { MediaQuery } from "../components/utilities";
 
-    function auth(e) {
-        console.log(e.detail.value);
+    let msg = "";
+    async function auth(e) {
+        const { value } = e.detail;
+
+        try {
+            let response = await fetch(`./login?passcode=${value}`, {
+                method: "POST",
+                redirect: "follow",
+            });
+
+            msg = (await response.json()).msg;
+        } catch (e) {
+            msg = response.text();
+        }
     }
 </script>
 
@@ -27,10 +39,10 @@
             <MediaQuery query="(min-width: 550px)" let:matches>
                 {#if matches}
                     <!-- other -->
-                    <Desktop on:submit={auth} />
+                    <Desktop {msg} on:submit={auth} />
                 {:else}
                     <!-- mobile -->
-                    <Mobile on:submit={auth} />
+                    <Mobile {msg} on:submit={auth} />
                 {/if}
             </MediaQuery>
         </div>

@@ -42,7 +42,8 @@ export default (args) => {
 		}
 	}
 
-	let isSingleBundle = bundles.length === 1
+	let singleBundle = bundles.length === 1
+	let flask = args['config-flask'] === true
 	let configs = []
 
 	// create configs
@@ -70,10 +71,11 @@ export default (args) => {
 				commonjs(),
 		
 				// In dev mode, call `npm run start` once
+				// In flask mode, dont serve
 				// the bundle has been generated
-				!production && serve(),
+				!production && !flask && serve(),
 				
-				!production && isSingleBundle
+				!production && singleBundle
 					? livereload(`public`)
 					: livereload(`public/build/${name}`),
 		
