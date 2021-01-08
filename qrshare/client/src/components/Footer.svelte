@@ -27,8 +27,16 @@
             brightness(90%) contrast(89%);
         transition: ease 200ms;
     }
+
+    @media (min-width: 550px) {
+        a {
+            margin: 1rem auto;
+        }
+    }
 </style>
 
 <div>
-    <a href="/about"> <img src="assets/github.svg" alt="Github Source" /> </a>
+    <a href="https://github.com/mHaisham/qrshare">
+        <img src="assets/github.svg" alt="Github Source" />
+    </a>
 </div>

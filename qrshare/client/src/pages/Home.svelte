@@ -1,10 +1,11 @@
 <script>
     import { Header, HeaderExtension, Search } from "../components/header";
-    import Divider from "../components/Divider.svelte";
     import { SizedBox } from "../components/utilities";
+    import Divider from "../components/Divider.svelte";
+    import DualDisplay from "../components/DualDisplay.svelte";
 </script>
 
-<Header title="~/" subtitle="subtitle">
+<Header title="ad" subtitle="~/Subtitle">
     <HeaderExtension>
         <Search onClick={(value) => console.log(value)} />
         <SizedBox width="2rem" />
@@ -14,3 +15,9 @@
     </HeaderExtension>
 </Header>
 <Divider />
+<div class="container">
+    <DualDisplay>
+        <div slot="top">top</div>
+        <div slot="bottom">bottom</div>
+    </DualDisplay>
+</div>

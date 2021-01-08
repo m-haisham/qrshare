@@ -3,6 +3,43 @@ body {
     Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
 }
 
+/* DISPLAY SETTINGS */
+.only-phone {
+  display: block;
+}
+
+.no-phone {
+  display: none;
+}
+
+@media (min-width: 550px) {
+  .only-phone {
+    display: none;
+  }
+
+  .no-phone {
+    display: block;
+  }
+}
+
+/* TRUNCATING */
+.line-clamp,
+.line-clamp[wrap="1"] {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1; /* number of lines to show */
+  -webkit-box-orient: vertical;
+}
+
+.line-clamp[wrap="2"] {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* number of lines to show */
+  -webkit-box-orient: vertical;
+}
+
 @media (min-width: 550px) {
   .header-button {
     margin-bottom: 0;

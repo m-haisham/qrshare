@@ -15,6 +15,6 @@
     }
 </style>
 
-<h4>
+<h4 class="line-clamp">
     <slot />
 </h4>

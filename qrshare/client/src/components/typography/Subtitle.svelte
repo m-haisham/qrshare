@@ -14,6 +14,6 @@
     }
 </style>
 
-<div>
+<div class="line-clamp">
     <slot />
 </div>
