@@ -1,8 +1,12 @@
 <script>
-    export let parent;
-    export let routes = [];
-
     import RouteListItem from "./RouteListItem.svelte";
+    import { currentRoute as current, routes, updateStore } from "../../store";
+
+    function load({ path }) {
+        updateStore(path);
+    }
+
+    function goto() {}
 </script>
 
 <style>
@@ -20,17 +24,27 @@
 {#if routes}
     <ul>
         <!-- back item -->
-        {#if parent}
+        {#if $current.parent}
             <RouteListItem
                 name="..."
-                path={parent.path}
-                href={parent.href}
-                isFile={true} />
+                path={$current.parent.path}
+                isFile={true}
+                on:file={load} />
+        {:else if !$current.isRoot}
+            <RouteListItem
+                name="..."
+                path="/root"
+                isFile={true}
+                on:file={load} />
         {/if}
 
         <!-- item list -->
-        {#each routes as route}
-            <RouteListItem {...route} on:go={(e) => console.log(e)} />
+        {#each $routes as { name, path, isFile, href }}
+            <RouteListItem
+                {...{ name, path, isFile }}
+                on:folder={(e) => load({ path: e.detail.path })}
+                on:file={(e) => console.log(e)}
+                on:zip={(e) => console.log(e)} />
         {/each}
     </ul>
 {:else}

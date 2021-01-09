@@ -1,14 +1,27 @@
 <script>
-    export let data;
-
     import { Header, HeaderExtension, Search } from "../components/header";
-    import { SizedBox } from "../components/utilities";
+    import { SizedBox } from "../utilities";
     import Divider from "../components/Divider.svelte";
     import DualDisplay from "../components/DualDisplay.svelte";
     import { RouteList, QR } from "../components/display";
+    import { currentRoute as current, qrUrl } from "../store/store";
 </script>
 
-<Header title={data.name} subtitle={data.parent ? data.parent.name : null}>
+<style>
+    .container {
+        margin-top: 1rem;
+    }
+
+    @media (min-width: 550px) {
+        .container {
+            margin-top: 2rem;
+        }
+    }
+</style>
+
+<Header
+    title={$current.name}
+    subtitle={$current.parent ? $current.parent.name : null}>
     <HeaderExtension>
         <Search onClick={(value) => console.log(value)} />
         <!-- <SizedBox width="2rem" /> -->
@@ -19,10 +32,10 @@
 <div class="container">
     <DualDisplay>
         <div slot="top">
-            <RouteList parent={data.parent} routes={data.routes} />
+            <RouteList />
         </div>
         <div slot="bottom">
-            <QR />
+            <QR url={$qrUrl} />
         </div>
     </DualDisplay>
 </div>

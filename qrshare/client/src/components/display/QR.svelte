@@ -1,3 +1,7 @@
+<script>
+    export let url;
+</script>
+
 <style>
     div {
         display: flex;
@@ -19,8 +23,8 @@
 </style>
 
 <div>
-    <object data="assets/rect.svg" type="image/svg+xml" title="qr"><img
-            src="assets/rect.svg"
+    <object data={url} type="image/svg+xml" title="QR"><img
+            src={url}
             alt="QR" />
     </object>
 </div>

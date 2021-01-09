@@ -1,4 +1,5 @@
 import json
+from io import BytesIO
 from pathlib import Path
 from typing import List
 
@@ -15,6 +16,7 @@ class App:
 
     def __init__(self, paths: List[Path], code=None, port=5000):
         self.app = self.init()
+        self.app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
         self.auth = Authentication(self.app, code)
 
         self.paths = paths
@@ -48,7 +50,7 @@ class App:
         def root():
             return {
                 'name': '~/',
-                'isRoot': False,
+                'isRoot': True,
                 'routes': [r.to_dict() for r in self.routes],
                 'parent': None,
                 'zip': '/root.zip',
@@ -66,7 +68,10 @@ class App:
 
         @self.app.route('/svg')
         def svg():
-            return send_file(self.qr.svg_io, mimetype='image/svg+xml', cache_timeout=self.cache_timeout)
+            svg_io = BytesIO()
+            self.qr.write(self.qr.string, svg_io)
+            svg_io.seek(0)
+            return send_file(svg_io, mimetype='image/svg+xml', cache_timeout=self.cache_timeout)
 
         @self.app.route('/<path:path>')
         def depend(path):
@@ -162,7 +167,6 @@ class App:
 
         if debug:
             self.app.debug = True
-            self.app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
             self.app.run(port=self.port, use_reloader=False)
         else:
             waitress.serve(self.app, port=self.port, _quiet=True)

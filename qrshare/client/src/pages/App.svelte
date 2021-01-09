@@ -2,17 +2,14 @@
 	import { onMount } from "svelte";
 
 	import Footer from "../components/Footer.svelte";
-	import { currentRoute, routes, qrUrl } from "../store.js";
+	import Content from "../views/Content.svelte";
+	import Global from "../components/Global.svelte";
+	import { updateStore, qrUrl } from "../store";
 	import { jsonOrRedirect, toDataURL } from "../request.js";
 
 	onMount(async () => {
 		// get current routes
-		let data = await jsonOrRedirect("/root");
-		routes.set(data.routes);
-
-		// set initial route
-		let root = (({ routes, ...others }) => ({ ...others }))(data);
-		currentRoute.set(root);
+		updateStore("/root");
 
 		// qrcode
 		let url = await toDataURL("/svg");
@@ -32,11 +29,13 @@
 	}
 </style>
 
-<main>
-	<div>
-		<h1>Main1</h1>
-	</div>
-	<footer>
-		<Footer />
-	</footer>
-</main>
+<Global>
+	<main>
+		<div>
+			<Content />
+		</div>
+		<footer>
+			<Footer />
+		</footer>
+	</main>
+</Global>

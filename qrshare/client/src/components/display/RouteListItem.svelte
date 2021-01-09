@@ -1,5 +1,4 @@
 <script>
-    export let href;
     export let name;
     export let path;
     export let isFile;
@@ -9,12 +8,16 @@
 
     const dispatch = createEventDispatcher();
 
-    function body() {
-        dispatch("go", { path, href });
+    function folder() {
+        dispatch("folder", { path });
+    }
+
+    function file() {
+        dispatch("file", { path });
     }
 
     function zip() {
-        dispatch("zip", { path, href });
+        dispatch("zip", { path });
     }
 </script>
 
@@ -33,10 +36,10 @@
 </style>
 
 {#if isFile}
-    <button class="ct-button line-clamp" on:click={body}> {name} </button>
+    <button class="ct-button line-clamp" on:click={file}> {name} </button>
 {:else}
     <div>
-        <button class="ct-button line-clamp" on:click={body}>{name}</button>
+        <button class="ct-button line-clamp" on:click={folder}>{name}</button>
         <SizedBox width="1rem" />
         <button on:click={zip}>ZIP</button>
     </div>
