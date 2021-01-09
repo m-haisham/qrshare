@@ -12,4 +12,6 @@
     });
 </script>
 
-<svelte:component this={$activeRoute.component} />
+{#key $activeRoute.key}
+    <svelte:component this={$activeRoute.component} />
+{/key}

@@ -25,10 +25,7 @@ function registerPopStateListener() {
     window.onpopstate = function(e) {
         console.log(e)
         if (e.state) {
-            const { id, state } = e.state
-            const { location, name } = e.target
-
-            navigateTo(id, location.pathname, state, name)
+            navigateTo({url: e.target.location.pathname, ...e.state})
         }
     }
 }
@@ -44,5 +41,5 @@ function setInitialRoute({ id, params={}, state={} }) {
 
     route.on(params, state)
 
-    window.history.pushState({id, state}, 'Home', route.name)
+    window.history.pushState({id, state, name: route.name}, 'Home', route.name)
 }

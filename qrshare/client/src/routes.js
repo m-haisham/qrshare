@@ -9,15 +9,17 @@ function updateSharedRoutes(params, state) {
 const routes = [
     {
         id: 0,
+        key: 0,
         name: '/',
         component: Home,
-        on: updateSharedRoutes
+        on: updateSharedRoutes,
     },
     {
         id: 1,
+        key: 0,
         name: '/:path',
         component: Home,
-        on: updateSharedRoutes
+        on: updateSharedRoutes,
     }
 ]
 
