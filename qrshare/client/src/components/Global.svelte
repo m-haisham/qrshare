@@ -1,3 +1,7 @@
+<script>
+    import { currentRoute } from "../store";
+</script>
+
 <style>
     :global(:root) {
         --color-light: #f1f1f1;
@@ -7,4 +11,7 @@
     }
 </style>
 
+<svelte:head>
+    <title>{$currentRoute.name}</title>
+</svelte:head>
 <slot />

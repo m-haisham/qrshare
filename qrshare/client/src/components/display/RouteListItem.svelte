@@ -1,4 +1,5 @@
 <script>
+    export let href;
     export let name;
     export let path;
     export let isFile;
@@ -9,15 +10,15 @@
     const dispatch = createEventDispatcher();
 
     function folder() {
-        dispatch("folder", { path });
+        dispatch("folder", { name, path, href });
     }
 
     function file() {
-        dispatch("file", { path });
+        dispatch("file", { name, path, href });
     }
 
     function zip() {
-        dispatch("zip", { path });
+        dispatch("zip", { name, path, href });
     }
 </script>
 

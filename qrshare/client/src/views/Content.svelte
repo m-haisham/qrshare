@@ -21,7 +21,7 @@
 
 <Header
     title={$current.name}
-    subtitle={$current.parent ? $current.parent.name : null}>
+    subtitle={$current.parent ? '~' + $current.parent.href : null}>
     <HeaderExtension>
         <Search onClick={(value) => console.log(value)} />
         <!-- <SizedBox width="2rem" /> -->

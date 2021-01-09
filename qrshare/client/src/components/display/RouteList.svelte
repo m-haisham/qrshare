@@ -2,8 +2,14 @@
     import RouteListItem from "./RouteListItem.svelte";
     import { currentRoute as current, routes, updateStore } from "../../store";
 
-    function load({ path }) {
-        updateStore(path);
+    function load(e) {
+        const route = e.detail;
+
+        // update state
+        updateStore(route.path);
+
+        // update url history
+        window.history.pushState(route, route.name, route.href);
     }
 
     function goto() {}
@@ -28,21 +34,23 @@
             <RouteListItem
                 name="..."
                 path={$current.parent.path}
+                href={$current.parent.href}
                 isFile={true}
                 on:file={load} />
         {:else if !$current.isRoot}
             <RouteListItem
                 name="..."
                 path="/root"
+                href="/"
                 isFile={true}
                 on:file={load} />
         {/if}
 
         <!-- item list -->
-        {#each $routes as { name, path, isFile, href }}
+        {#each $routes as route}
             <RouteListItem
-                {...{ name, path, isFile }}
-                on:folder={(e) => load({ path: e.detail.path })}
+                {...route}
+                on:folder={load}
                 on:file={(e) => console.log(e)}
                 on:zip={(e) => console.log(e)} />
         {/each}
