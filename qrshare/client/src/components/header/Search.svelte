@@ -39,7 +39,7 @@
 </style>
 
 <form>
-    <input type="text" bind:value placeholder="Query" />
+    <input type="text" bind:value />
     <SizedBox width="2rem" />
     <button
         class="header-button"

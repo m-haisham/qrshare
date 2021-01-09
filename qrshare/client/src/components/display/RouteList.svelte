@@ -13,9 +13,12 @@
         window.history.pushState(route, route.name, route.href);
     }
 
-    function goto(e) {
-        const route = e.detail;
-        createLink(route.path).click();
+    function file(e) {
+        createLink(e.detail.zip).click();
+    }
+
+    function zip(e) {
+        createLink(e.detail.zip).click();
     }
 </script>
 
@@ -55,8 +58,8 @@
             <RouteListItem
                 {...route}
                 on:folder={load}
-                on:file={goto}
-                on:zip={goto} />
+                on:file={file}
+                on:zip={zip} />
         {/each}
     </ul>
 {:else}

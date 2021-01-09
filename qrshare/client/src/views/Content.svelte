@@ -5,6 +5,11 @@
     import DualDisplay from "../components/DualDisplay.svelte";
     import { RouteList, QR } from "../components/display";
     import { currentRoute as current, qrUrl } from "../store/store";
+    import { createLink } from "../helper";
+
+    function currentZip() {
+        createLink($current.zip).click();
+    }
 </script>
 
 <style>
@@ -24,8 +29,10 @@
     subtitle={$current.parent ? '~' + $current.parent.href : null}>
     <HeaderExtension>
         <Search onClick={(value) => console.log(value)} />
-        <!-- <SizedBox width="2rem" /> -->
-        <!-- <button class="u-full-width header-button">Home</button> -->
+        <SizedBox width="2rem" />
+        <button
+            class="u-full-width header-button"
+            on:click={currentZip}>Zip</button>
     </HeaderExtension>
 </Header>
 <Divider />
