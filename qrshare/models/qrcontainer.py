@@ -9,11 +9,6 @@ class QRContainer:
     def __init__(self, s):
         self.string = s
 
-        self.svg_io = BytesIO()
-        img = qr.make(s, image_factory=SvgPathImage)
-        img.save(self.svg_io)
-        self.svg_io.seek(0)
-
     def to_svg(self, s):
         with BytesIO() as handle:
             # create and save to svg
@@ -35,6 +30,10 @@ class QRContainer:
             code.print_ascii(handle)
 
             return handle.getvalue()
+
+    def write(self, s, stream):
+        img = qr.make(s, image_factory=SvgPathImage)
+        img.save(stream)
 
     def __str__(self):
         return self.string
