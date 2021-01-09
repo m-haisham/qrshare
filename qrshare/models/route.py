@@ -35,6 +35,13 @@ class Route:
             parent_data = None
             if self.parent:
                 parent_data = self.parent.to_dict()
+            else:
+                parent_data = {
+                    'name': '~/',
+                    'path': '/root',
+                    'href': '/',
+                    'zip': '/root.zip',
+                }
 
             return {
                 'name': self.path.name,

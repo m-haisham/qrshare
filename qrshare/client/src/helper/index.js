@@ -1,0 +1,1 @@
+export { createLink } from './dom.js'

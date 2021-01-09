@@ -1,6 +1,7 @@
 <script>
     import RouteListItem from "./RouteListItem.svelte";
     import { currentRoute as current, routes, updateStore } from "../../store";
+    import { createLink } from "../../helper";
 
     function load(e) {
         const route = e.detail;
@@ -12,7 +13,10 @@
         window.history.pushState(route, route.name, route.href);
     }
 
-    function goto() {}
+    function goto(e) {
+        const route = e.detail;
+        createLink(route.path).click();
+    }
 </script>
 
 <style>
@@ -51,8 +55,8 @@
             <RouteListItem
                 {...route}
                 on:folder={load}
-                on:file={(e) => console.log(e)}
-                on:zip={(e) => console.log(e)} />
+                on:file={goto}
+                on:zip={goto} />
         {/each}
     </ul>
 {:else}
