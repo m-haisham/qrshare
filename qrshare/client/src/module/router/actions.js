@@ -1,13 +1,27 @@
 import { activeRoute } from './store'
-import { getById, getByName } from './utils'
-import { UrlParser } from 'url-params-parser'
+import { getRouteById, parseNamedParams } from './utils'
 
 let definedRoutes = []
 
-export function init({routes}) {
+export function init({routes, initial}) {
     definedRoutes = routes
 
-    // register to history.state
+    registerPopStateListener()
+    setInitialRoute(initial)
+}
+
+export async function navigateTo({id, url, state = {}, name = ''}) {
+    const route = getRouteById(definedRoutes, id)
+    const params = parseNamedParams(url, route.name)
+    
+    // change active route
+    activeRoute.set({...route, params, state})
+    route.on(params, state)
+    
+    window.history.pushState({id: route.id, state}, name, url || route.name)
+}
+
+function registerPopStateListener() {
     window.onpopstate = function(e) {
         console.log(e)
         if (e.state) {
@@ -17,23 +31,18 @@ export function init({routes}) {
             navigateTo(id, location.pathname, state, name)
         }
     }
-
-    // initial active route
-    activeRoute.set({
-        ...getByName(definedRoutes, '/'),
-        params: {},
-        state: {},
-    })
-
 }
 
-export async function navigateTo(id, url, [state = {}, name = '']) {
-    let route = getById(definedRoutes, id)
-    let params = UrlParser(url, route.url).namedParams
+function setInitialRoute({ id, params={}, state={} }) {
+    let route = getRouteById(definedRoutes, id);
     
+    activeRoute.set({
+        ...route,
+        params,
+        state
+    })
+
     route.on(params, state)
-    
-    // change active route
-    activeRoute.set({...route, params, state})
-    window.history.pushState({id: route.id, state}, name, url)
+
+    window.history.pushState({id, state}, 'Home', route.name)
 }

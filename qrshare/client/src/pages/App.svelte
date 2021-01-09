@@ -1,6 +1,6 @@
 <script>
 	import { Router } from "../module/router";
-	import { routes } from "../routes";
+	import { routes, options } from "../routes";
 </script>
 
-<Router {routes} />
+<Router {routes} {options} />

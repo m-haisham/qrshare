@@ -1,23 +1,21 @@
 <script>
     import RouteListItem from "./RouteListItem.svelte";
-    import { currentRoute as current, routes, updateStore } from "../../store";
+    import { currentRoute as current, routes } from "../../store";
     import { createLink } from "../../helper";
+    import { navigateTo } from "../../module/router";
 
     function load(e) {
         const route = e.detail;
-
-        // update state
-        updateStore(route.path);
-
-        // update url history
-        window.history.pushState(route, route.name, route.href);
+        navigateTo({ id: 1, url: route.href, state: route, name: route.name });
     }
 
     function file(e) {
-        createLink(e.detail.zip).click();
+        console.log(e);
+        createLink(e.detail.path).click();
     }
 
     function zip(e) {
+        console.log(e);
         createLink(e.detail.zip).click();
     }
 </script>
