@@ -7,7 +7,7 @@ from flask import session, redirect, send_from_directory, request
 class Authentication:
     def __init__(self, app, code=None):
         self.app = app
-        self.code = str(code)
+        self.code = code
         self.ukey = str(uuid.uuid4())
         self.create_endpoints()
 
@@ -23,11 +23,11 @@ class Authentication:
                 if request.args.get('key') == code:
                     session['ukey'] = ukey
                 else:
-                    return {'msg': ''}
+                    return {'msg': 'The key does not match, try again.'}
 
             # check if already authenticated
             try:
-                authenticated = session['ukey'] == ukey
+                authenticated = not(code and session['ukey'] != ukey)
             except KeyError:
                 authenticated = False
 

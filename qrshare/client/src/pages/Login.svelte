@@ -19,6 +19,9 @@
                 window.location.assign(response.url);
             } else {
                 let data = await response.json();
+
+                // hack: setting same thing twine removes it so...
+                msg = "";
                 msg = !data ? "The key does not match, try again." : data.msg;
             }
         } catch (e) {
