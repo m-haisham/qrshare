@@ -256,3 +256,4 @@ dmypy.json
 /qrshare/svelte/public/build/
 
 .DS_Store
+example.py
