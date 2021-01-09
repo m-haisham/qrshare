@@ -18,5 +18,8 @@
     "rollup-plugin-terser": "^7.0.0",
     "svelte": "^3.0.0"
   },
-  "dependencies": {}
+  "dependencies": {
+    "url-params-parser": "^1.0.3",
+    "sirv-cli": "^1.0.0"
+  }
 }

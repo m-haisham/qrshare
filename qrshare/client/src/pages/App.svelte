@@ -1,51 +1,6 @@
 <script>
-	import { onMount } from "svelte";
-
-	import Footer from "../components/Footer.svelte";
-	import Content from "../views/Content.svelte";
-	import Global from "../components/Global.svelte";
-	import { updateStore, qrUrl } from "../store";
-	import { toDataURL } from "../request.js";
-
-	// bind events
-	import "../events";
-
-	onMount(async () => {
-		// get current routes
-		let { current, routes } = await updateStore("/root");
-
-		// initialize window history
-		window.history.pushState(
-			{ ...current, path: "/root" },
-			current.name,
-			"/"
-		);
-
-		// qrcode
-		let url = await toDataURL("/svg");
-		qrUrl.set(url);
-	});
+	import { Router } from "../module/router";
+	import { routes } from "../routes";
 </script>
 
-<style>
-	main {
-		height: 100vh;
-		display: flex;
-		flex-direction: column;
-	}
-
-	footer {
-		margin-top: auto;
-	}
-</style>
-
-<Global>
-	<main>
-		<div>
-			<Content />
-		</div>
-		<footer>
-			<Footer />
-		</footer>
-	</main>
-</Global>
+<Router {routes} />

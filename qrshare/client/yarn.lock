@@ -640,6 +640,11 @@ totalist@^1.0.0:
   resolved "https://registry.yarnpkg.com/totalist/-/totalist-1.1.0.tgz#a4d65a3e546517701e3e5c37a47a70ac97fe56df"
   integrity sha512-gduQwd1rOdDMGxFG1gEvhV88Oirdo2p+KjoYFU7k2g+i7n6AFFbDQ5kMPUsW0pNbfQsB/cwXvT1i4Bue0s9g5g==
 
+url-params-parser@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/url-params-parser/-/url-params-parser-1.0.3.tgz#f99940c575705835049ab223b349fe2575a78ee5"
+  integrity sha512-PLyEzfi+ymsvG8FYSNwvUG6LT/AM7ApWcRgF4EVEb+4Vlf7MkIEbdMjunLaXuTRl7YwZDRoyZaez8Y1AGLuALA==
+
 wrappy@1:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/wrappy/-/wrappy-1.0.2.tgz#b5243d8f3ec1aa35f1364605bc0d1036e30ab69f"
