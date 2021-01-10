@@ -49,7 +49,7 @@ export default (args) => {
 	// create configs
 	for (const name of bundles) {
 		let inst = {
-			input: `src/${name}.js`,
+			input: `src/${name}/${name}.js`,
 			output: {
 				sourcemap: true,
 				format: 'iife',

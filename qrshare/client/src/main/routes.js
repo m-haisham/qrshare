@@ -1,6 +1,6 @@
-import Home from './views/Home.svelte'
+import Home from './Home.svelte'
 import { qrUrl, updateStore } from './store'
-import { toDataURL } from './request'
+import { toDataURL } from '../request'
 
 function updateSharedRoutes(params, state) {
     updateStore(state.path)

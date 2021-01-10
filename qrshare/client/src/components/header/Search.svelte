@@ -1,9 +1,13 @@
 <script>
-    export let onClick;
-
     import { SizedBox } from "../../utilities";
+    import { createEventDispatcher } from "svelte";
+
+    const dispatch = createEventDispatcher();
 
     let value = "";
+    function submit() {
+        dispatch("submit", { query: value });
+    }
 </script>
 
 <style>
@@ -44,5 +48,5 @@
     <button
         class="header-button"
         type="button"
-        on:click={onClick(value)}>Search</button>
+        on:click={submit}>Search</button>
 </form>

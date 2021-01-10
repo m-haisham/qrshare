@@ -1,4 +1,4 @@
-import { jsonOrRedirect } from '../request'
+import { jsonOrRedirect } from '../../request'
 import { currentRoute, routes } from './store'
 
 /**

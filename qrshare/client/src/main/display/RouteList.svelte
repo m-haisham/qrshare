@@ -1,6 +1,6 @@
 <script>
     import RouteListItem from "./RouteListItem.svelte";
-    import { currentRoute as current, routes } from "../../store";
+    import { currentRoute as current, routes } from "../store";
     import { createLink } from "../../helper";
     import { navigateTo } from "../../module/router";
 

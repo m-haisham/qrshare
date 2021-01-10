@@ -1,8 +1,8 @@
 <script>
     export let msg;
 
-    import { Header } from "../header";
-    import Divider from "../Divider.svelte";
+    import { Header } from "../components/header";
+    import Divider from "../components/Divider.svelte";
     import { createEventDispatcher } from "svelte";
     const dispatch = createEventDispatcher();
 
