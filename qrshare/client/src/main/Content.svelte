@@ -28,7 +28,7 @@
     title={$current.name}
     subtitle={$current.parent ? '~' + $current.parent.href : null}>
     <HeaderExtension>
-        <Search onClick={(e) => console.log(e.detail.query)} />
+        <Search on:submit={(e) => console.log(e.detail.query)} />
         <SizedBox width="2rem" />
         <button
             class="u-full-width header-button"

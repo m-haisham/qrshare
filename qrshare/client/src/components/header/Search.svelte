@@ -5,7 +5,10 @@
     const dispatch = createEventDispatcher();
 
     let value = "";
-    function submit() {
+    $: expanded = Boolean.valueOf(value) && value !== "";
+
+    function submit(e) {
+        e.preventDefault();
         dispatch("submit", { query: value });
     }
 </script>
@@ -38,15 +41,34 @@
             width: auto;
             text-align: start;
             margin-bottom: auto;
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+            transition: width 100ms ease;
+        }
+        button {
+            width: auto;
+            margin-left: -2rem;
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+    }
+
+    /* Larger than tablet */
+    @media (min-width: 750px) {
+        input {
+            width: 20rem;
+            transition: width 100ms ease;
+        }
+
+        input:focus,
+        .expanded {
+            width: 30rem;
         }
     }
 </style>
 
-<form>
-    <input type="text" bind:value />
+<form on:submit={submit}>
+    <input type="text" bind:value class:expanded />
     <SizedBox width="2rem" />
-    <button
-        class="header-button"
-        type="button"
-        on:click={submit}>Search</button>
+    <button class="header-button" type="submit" value="submit">Search</button>
 </form>
