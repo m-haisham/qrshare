@@ -3,18 +3,17 @@
 	import { routes, options } from "./routes";
 	import { Header, HeaderExtension, Search } from "../components/header";
 	import { SizedBox } from "../utilities";
-	import { currentRoute as current } from "./store";
+	import { currentRoute as current, isSearching } from "./store";
 	import Divider from "../components/Divider.svelte";
 	import { createLink } from "../helper";
 	import { navigateTo, activeRoute } from "../module/router";
 
+	let value = "";
+
 	$: inSearch = $activeRoute.id === 2;
 	$: title = inSearch ? "Search" : $current.name;
-	$: subtitle = inSearch
-		? null
-		: $current.parent
-		? "~" + $current.parent.href
-		: null;
+	$: subtitle =
+		!inSearch && $current.parent ? "~" + $current.parent.href : null;
 
 	function currentZip() {
 		createLink($current.zip).click();
@@ -51,7 +50,7 @@
 
 <Header {title} {subtitle}>
 	<HeaderExtension>
-		<Search on:submit={search} />
+		<Search on:submit={search} disabled={$isSearching} {value} />
 		<SizedBox width="4rem" />
 		{#if inSearch}
 			<button

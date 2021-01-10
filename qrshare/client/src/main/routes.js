@@ -8,21 +8,17 @@ function updateSharedRoutes(params, state) {
 }
 
 function updateSearch(params, state) {
-    search('py', 2)
+    console.log({params, state})
+    search(params.query, 100)
 }
 
 const routes = [
     {
-        // id: 0,
-        // key: 0,
-        // name: '/',
-        // component: Content,
-        // on: updateSharedRoutes,
         id: 0,
-        key: 1,
+        key: 0,
         name: '/',
-        component: SearchResult,
-        on: updateSearch,
+        component: Content,
+        on: updateSharedRoutes,
     },
     {
         id: 1,
@@ -35,6 +31,13 @@ const routes = [
         id: 2,
         key: 1,
         name: '/search/:query',
+        component: SearchResult,
+        on: updateSearch,
+    },
+    {
+        id: 3,
+        key: 1,
+        name: '/search/:path/:query',
         component: SearchResult,
         on: updateSearch,
     }

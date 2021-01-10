@@ -4,7 +4,7 @@ from qrshare import App
 
 paths = [
     Path(r'C:\Users\User\Documents\Projects\Web\share\index.html'),
-    Path(r'C:\Users\User\Documents\Projects'),
+    Path(r'C:\Users\User\novels'),
 ]
 
 if __name__ == '__main__':

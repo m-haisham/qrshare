@@ -32,20 +32,13 @@ export async function search(query, limit=200) {
     console.log({msg: 'start', source})
     
     source.onmessage = (e) => {
-        console.log({e})
-        
-        let data = JSON.parse(e.data)
-        
-        console.log({data})
-
-        searchResults.push(data)
+        searchResults.push(JSON.parse(e.data))
     }
 
     source.onerror = (e) => {
         if (e.eventPhase === EventSource.CLOSED) {
             source.close()
             isSearching.set(false)
-            console.log({e, msg: 'closed'})
         }
     }
 }

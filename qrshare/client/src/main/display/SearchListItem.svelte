@@ -1,9 +1,5 @@
 <script>
-    export let href;
-    export let name;
-    export let path;
-    export let isFile;
-    export let matches;
+    export let route;
 
     import { SizedBox } from "../../utilities";
     import { createEventDispatcher } from "svelte";
@@ -11,25 +7,32 @@
     const dispatch = createEventDispatcher();
 
     function folder() {
-        dispatch("folder", { name, path, href });
+        dispatch("folder", route);
     }
 
     function file() {
-        dispatch("file", { name, path, href });
+        dispatch("file", route);
     }
 
     function zip() {
-        dispatch("zip", { name, path, href });
+        dispatch("zip", route);
     }
 
     let title;
     $: {
-        const _title = name;
+        const { name, matches } = route;
 
+        title = "";
+        let start = 0;
         for (let match of matches) {
-            console.log(match);
-            console.log(_title.slice(...match));
+            title +=
+                name.slice(start, match[0]) +
+                `<span>${name.slice(...match)}</span>`;
+            start = match[1];
         }
+
+        // piece after all the matches
+        title += name.slice(start);
     }
 </script>
 
@@ -45,14 +48,22 @@
         display: flex;
         flex-direction: row;
     }
+
+    button :global(span) {
+        background-color: var(--color-primary);
+    }
 </style>
 
-{#if isFile}
-    <button class="ct-button line-clamp" on:click={file}> {name} </button>
+{#if route.isFile}
+    <button class="ct-button line-clamp" on:click={file}>
+        {@html title}
+    </button>
 {:else}
     <div>
-        <button class="ct-button line-clamp" on:click={folder}>{name}</button>
+        <button
+            class="ct-button line-clamp"
+            on:click={folder}>{@html title}</button>
         <SizedBox width="1rem" />
-        <button on:click={zip}>ZIP</button>
+        <button on:click={zip} data-tooltip="This is a tooltip">ZIP</button>
     </div>
 {/if}

@@ -17,11 +17,11 @@
     }
 </style>
 
-<h4>{$searchResults.length} Results {$isSearching ? '...' : ''}</h4>
+<h4>{$searchResults.length} Results</h4>
 <li class="grid">
     {#each $searchResults as route}
         <ul>
-            <SearchListItem {...route} />
+            <SearchListItem {route} />
         </ul>
     {/each}
 </li>

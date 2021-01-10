@@ -13,7 +13,10 @@ export function getRouteByName(routes, name) {
 }
 
 export function parseNamedParams(url, namedUrl) {
-    const allPathNames = url.split("/").filter((v) => v);
+
+    const [path, queries] = url.split('?')
+
+    const allPathNames = path.split("/").filter((v) => v);
     const allNamedParamKeys = namedUrl.split("/").filter((v) => v);
   
     let lastkey
@@ -29,6 +32,12 @@ export function parseNamedParams(url, namedUrl) {
             params[lastkey] += `/${key}`;
         }
     }
+    
+    if (queries)
+        for (let query of queries.split('&')) {
+            const [key, value] = query.split('=')
+            params[key] = value
+        }
     
     return params;
 }

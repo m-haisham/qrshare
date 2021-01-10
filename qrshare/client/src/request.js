@@ -6,7 +6,7 @@
  * fetches url but prioritizing redirect
  * @param {string} url
  */
-export async function fetchOrRedirect(url, {method='GET'}) {
+export async function fetchOrRedirect(url, method='GET') {
     let response = await fetch(url, { method, redirect:'follow' });
     if (response.redirect) {
         window.location.assign(response.url)

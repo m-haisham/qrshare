@@ -153,6 +153,9 @@ class App:
                         data = route.to_dict()
                         data['matches'] = result.regs
 
+                        relative_path = route.general_path(False, True) / path.relative_to(route.path)
+                        data['parentPath'] = str(relative_path.parent.as_posix())
+
                         yield f'data: {json.dumps(data)}\n\n'
 
                         # limit search space

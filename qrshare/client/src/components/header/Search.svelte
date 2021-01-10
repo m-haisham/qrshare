@@ -1,16 +1,20 @@
 <script>
+    export let value;
+    export let disabled;
+
     import { SizedBox } from "../../utilities";
     import { createEventDispatcher } from "svelte";
 
     const dispatch = createEventDispatcher();
 
-    let value = "";
     $: expanded = Boolean.valueOf(value) && value !== "";
 
     function submit(e) {
         e.preventDefault();
 
-        if (value) dispatch("submit", { query: value });
+        if (value && !disabled) {
+            dispatch("submit", { query: value });
+        }
     }
 </script>
 
@@ -31,6 +35,10 @@
     button {
         width: 100%;
         box-sizing: border-box;
+    }
+
+    .disabled {
+        opacity: 0.5;
     }
 
     @media (min-width: 550px) {
@@ -68,8 +76,8 @@
     }
 </style>
 
-<form on:submit={submit}>
-    <input type="text" bind:value class:expanded />
+<form on:submit={submit} class:disabled>
+    <input type="text" bind:value {disabled} class:expanded />
     <SizedBox width="2rem" />
     <button class="header-button" type="submit" value="submit">Search</button>
 </form>
