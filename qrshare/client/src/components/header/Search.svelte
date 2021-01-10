@@ -9,7 +9,8 @@
 
     function submit(e) {
         e.preventDefault();
-        dispatch("submit", { query: value });
+
+        if (value) dispatch("submit", { query: value });
     }
 </script>
 

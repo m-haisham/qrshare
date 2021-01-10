@@ -108,7 +108,7 @@ class App:
 
             return route.zip()
 
-        @self.app.route('/search')
+        @self.app.route('/search', methods=['GET', 'POST'])
         @self.auth.require_auth
         def search_point():
             # query parameters
@@ -137,7 +137,7 @@ class App:
             words = [word for word in query.split(' ') if len(word) > 1]
 
             def generate():
-                count = 0
+                count = 1
                 for route in search_routes:
                     for path, result in route.search(words):
                         # add to route map
@@ -153,14 +153,14 @@ class App:
                         data = route.to_dict()
                         data['matches'] = result.regs
 
-                        yield json.dumps(data)
+                        yield f'data: {json.dumps(data)}\n\n'
 
                         # limit search space
                         count += 1
                         if count > limit:
                             return
 
-            return Response(generate(), mimetype='text/json')
+            return Response(generate(), mimetype='text/event-stream')
 
     def serve(self, debug=False):
         self.create_endpoints()

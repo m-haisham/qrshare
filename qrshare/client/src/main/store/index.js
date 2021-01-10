@@ -1,2 +1,2 @@
-export { currentRoute, routes, qrUrl } from './store'
-export { updateStore } from './actions'
+export { currentRoute, routes, qrUrl, isSearching, searchResults } from './store'
+export { updateStore, search } from './actions'
