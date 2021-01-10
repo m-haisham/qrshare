@@ -32,7 +32,8 @@ export function parseNamedParams(url, namedUrl) {
             params[lastkey] += `/${key}`;
         }
     }
-    
+
+    // queryies
     if (queries)
         for (let query of queries.split('&')) {
             const [key, value] = query.split('=')

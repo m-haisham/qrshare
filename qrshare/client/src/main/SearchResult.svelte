@@ -1,6 +1,20 @@
 <script>
     import { isSearching, searchResults } from "./store";
     import { SearchListItem } from "./display";
+    import { navigateTo } from "../module/router";
+
+    function load(e) {
+        const route = e.detail;
+        navigateTo({ id: 1, url: route.href, state: route, name: route.name });
+    }
+
+    function file(e) {
+        createLink(e.detail.path).click();
+    }
+
+    function zip(e) {
+        createLink(e.detail.zip).click();
+    }
 </script>
 
 <style>
@@ -17,11 +31,18 @@
     }
 </style>
 
-<h4>{$searchResults.length} Results</h4>
+<!-- Heading -->
+{#if $isSearching}
+    <h4>Searching... ({$searchResults.length})</h4>
+{:else if $searchResults.length == 0}
+    <h4>No matches found</h4>
+{:else}
+    <h4>{$searchResults.length} Results</h4>
+{/if}
+
+<!-- Results -->
 <li class="grid">
     {#each $searchResults as route}
-        <ul>
-            <SearchListItem {route} />
-        </ul>
+        <SearchListItem {route} on:folder={load} on:file={file} on:zip={zip} />
     {/each}
 </li>

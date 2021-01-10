@@ -25,8 +25,8 @@ export async function updateStore(path) {
 export async function search(query, limit=200) {
 
     // reset previous results
-    searchResults.clear()
     isSearching.set(true)
+    searchResults.clear()
 
     const source = new EventSource(`/search?query=${query}&limit=${limit}`)
     console.log({msg: 'start', source})

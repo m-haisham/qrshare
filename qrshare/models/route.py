@@ -63,7 +63,8 @@ class Route:
 
     def search(self, words):
         rx = re.compile(
-            '|'.join(words)
+            '|'.join(words),
+            re.IGNORECASE
         )
 
         for path in self.path.rglob('**/*'):

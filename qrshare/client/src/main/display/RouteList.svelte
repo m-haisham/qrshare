@@ -10,12 +10,10 @@
     }
 
     function file(e) {
-        console.log(e);
         createLink(e.detail.path).click();
     }
 
     function zip(e) {
-        console.log(e);
         createLink(e.detail.zip).click();
     }
 </script>

@@ -64,6 +64,6 @@
             class="ct-button line-clamp"
             on:click={folder}>{@html title}</button>
         <SizedBox width="1rem" />
-        <button on:click={zip} data-tooltip="This is a tooltip">ZIP</button>
+        <button on:click={zip}>ZIP</button>
     </div>
 {/if}
