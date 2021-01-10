@@ -140,13 +140,10 @@ class App:
             def generate():
                 count = 1
                 while True:
-
                     try:
                         route = search_routes.pop(0)
                     except IndexError:
                         break
-
-                    print(route.path, route.sub_routes)
 
                     # get sub routes and queue to be searched
                     self.map(route)

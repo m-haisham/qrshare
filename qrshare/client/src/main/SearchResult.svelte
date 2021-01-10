@@ -42,7 +42,12 @@
 
 <!-- Results -->
 <li class="grid">
-    {#each $searchResults as route}
-        <SearchListItem {route} on:folder={load} on:file={file} on:zip={zip} />
+    {#each $searchResults as route, i}
+        <SearchListItem
+            id={i}
+            {route}
+            on:folder={load}
+            on:file={file}
+            on:zip={zip} />
     {/each}
 </li>

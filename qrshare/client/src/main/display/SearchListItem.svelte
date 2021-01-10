@@ -1,4 +1,5 @@
 <script>
+    export let id;
     export let route;
 
     import { createEventDispatcher } from "svelte";
@@ -82,12 +83,27 @@
         border-top: 1px solid #bbb;
         text-align: start;
     }
+
+    .title-row {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+    }
+
+    .title-id {
+        color: var(--color-light-dark);
+    }
 </style>
 
 <li>
     <button class="button-multiline" on:click={main}>
         <div class="title">
-            {@html title}
+            <div class="title-row">
+                <div>
+                    {@html title}
+                </div>
+                <div class="title-id">#{id}</div>
+            </div>
         </div>
         <div class="subtitle">~{route.parent.href}</div>
     </button>
