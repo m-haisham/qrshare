@@ -71,7 +71,10 @@
         cursor: pointer;
     }
 
-    .title {
+    .title-row {
+        display: flex;
+        max-width: 100%;
+        overflow-wrap: break-word;
         font-weight: bold;
     }
 
@@ -84,26 +87,23 @@
         text-align: start;
     }
 
-    .title-row {
-        display: flex;
-        align-items: flex-start;
-        justify-content: space-between;
+    .title-text {
+        overflow: hidden;
     }
 
     .title-id {
+        margin-left: auto;
         color: var(--color-light-dark);
     }
 </style>
 
 <li>
     <button class="button-multiline" on:click={main}>
-        <div class="title">
-            <div class="title-row">
-                <div>
-                    {@html title}
-                </div>
-                <div class="title-id">#{id}</div>
+        <div class="title-row">
+            <div class="title-text">
+                {@html title}
             </div>
+            <div class="title-id">#{id + 1}</div>
         </div>
         <div class="subtitle">~{route.parent.href}</div>
     </button>

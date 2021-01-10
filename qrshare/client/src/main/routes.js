@@ -19,6 +19,8 @@ const routes = [
         name: '/',
         component: Content,
         on: updateSharedRoutes,
+        // component: SearchResult,
+        // on: updateSearch,
     },
     {
         id: 1,
