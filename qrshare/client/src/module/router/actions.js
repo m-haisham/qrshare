@@ -10,7 +10,7 @@ export function init({routes, initial}) {
     setInitialRoute(initial)
 }
 
-export async function navigateTo({id, url, state = {}, name = ''}) {
+export async function navigateTo({id, url, state = {}, name = '', push=true}) {
     const route = getRouteById(definedRoutes, id)
     const params = parseNamedParams(url, route.name)
     
@@ -18,14 +18,14 @@ export async function navigateTo({id, url, state = {}, name = ''}) {
     activeRoute.set({...route, params, state})
     route.on(params, state)
     
-    window.history.pushState({id: route.id, state}, name, url || route.name)
+    if (push)
+        window.history.pushState({id: route.id, state}, name, url || route.name)
 }
 
 function registerPopStateListener() {
     window.onpopstate = function(e) {
-        console.log(e)
         if (e.state) {
-            navigateTo({url: e.target.location.pathname, ...e.state})
+            navigateTo({url: e.target.location.pathname, ...e.state, push: false})
         }
     }
 }
