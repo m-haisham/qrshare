@@ -8,17 +8,19 @@ function updateSharedRoutes(params, state) {
 }
 
 function updateSearch(params, state) {
-    console.log({params, state})
-    search(params.query, 100)
+    search('data', 100)
+    // search(params.query, 100)
 }
 
 const routes = [
     {
         id: 0,
         key: 0,
-        name: '/',
-        component: Content,
-        on: updateSharedRoutes,
+        // name: '/',
+        // component: Content,
+        // on: updateSharedRoutes,
+        component: SearchResult,
+        on: updateSearch,
     },
     {
         id: 1,

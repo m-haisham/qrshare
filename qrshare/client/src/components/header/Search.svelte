@@ -50,15 +50,13 @@
             width: auto;
             text-align: start;
             margin-bottom: auto;
-            border-top-right-radius: 0;
-            border-bottom-right-radius: 0;
+            border-radius: 4px 0 0 4px;
             transition: width 100ms ease;
         }
         button {
             width: auto;
             margin-left: -2rem;
-            border-top-left-radius: 0;
-            border-bottom-left-radius: 0;
+            border-radius: 0 4px 4px 0;
         }
     }
 
