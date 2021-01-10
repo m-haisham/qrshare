@@ -10,11 +10,10 @@ from .zip import ZipContent
 
 
 class Route:
-    def __init__(self, qr, path, parent=None):
+    def __init__(self, path, parent=None):
         self.path: Path = path
         self.parent: Route = parent
         self.sub_routes: Union[List[Route], None] = None
-        self.qr = qr
         self.is_root = False
 
     def populate(self):
@@ -22,7 +21,7 @@ class Route:
         :return: whether sub routes where populated this run
         """
         if not self.is_file and self.sub_routes is None:
-            self.sub_routes = [Route(self.qr, subdir, self) for subdir in self.path.iterdir()]
+            self.sub_routes = [Route(subdir, self) for subdir in self.path.iterdir()]
             self.sub_routes.sort(key=lambda r: (r.is_file, r.general_path()))
             return True
 
@@ -60,17 +59,6 @@ class Route:
             zipper.reset_hand()
 
             return send_file(zipper.file, mimetype='application/zip')
-
-    def search(self, words):
-        rx = re.compile(
-            '|'.join(words),
-            re.IGNORECASE
-        )
-
-        for path in self.path.rglob('**/*'):
-            result = rx.search(path.name)
-            if result:
-                yield path, result
 
     @property
     def name(self):

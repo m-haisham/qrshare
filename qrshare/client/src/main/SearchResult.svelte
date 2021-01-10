@@ -37,7 +37,7 @@
 {:else if $searchResults.length == 0}
     <h4>No matches found</h4>
 {:else}
-    <h4>{$searchResults.length} Results</h4>
+    <h4>Found {$searchResults.length} matches</h4>
 {/if}
 
 <!-- Results -->

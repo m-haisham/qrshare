@@ -7,6 +7,9 @@ paths = [
     Path(r'C:\Users\User\novels'),
 ]
 
+def walkthrough(path):
+    path
+
 if __name__ == '__main__':
     app = App(paths, port=4000)
 

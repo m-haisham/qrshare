@@ -1,4 +1,5 @@
 import json
+import re
 from io import BytesIO
 from pathlib import Path
 from typing import List
@@ -23,7 +24,7 @@ class App:
         self.port = port
 
         self.qr = QRContainer(f'{NetworkTools.local_ip()}:{self.port}')
-        self.routes = sorted([Route(self.qr, path) for path in self.paths], key=lambda r: (r.is_file, r.general_path()))
+        self.routes = sorted([Route(path) for path in self.paths], key=lambda r: (r.is_file, r.general_path()))
         self.route_map = {
             route.general_path(False, True).lstrip('/'): route
             for route in self.routes
@@ -86,13 +87,7 @@ class App:
             except KeyError:
                 return abort(404)
 
-            # check whether sub routes need refreshing
-            if route.populate():
-                # add newly explored routes to map
-                for sub_route in route.sub_routes:
-                    # make it english; remove the url specific encoding
-                    path = sub_route.general_path(False, True).lstrip('/')
-                    self.route_map[path] = sub_route
+            self.map(route)
 
             return route.get()
 
@@ -136,25 +131,35 @@ class App:
             # single char words would makes s... search complicated
             words = [word for word in query.split(' ') if len(word) > 1]
 
+            # regex matcher
+            rx = re.compile(
+                '|'.join(words),
+                re.IGNORECASE
+            )
+
             def generate():
                 count = 1
-                for route in search_routes:
-                    for path, result in route.search(words):
-                        # add to route map
-                        route = Route(self.qr, path)
-                        relative_path = route.general_path(False, True).lstrip('/')
-                        try:
-                            # overriding existing route might delete existing parent connection
-                            self.route_map[relative_path]
-                        except KeyError:
-                            self.route_map[relative_path] = route
+                while True:
 
-                        # extract useful information
+                    try:
+                        route = search_routes.pop(0)
+                    except IndexError:
+                        break
+
+                    print(route.path, route.sub_routes)
+
+                    # get sub routes and queue to be searched
+                    self.map(route)
+
+                    if not route.is_file:
+                        search_routes.extend(route.sub_routes)
+
+                    # check if current route matches search parameter
+                    result = rx.search(route.name)
+                    if result:
                         data = route.to_dict()
                         data['matches'] = result.regs
-
-                        relative_path = route.general_path(False, True) / path.relative_to(route.path)
-                        data['parentPath'] = str(relative_path.parent.as_posix())
+                        data['parent'] = route.parent.to_dict()
 
                         yield f'data: {json.dumps(data)}\n\n'
 
@@ -164,6 +169,15 @@ class App:
                             return
 
             return Response(generate(), mimetype='text/event-stream')
+
+    def map(self, route):
+        # check whether sub routes need refreshing
+        if route.populate():
+            # add newly explored routes to map
+            for sub_route in route.sub_routes:
+                # make it english; remove the url specific encoding
+                path = sub_route.general_path(False, True).lstrip('/')
+                self.route_map[path] = sub_route
 
     def serve(self, debug=False):
         self.create_endpoints()
