@@ -1,4 +1,5 @@
-import Home from './Home.svelte'
+import Content from './Content.svelte'
+import SearchResult from './SearchResult.svelte'
 import { qrUrl, updateStore } from './store'
 import { toDataURL } from '../request'
 
@@ -6,20 +7,31 @@ function updateSharedRoutes(params, state) {
     updateStore(state.path)
 }
 
+function updateSearch(params, state) {
+
+}
+
 const routes = [
     {
         id: 0,
         key: 0,
         name: '/',
-        component: Home,
+        component: Content,
         on: updateSharedRoutes,
     },
     {
         id: 1,
         key: 0,
         name: '/:path',
-        component: Home,
+        component: Content,
         on: updateSharedRoutes,
+    },
+    {
+        id: 2,
+        key: 1,
+        name: '/search/:query',
+        component: SearchResult,
+        on: updateSearch,
     }
 ]
 
