@@ -87,6 +87,11 @@
         text-align: start;
     }
 
+    .button-multiline:hover,
+    .button-extension:hover {
+        color: #111;
+    }
+
     .title-text {
         overflow: hidden;
     }

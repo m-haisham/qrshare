@@ -46,7 +46,7 @@ class App:
         @self.app.errorhandler(Exception)
         def error_handler(error):
             try:
-                return render_template('error.html', code=error.code, message=str(error)), error.code
+                return render_template('error.html', code=error.code, message=error.description), error.code
             except:
                 return render_template('client/public/error.html', code=500, message="Something went wrong"), 500
 

@@ -1,7 +1,8 @@
 <script>
     import Global from "../components/Global.svelte";
     import Footer from "../components/Footer.svelte";
-    import { Mobile, Desktop } from "../components/login";
+    import Desktop from "./Desktop.svelte";
+    import Mobile from './Mobile.svelte'
     import { MediaQuery } from "../utilities";
 
     let msg = "";
