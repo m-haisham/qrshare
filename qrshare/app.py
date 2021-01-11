@@ -5,7 +5,7 @@ from pathlib import Path
 from typing import List
 
 import waitress
-from flask import Flask, send_from_directory, abort, send_file, after_this_request, request, Response, stream_with_context
+from flask import Flask, send_from_directory, abort, send_file, request, Response, render_template
 
 from .auth import Authentication
 from .models import Route, QRContainer, ZipContent
@@ -17,7 +17,6 @@ class App:
 
     def __init__(self, paths: List[Path], code=None, port=5000):
         self.app = self.init()
-        self.app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
         self.auth = Authentication(self.app, code)
 
         self.paths = paths
@@ -37,9 +36,19 @@ class App:
         # load config for deployment environments
         app.config.from_pyfile('config.py', silent=True)
 
+        app.config['TRAP_HTTP_EXCEPTIONS']=True
+        app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
+
         return app
 
     def create_endpoints(self):
+
+        @self.app.errorhandler(Exception)
+        def error_handler(error):
+            try:
+                return render_template('error.html', code=error.code, message=str(error)), error.code
+            except:
+                return render_template('client/public/error.html', code=500, message="Something went wrong"), 500
 
         @self.app.route('/')
         @self.auth.require_auth
@@ -166,6 +175,7 @@ class App:
                             return
 
             return Response(generate(), mimetype='text/event-stream')
+
 
     def map(self, route):
         # check whether sub routes need refreshing
