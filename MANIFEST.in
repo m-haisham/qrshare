@@ -1,4 +1,8 @@
+include LICENSE
 graft qrshare/client/public
 graft qrshare/client/scripts
 graft qrshare/client/src
+graft qrshare/templates
 recursive-include qrshare/client *
+recursive-exclude qrshare/client/node_modules *
+exclude *.log
