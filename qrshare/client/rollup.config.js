@@ -42,9 +42,9 @@ export default (args) => {
 		}
 	}
 
-	let singleBundle = bundles.length === 1
-	let flask = args['config-flask'] === true
-	let configs = []
+	const singleBundle = bundles.length === 1
+	const flask = args['config-flask'] === true
+	const configs = []
 
 	// create configs
 	for (const name of bundles) {
@@ -75,9 +75,9 @@ export default (args) => {
 				// the bundle has been generated
 				!production && !flask && serve(),
 				
-				!production && singleBundle
+				!production && (singleBundle
 					? livereload(`public`)
-					: livereload(`public/build/${name}`),
+					: livereload(`public/build/${name}`)),
 		
 				// If we're building for production (npm run build
 				// instead of npm run dev), minify
