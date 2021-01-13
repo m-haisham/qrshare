@@ -12,7 +12,10 @@ export function init({routes, initial}) {
 
 export async function navigateTo({id, url, state = {}, name = '', push=true}) {
     const route = getRouteById(definedRoutes, id)
-    const params = parseNamedParams(url, route.name)
+    let params = {}
+    if (url) {
+        params = parseNamedParams(url, route.name)
+    }
     
     // change active route
     activeRoute.set({...route, params, state})

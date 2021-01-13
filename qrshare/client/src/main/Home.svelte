@@ -20,7 +20,7 @@
 	}
 
 	function home() {
-		navigateTo({ id: 0, url: "/" });
+		navigateTo({ id: 0, state: { path: "/root" } });
 	}
 
 	function search(e) {
