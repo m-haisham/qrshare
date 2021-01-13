@@ -2,6 +2,7 @@
     import { isSearching, searchResults } from "./store";
     import { SearchListItem } from "./display";
     import { navigateTo } from "../module/router";
+    import { createLink } from "../helper";
 
     function load(e) {
         const route = e.detail;

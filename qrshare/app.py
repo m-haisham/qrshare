@@ -36,7 +36,7 @@ class App:
         # load config for deployment environments
         app.config.from_pyfile('config.py', silent=True)
 
-        app.config['TRAP_HTTP_EXCEPTIONS']=True
+        app.config['TRAP_HTTP_EXCEPTIONS'] = True
         app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 
         return app
@@ -112,7 +112,7 @@ class App:
 
             return route.zip()
 
-        @self.app.route('/search', methods=['GET', 'POST'])
+        @self.app.route('/search')
         @self.auth.require_auth
         def search_point():
             # query parameters
@@ -166,6 +166,7 @@ class App:
                         data = route.to_dict()
                         data['matches'] = result.regs
                         data['parent'] = route.parent.to_dict()
+                        data['zip'] = route.zip_path()
 
                         yield f'data: {json.dumps(data)}\n\n'
 
@@ -175,7 +176,6 @@ class App:
                             return
 
             return Response(generate(), mimetype='text/event-stream')
-
 
     def map(self, route):
         # check whether sub routes need refreshing

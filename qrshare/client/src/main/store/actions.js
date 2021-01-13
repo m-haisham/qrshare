@@ -29,7 +29,7 @@ export async function search(query, limit=200) {
     searchResults.clear()
 
     const source = new EventSource(`/search?query=${query}&limit=${limit}`)
-    console.log({msg: 'start', source})
+    // console.log({msg: 'start', source})
     
     source.onmessage = (e) => {
         searchResults.push(JSON.parse(e.data))

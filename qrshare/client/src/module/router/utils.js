@@ -1,5 +1,3 @@
-import { UrlParser } from 'url-params-parser'
-
 export function getRouteById(routes, id) {
     for (let route of routes)
         if (route.id == id)

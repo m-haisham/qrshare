@@ -31,7 +31,6 @@ class Route:
         if self.is_file:
             return send_file(self.path)
         else:
-            parent_data = None
             if self.parent:
                 parent_data = self.parent.to_dict()
             else:
