@@ -12,15 +12,21 @@ export function init({routes, initial}) {
 
 export async function navigateTo({id, url, state = {}, name = '', push=true}) {
     const route = getRouteById(definedRoutes, id)
+    
+    // extract information from url
     let params = {}
     if (url) {
         params = parseNamedParams(url, route.name)
     }
-    
+
+    // prevent modification to params
+    Object.freeze(params)
+
     // change active route
     activeRoute.set({...route, params, state})
     route.on(params, state)
     
+    // change browser url
     if (push)
         window.history.pushState({id: route.id, state}, name, url || route.name)
 }

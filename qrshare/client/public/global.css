@@ -1,3 +1,12 @@
+:root {
+  --color-primary: #33c3f0;
+  --color-primary-light: #33c4f073;
+  --color-light: #f1f1f1;
+  --color-light-dark: #ccc;
+  --color-dark: #222222;
+  --color-warning: #cc3300;
+}
+
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;

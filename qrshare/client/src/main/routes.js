@@ -58,4 +58,7 @@ const options = {
     }
 }
 
+Object.freeze(routes)
+Object.freeze(options)
+
 export { routes, options }

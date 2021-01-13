@@ -10,6 +10,12 @@ export function getRouteByName(routes, name) {
             return route
 }
 
+/**
+ * Extracts valid information from url to object 
+ * 
+ * @param {String} url url to be parsed
+ * @param {String} namedUrl url pattern of how to organise information
+ */
 export function parseNamedParams(url, namedUrl) {
 
     const [path, queries] = url.split('?')
@@ -31,7 +37,7 @@ export function parseNamedParams(url, namedUrl) {
         }
     }
 
-    // queryies
+    // queries
     if (queries)
         for (let query of queries.split('&')) {
             const [key, value] = query.split('=')

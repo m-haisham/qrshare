@@ -1,8 +1,7 @@
 <script>
-    import Global from "../components/Global.svelte";
     import Footer from "../components/Footer.svelte";
     import Desktop from "./Desktop.svelte";
-    import Mobile from './Mobile.svelte'
+    import Mobile from "./Mobile.svelte";
     import { MediaQuery } from "../utilities";
 
     let msg = "";
@@ -43,21 +42,19 @@
     }
 </style>
 
-<Global>
-    <main>
-        <div>
-            <MediaQuery query="(min-width: 550px)" let:matches>
-                {#if matches}
-                    <!-- other -->
-                    <Desktop {msg} on:submit={auth} />
-                {:else}
-                    <!-- mobile -->
-                    <Mobile {msg} on:submit={auth} />
-                {/if}
-            </MediaQuery>
-        </div>
-        <footer>
-            <Footer />
-        </footer>
-    </main>
-</Global>
+<main>
+    <div>
+        <MediaQuery query="(min-width: 550px)" let:matches>
+            {#if matches}
+                <!-- other -->
+                <Desktop {msg} on:submit={auth} />
+            {:else}
+                <!-- mobile -->
+                <Mobile {msg} on:submit={auth} />
+            {/if}
+        </MediaQuery>
+    </div>
+    <footer>
+        <Footer />
+    </footer>
+</main>
