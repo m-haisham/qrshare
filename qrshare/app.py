@@ -1,5 +1,5 @@
 import json
-import re
+import regex
 from io import BytesIO
 from pathlib import Path
 from typing import List
@@ -45,7 +45,6 @@ class App:
 
         @self.app.errorhandler(Exception)
         def error_handler(error):
-            print(error)
             try:
                 return render_template('error.html', code=error.code, name=error.name,  message=error.description),\
                        error.code
@@ -143,9 +142,9 @@ class App:
             words = [word for word in query.split(' ') if len(word) > 1]
 
             # regex matcher
-            rx = re.compile(
+            rx = regex.compile(
                 '|'.join(words),
-                re.IGNORECASE
+                regex.IGNORECASE
             )
 
             def generate():
@@ -163,10 +162,10 @@ class App:
                         search_routes.extend(route.sub_routes)
 
                     # check if current route matches search parameter
-                    result = rx.search(route.name)
+                    result = [match for match in rx.finditer(route.name)]
                     if result:
                         data = route.to_dict()
-                        data['matches'] = result.regs
+                        data['matches'] = [match.regs[0] for match in result]
                         data['parent'] = route.parent.to_dict()
                         data['zip'] = route.zip_path()
 

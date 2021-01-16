@@ -1,5 +1,5 @@
 import { fetchOrRedirect, jsonOrRedirect } from '../../request'
-import { currentRoute, isSearching, routes, searchResults } from './store'
+import { currentRoute, isSearching, routes, searchResults, searchInfo } from './store'
 
 /**
  * gets the route information and updates state
@@ -22,13 +22,14 @@ export async function updateStore(path) {
     return { current, routes }
 }
 
-export async function search(query, limit=200) {
+export async function search(query, path='/', limit=100) {
 
     // reset previous results
     isSearching.set(true)
+    searchInfo.set({query, path, limit})
     searchResults.clear()
 
-    const source = new EventSource(`/search?query=${query}&limit=${limit}`)
+    const source = new EventSource(`/search?query=${query}&path=${path}&limit=${limit}`)
     // console.log({msg: 'start', source})
     
     source.onmessage = (e) => {

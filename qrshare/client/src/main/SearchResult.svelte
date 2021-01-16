@@ -1,54 +1,83 @@
 <script>
-    import { isSearching, searchResults } from "./store";
-    import { SearchListItem } from "./display";
-    import { navigateTo } from "../module/router";
-    import { createLink } from "../helper";
+  import {
+    isSearching,
+    searchInfo,
+    searchResults,
+    isSorted,
+    processedResults,
+  } from "./store";
+  import { SearchListItem } from "./display";
+  import { navigateTo } from "../module/router";
+  import { createLink } from "../helper";
 
-    function load(e) {
-        const route = e.detail;
-        navigateTo({ id: 1, url: route.href, state: route, name: route.name });
-    }
+  function load(e) {
+    const route = e.detail;
+    navigateTo({ id: 1, url: route.href, state: route, name: route.name });
+  }
 
-    function file(e) {
-        createLink(e.detail.path).click();
-    }
+  function file(e) {
+    createLink(e.detail.path).click();
+  }
 
-    function zip(e) {
-        createLink(e.detail.zip).click();
-    }
+  function zip(e) {
+    createLink(e.detail.zip).click();
+  }
+
+  function sort(e) {
+    isSorted.flip();
+  }
 </script>
 
-<style>
-    .grid {
-        display: grid;
-        grid-template-columns: 100%;
-        column-gap: 1rem;
-    }
-
-    @media (min-width: 550px) {
-        .grid {
-            grid-template-columns: 50% 50%;
-        }
-    }
-</style>
+<svelte:head>
+  <title>{$searchInfo.query} | ~{$searchInfo.path} | Search</title>
+</svelte:head>
 
 <!-- Heading -->
-{#if $isSearching}
-    <h4>Searching... ({$searchResults.length})</h4>
-{:else if $searchResults.length == 0}
-    <h4>No matches found</h4>
-{:else}
-    <h4>Found {$searchResults.length} matches</h4>
-{/if}
+<div class="header">
+  <h4>
+    {#if $isSearching}
+      Searching... ({$searchResults.length})
+    {:else if $searchResults.length == 0}
+      No matches found
+    {:else}Found {$searchResults.length} matches{/if}
+  </h4>
+  <button disabled={$isSearching} on:click={sort}
+    >{$isSorted ? "Sorted" : "Unsorted"}</button
+  >
+</div>
 
 <!-- Results -->
 <li class="grid">
-    {#each $searchResults as route, i}
-        <SearchListItem
-            id={i}
-            {route}
-            on:folder={load}
-            on:file={file}
-            on:zip={zip} />
-    {/each}
+  {#each $processedResults as route, i}
+    <SearchListItem
+      id={i}
+      {route}
+      on:folder={load}
+      on:file={file}
+      on:zip={zip}
+    />
+  {/each}
 </li>
+
+<style>
+  .grid {
+    display: grid;
+    grid-template-columns: 100%;
+    column-gap: 1rem;
+  }
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .header h4 {
+    text-align: start;
+  }
+
+  @media (min-width: 550px) {
+    .grid {
+      grid-template-columns: 50% 50%;
+    }
+  }
+</style>

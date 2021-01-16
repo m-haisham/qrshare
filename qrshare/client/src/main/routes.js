@@ -8,8 +8,8 @@ function updateSharedRoutes(params, state) {
 }
 
 function updateSearch(params, state) {
-    // search('data', 100)
-    search(params.query, 100)
+    // search('data')
+    search(params.query)
 }
 
 const routes = [
