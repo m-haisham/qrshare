@@ -24,7 +24,7 @@ class ConfigBase:
 
     def save(self):
         with self.path.open('w') as f:
-            json.dump(self.data, f)
+            json.dump(self.data, f, indent=4, sort_keys=True)
 
     def load(self):
         try:
