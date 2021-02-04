@@ -7,11 +7,17 @@ from flask import Flask, render_template, Markup, abort, send_file
 from .auth import Authentication
 from .models import Route, QRContainer, ZipContent
 from .tools import NetworkTools
+from .config import UserConfig
 
 
 class App:
     def __init__(self, paths: List[Path], code=None, port=5000):
         self.app = self.init()
+        self.user = UserConfig()
+
+        # set config
+        self.app.config.from_mapping(self.user.config.data)
+
         self.auth = Authentication(self.app, code)
 
         self.paths = paths
