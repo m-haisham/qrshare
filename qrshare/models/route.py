@@ -10,6 +10,9 @@ from .zip import ZipContent
 
 
 class Route:
+
+    types = ('is_file', 'is_dir')
+
     def __init__(self, path, parent=None):
         self.path: Path = path
         self.parent: Route = parent
