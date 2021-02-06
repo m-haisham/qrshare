@@ -91,6 +91,9 @@ class Search:
                 if t not in Route.types:
                     raise ValueError(f'Unexpected value received: {t}; expecting {Route.types}')
 
+            # removes any duplicate values
+            types = set(types)
+
         def predicate(route: Route):
 
             # filter by path type
@@ -99,6 +102,11 @@ class Search:
                 return
 
             matches = []
+            relevance = 0
+
+            # relevance increases if there was a type check
+            if types != Route.types:
+                relevance += 1
 
             # filter by query
             if rx_query is not None:
@@ -111,8 +119,12 @@ class Search:
                 matches += [match.regs[0] for match in rx_exts.finditer(full_suffix)]
 
             if matches:
+                # number of matches is directly proportional to result relevance
+                relevance += len(matches)
+
                 data: dict = route.to_dict()
                 data['matches'] = matches
+                data['relevance'] = relevance
                 data['parent'] = route.parent.to_dict()
                 data['zip'] = route.zip_path()
 
