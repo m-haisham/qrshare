@@ -102,19 +102,24 @@ class Search:
             matches = []
             relevance = 0
 
-            # relevance increases if there was a type check
-            if types != Route.types:
-                relevance += 1
+            query_match = False
+            exts_match = False
 
             # filter by query
             if rx_query is not None:
                 matches += [match.regs[0] for match in rx_query.finditer(route.name)]
+                query_match = True
 
             # filter by extension
             if rx_exts is not None and route.is_file():
                 # getting the full suffix of the route
                 full_suffix = ''.join(route.path.suffixes)
                 matches += [match.regs[0] for match in rx_exts.finditer(full_suffix)]
+                exts_match = True
+
+            # increased relevance if both query and extension match
+            if query_match and exts_match:
+                relevance += 1
 
             if matches:
                 # number of matches is directly proportional to result relevance
