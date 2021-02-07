@@ -49,7 +49,7 @@ class App:
                 return render_template('error.html', code=error.code, name=error.name,  message=error.description),\
                        error.code
             except:
-                return render_template('client/public/error.html', code=500, message="Something went wrong"), 500
+                return render_template('error.html', code=500, message="Something went wrong"), 500
 
         @self.app.route('/')
         @self.auth.require_auth

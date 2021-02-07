@@ -49,6 +49,7 @@ class Route:
                 'isRoot': self.is_root,
                 'routes': [r.to_dict() for r in self.sub_routes],
                 'parent': parent_data,
+                'href': self.general_path(False, True),
                 'zip': self.zip_path(),
             }
 

@@ -21,8 +21,8 @@ class Search:
         def search_point():
             # query parameters
             query = request.args.get('query')
-            exts = request.args.get('exts')
-            types = request.args.get('types')
+            exts = request.args.getlist('exts')
+            types = request.args.getlist('types')
             path = request.args.get('path') or '/'
             try:
                 limit = int(request.args.get('limit') or 200)
@@ -56,7 +56,7 @@ class Search:
             raise ValueError('Require at least one argument (query, exts, types)')
 
         rx_query = None
-        if query is not None:
+        if query:
             # single char words would makes s... search complicated
             words = {word for word in query.split(' ') if len(word) > 1}
 
@@ -66,21 +66,21 @@ class Search:
             )
 
         rx_exts = None
-        if exts is not None:
+        if exts:
             if type(exts) == str:
                 exts = (exts, )
 
             # default is type iterable, any other type should be converted to iterable before this point
-            # ensure extension has a dot at the start
-            exts = {'.' + ext.lstrip('.') for ext in exts}
+            # ensure extension has a dot at the start and build individual expressions
+            exts = {f'(\\.{ext.lstrip(".")})(\\.|$)' for ext in exts}
 
             rx_exts = regex.compile(
                 '|'.join(exts)
             )
 
         # sanitizing received types
-        # :throws: value error if unexpected type removed
-        if types is not None:
+        # :throws: value error if unexpected type received
+        if types:
             if type(types) == str:
                 types = (types, )
 
@@ -111,11 +111,10 @@ class Search:
                 query_match = True
 
             # filter by extension
-            if rx_exts is not None and route.is_file():
-                # getting the full suffix of the route
-                full_suffix = ''.join(route.path.suffixes)
-                matches += [match.regs[0] for match in rx_exts.finditer(full_suffix)]
-                exts_match = True
+            if rx_exts is not None and route.is_file:
+                if len(route.path.suffixes) > 0:
+                    matches += [match.regs[0] for match in rx_exts.finditer(route.name)]
+                    exts_match = True
 
             # increased relevance if both query and extension match
             if query_match and exts_match:
