@@ -8,9 +8,9 @@ function updateSharedRoutes(params, state) {
 }
 
 function updateSearch(params, state) {
-    // search({ path: "/", exts: ["py", "pyc"] });
-    search(params);
-    console.log({ params });
+    search({ path: "/", exts: ["py", "pyc"] });
+    // search(params);
+    // console.log({ params });
 }
 
 const routes = [
@@ -20,8 +20,8 @@ const routes = [
         name: "/",
         component: Content,
         on: updateSharedRoutes,
-        // component: SearchResult,
-        // on: updateSearch,
+        component: SearchResult,
+        on: updateSearch,
     },
     {
         id: 1,

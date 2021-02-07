@@ -66,6 +66,7 @@
         {#if !inSearch}
             <Search on:submit={search} disabled={$isSearching} {value} />
         {/if}
+
         <SizedBox width="4rem" />
 
         {#if inSearch}

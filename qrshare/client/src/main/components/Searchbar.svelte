@@ -38,16 +38,18 @@
         <Collapsible textH="OPTIONS" secondary={true} show={true}>
             <form on:submit|preventDefault={submit}>
                 <input type="text" placeholder="Search" bind:value={query} />
-                <SwitchGroup
-                    options={["is_file", "is_dir"]}
-                    initial={true}
-                    bind:selected={types}
-                />
-                <input
-                    type="text"
-                    placeholder="Extensions"
-                    bind:value={extensions}
-                />
+                <div class="more">
+                    <input
+                        type="text"
+                        placeholder="Extensions"
+                        bind:value={extensions}
+                    />
+                    <SwitchGroup
+                        options={["is_file", "is_dir"]}
+                        initial={true}
+                        bind:selected={types}
+                    />
+                </div>
                 <button>SEARCH</button>
             </form>
         </Collapsible>
@@ -73,5 +75,38 @@
 
     button {
         width: 100%;
+    }
+
+    @media (min-width: 550px) {
+        input {
+            text-align: start;
+        }
+
+        button {
+            width: auto;
+            padding-left: 2rem;
+            padding-right: 2rem;
+        }
+    }
+
+    /* STYLE MORE OPTIONS */
+    .more {
+        display: flex;
+        flex-direction: column;
+    }
+
+    @media (min-width: 550px) {
+        .more {
+            flex-direction: row;
+            gap: 1rem;
+        }
+
+        .more > *:first-child {
+            flex-grow: 8;
+        }
+
+        .more > *:last-child {
+            flex-grow: 4;
+        }
     }
 </style>
