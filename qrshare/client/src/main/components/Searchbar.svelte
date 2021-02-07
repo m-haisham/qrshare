@@ -5,26 +5,29 @@
     import Divider from "../../components/Divider.svelte";
 
     // state values
-    import { currentRoute as current } from "../store";
+    import {
+        currentRoute as current,
+        isSearching,
+        searchQuery,
+    } from "../store";
 
     // functions
     import { createSearchUrl } from "../../helper";
     import { navigateTo } from "../../module/router";
 
-    let query = "";
     let types = [];
     let extensions = "";
 
     function submit(e) {
         // query
-        const _query = query ? query : null;
+        const query = $searchQuery ? $searchQuery : null;
         const exts = extensions.split(" ").filter((v) => v);
 
         navigateTo({
             id: $current.href === undefined ? 2 : 3,
             url: createSearchUrl({
                 path: $current.href,
-                query: _query,
+                query,
                 exts,
                 types,
             }),
@@ -35,22 +38,28 @@
 
 <div class="stick">
     <div class="container">
-        <Collapsible textH="OPTIONS" secondary={true} show={true}>
+        <Collapsible textH="OPTIONS" secondary={true}>
             <form on:submit|preventDefault={submit}>
-                <input type="text" placeholder="Search" bind:value={query} />
-                <div class="more">
+                <fieldset disabled={$isSearching}>
                     <input
                         type="text"
-                        placeholder="Extensions"
-                        bind:value={extensions}
+                        placeholder="Search"
+                        bind:value={$searchQuery}
                     />
-                    <SwitchGroup
-                        options={["is_file", "is_dir"]}
-                        initial={true}
-                        bind:selected={types}
-                    />
-                </div>
-                <button>SEARCH</button>
+                    <div class="more">
+                        <input
+                            type="text"
+                            placeholder="Extensions"
+                            bind:value={extensions}
+                        />
+                        <SwitchGroup
+                            options={["is_file", "is_dir"]}
+                            initial={true}
+                            bind:selected={types}
+                        />
+                    </div>
+                    <button>SEARCH</button>
+                </fieldset>
             </form>
         </Collapsible>
     </div>
@@ -63,7 +72,8 @@
         margin-bottom: 1rem;
     }
 
-    form {
+    form,
+    fieldset {
         margin: 0;
     }
 
@@ -86,6 +96,7 @@
             width: auto;
             padding-left: 2rem;
             padding-right: 2rem;
+            margin-bottom: 0;
         }
     }
 

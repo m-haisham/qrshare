@@ -94,8 +94,6 @@ export async function search({ path = "/", query, exts, types, limit = 100 }) {
         }
     }
 
-    console.log(base, params);
-
     const source = new EventSource(base + params.join("&"));
     // console.log({msg: 'start', source})
 

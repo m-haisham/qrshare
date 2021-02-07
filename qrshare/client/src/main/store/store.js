@@ -1,25 +1,25 @@
 import { writable, derived } from "svelte/store";
 
 function createListStore() {
-    const { subscribe, set, update } = writable([])
+    const { subscribe, set, update } = writable([]);
 
     return {
         subscribe,
         set,
         update,
-        push: (item) => update(l => [...l, item]),
+        push: (item) => update((l) => [...l, item]),
         clear: () => set([]),
-    }
+    };
 }
 
 function createBooleanStore(initial) {
-    const { subscribe, set, update } = writable(initial)
+    const { subscribe, set, update } = writable(initial);
 
     return {
         subscribe,
         set,
-        flip: () => update(b => !b),
-    }
+        flip: () => update((b) => !b),
+    };
 }
 
 /**
@@ -35,18 +35,20 @@ function compare(a, b) {
 }
 
 // shared routes
-export const routes = writable([])
-export const qrUrl = writable('')
-export const currentRoute = writable({})
+export const routes = writable([]);
+export const qrUrl = writable("");
+export const currentRoute = writable({});
 
 // search
-export const searchInfo = writable({})
-export const isSearching = writable(false)
-export const searchResults = createListStore()
+export const searchInfo = writable({});
+export const isSearching = writable(false);
+export const searchResults = createListStore();
+export const searchQuery = writable("");
 
 // sort
-export const isSorted = createBooleanStore(true)
+export const isSorted = createBooleanStore(true);
 export const processedResults = derived(
     [searchResults, isSorted],
-    ([$searchResults, $isSorted]) => $isSorted ? [...$searchResults].sort(compare) : $searchResults,
-)
+    ([$searchResults, $isSorted]) =>
+        $isSorted ? [...$searchResults].sort(compare) : $searchResults
+);

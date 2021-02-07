@@ -96,7 +96,7 @@ class Search:
 
             # filter by path type
             # if no dir types are specified, its assumed all types are welcome
-            if types is not None and not self._is_route_of_type(route, types):
+            if not self._is_route_of_type(route, types):
                 return
 
             matches = []
@@ -164,6 +164,11 @@ class Search:
         :param types: possible route types
         :return: whether the route is of any of the provided types
         """
+        # if type is an empty is or an empty string or none
+        # return true, negetive boolean is as taken as default
+        if not types:
+            return True
+
         for t in types:
             if getattr(route.path, t)():
                 return True
