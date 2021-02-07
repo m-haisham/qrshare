@@ -9,7 +9,6 @@ class Authentication:
         self.app = app
         self.code = code
         self.ukey = str(uuid.uuid4())
-        self.create_endpoints()
 
     def create_endpoints(self):
 

@@ -113,6 +113,10 @@ class App:
 
             return route.zip()
 
+        # create endpoints from other modules
+        self.auth.create_endpoints()
+        self.search.create_endpoints()
+
     def map(self, route):
         # check whether sub routes need refreshing
         if route.populate():

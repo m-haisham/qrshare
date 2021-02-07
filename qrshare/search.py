@@ -14,8 +14,6 @@ class Search:
         self.app = app
         self.auth = auth
 
-        self.create_endpoints()
-
     def create_endpoints(self):
 
         @self.app.app.route('/search')
