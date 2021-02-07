@@ -28,6 +28,9 @@ export function parseNamedParams(url, namedUrl) {
         for (let query of queries.split("&")) {
             const [key, value] = query.split("=");
 
+            // if there is no value, skip the query field
+            if (value === undefined || value === null || value === "") continue;
+
             // split between commas to get values list
             const values = value.split(",");
 

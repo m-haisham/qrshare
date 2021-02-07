@@ -68,6 +68,8 @@ export async function search({ path = "/", query, exts, types, limit = 100 }) {
             for (let ext of exts) {
                 params.push("exts=" + ext);
             }
+        } else if (typeof exts === "string") {
+            params.push("exts=" + exts);
         } else {
             console.error(
                 `Received unexpected type exts[${typeof exts}]=${exts}; Expected type Array`
@@ -76,19 +78,23 @@ export async function search({ path = "/", query, exts, types, limit = 100 }) {
     }
 
     // add types
-    if (types !== null && exts !== undefined) {
+    if (types !== null && types !== undefined) {
         // types is expected to be an array
         // this constructs a url with multiple values for types
         if (Array.isArray(types)) {
             for (let type of types) {
                 params.push("types=" + type);
             }
+        } else if (typeof types === "string") {
+            params.push("types=" + types);
         } else {
             console.error(
                 `Received unexpected type types[${typeof types}]=${types}; Expected type Array`
             );
         }
     }
+
+    console.log(base, params);
 
     const source = new EventSource(base + params.join("&"));
     // console.log({msg: 'start', source})
@@ -101,6 +107,8 @@ export async function search({ path = "/", query, exts, types, limit = 100 }) {
         if (e.eventPhase === EventSource.CLOSED) {
             source.close();
             isSearching.set(false);
+        } else {
+            console.error(e.target.message);
         }
     };
 }

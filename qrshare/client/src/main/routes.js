@@ -10,6 +10,7 @@ function updateSharedRoutes(params, state) {
 function updateSearch(params, state) {
     // search({ path: "/", exts: ["py", "pyc"] });
     search(params);
+    console.log({ params });
 }
 
 const routes = [

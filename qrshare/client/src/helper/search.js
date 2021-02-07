@@ -18,12 +18,15 @@ export function createSearchUrl({
 
     // add extensions
     if (exts !== null && exts !== undefined) {
+        // if the array has no values, return
+        if (!exts) return;
+
         params.push("exts=" + exts.join(","));
     }
 
     // add types filtering
     if (types !== null && types !== undefined) {
-        params.push("types" + types.join(","));
+        params.push("types=" + types.join(","));
     }
 
     // add limit

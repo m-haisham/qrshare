@@ -96,7 +96,7 @@ class Search:
 
             # filter by path type
             # if no dir types are specified, its assumed all types are welcome
-            if types is not None and self._is_route_of_type(route, types):
+            if types is not None and not self._is_route_of_type(route, types):
                 return
 
             matches = []

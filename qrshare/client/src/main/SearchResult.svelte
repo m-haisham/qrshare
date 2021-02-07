@@ -1,83 +1,99 @@
 <script>
-  import {
-    isSearching,
-    searchInfo,
-    searchResults,
-    isSorted,
-    processedResults,
-  } from "./store";
-  import { SearchListItem } from "./display";
-  import { navigateTo } from "../module/router";
-  import { createLink } from "../helper";
+    import {
+        isSearching,
+        searchInfo,
+        searchResults,
+        isSorted,
+        processedResults,
+    } from "./store";
+    import { SearchListItem } from "./display";
+    import { navigateTo } from "../module/router";
+    import { createLink } from "../helper";
+    import SearchBar from "./components/Searchbar.svelte";
 
-  function load(e) {
-    const route = e.detail;
-    navigateTo({ id: 1, url: route.href, state: route, name: route.name });
-  }
+    function load(e) {
+        const route = e.detail;
+        navigateTo({ id: 1, url: route.href, state: route, name: route.name });
+    }
 
-  function file(e) {
-    createLink(e.detail.path).click();
-  }
+    function file(e) {
+        createLink(e.detail.path).click();
+    }
 
-  function zip(e) {
-    createLink(e.detail.zip).click();
-  }
+    function zip(e) {
+        createLink(e.detail.zip).click();
+    }
 
-  function sort(e) {
-    isSorted.flip();
-  }
+    function sort(e) {
+        isSorted.flip();
+    }
 </script>
 
 <svelte:head>
-  <title>{$searchInfo.query} | ~{$searchInfo.path} | Search</title>
+    <title>~{$searchInfo.href} | Search</title>
 </svelte:head>
 
-<!-- Heading -->
-<div class="header">
-  <h4>
-    {#if $isSearching}
-      Searching... ({$searchResults.length})
-    {:else if $searchResults.length == 0}
-      No matches found
-    {:else}Found {$searchResults.length} matches{/if}
-  </h4>
-  <button disabled={$isSearching} on:click={sort}
-    >{$isSorted ? "Sorted" : "Unsorted"}</button
-  >
+<!-- Searchbar -->
+<SearchBar />
+
+<!-- main body -->
+<div class="container">
+    <!-- Heading -->
+    <div class="header">
+        <h4>
+            {#if $isSearching}
+                Searching... ({$searchResults.length})
+            {:else if $searchResults.length == 0}
+                No matches found
+            {:else}Found {$searchResults.length} matches{/if}
+        </h4>
+        <button disabled={$isSearching} on:click={sort}
+            >{$isSorted ? "Sorted" : "Unsorted"}</button
+        >
+    </div>
+
+    <!-- Results -->
+    <li class="grid">
+        {#each $processedResults as route, i}
+            <SearchListItem
+                id={i}
+                {route}
+                on:folder={load}
+                on:file={file}
+                on:zip={zip}
+            />
+        {/each}
+    </li>
 </div>
 
-<!-- Results -->
-<li class="grid">
-  {#each $processedResults as route, i}
-    <SearchListItem
-      id={i}
-      {route}
-      on:folder={load}
-      on:file={file}
-      on:zip={zip}
-    />
-  {/each}
-</li>
-
 <style>
-  .grid {
-    display: grid;
-    grid-template-columns: 100%;
-    column-gap: 1rem;
-  }
-
-  .header {
-    display: flex;
-    justify-content: space-between;
-  }
-
-  .header h4 {
-    text-align: start;
-  }
-
-  @media (min-width: 550px) {
     .grid {
-      grid-template-columns: 50% 50%;
+        display: grid;
+        grid-template-columns: 100%;
+        column-gap: 1rem;
     }
-  }
+
+    .header {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .header h4 {
+        text-align: start;
+    }
+
+    @media (min-width: 550px) {
+        .grid {
+            grid-template-columns: 50% 50%;
+        }
+    }
+    .container {
+        margin-top: 1rem;
+    }
+
+    @media (min-width: 550px) {
+        .container {
+            margin-top: 2rem;
+        }
+    }
 </style>
