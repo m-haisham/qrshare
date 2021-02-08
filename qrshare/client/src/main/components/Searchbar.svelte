@@ -5,11 +5,7 @@
     import Divider from "../../components/Divider.svelte";
 
     // state values
-    import {
-        currentRoute as current,
-        isSearching,
-        searchQuery,
-    } from "../store";
+    import { currentRoute as current, isSearching, searchInfo } from "../store";
 
     // functions
     import { createSearchUrl } from "../../helper";
@@ -20,7 +16,7 @@
 
     function submit(e) {
         // query
-        const query = $searchQuery ? $searchQuery : null;
+        const query = $searchInfo.query ? $searchInfo.query : null;
         const exts = extensions.split(" ").filter((v) => v);
 
         navigateTo({
@@ -44,7 +40,7 @@
                     <input
                         type="text"
                         placeholder="Search"
-                        bind:value={$searchQuery}
+                        bind:value={$searchInfo.query}
                     />
                     <div class="more">
                         <input

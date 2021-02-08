@@ -6,7 +6,7 @@ export function createSearchUrl({
     limit = 100,
 }) {
     // get base url depending on path
-    const base = path == "/" ? "/search?" : `${path}/search?`;
+    const base = path == "/" ? "/results?" : `${path}/results?`;
 
     // url parameters
     const params = [];

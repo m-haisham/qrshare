@@ -26,8 +26,8 @@ function createBooleanStore(initial) {
  * Compare via number of matches
  */
 function compare(a, b) {
-    let lenA = a.matches.length;
-    let lenB = b.matches.length;
+    let lenA = a.relevance;
+    let lenB = b.relevance;
 
     if (lenA < lenB) return 1;
     else if (lenA > lenB) return -1;
@@ -43,7 +43,6 @@ export const currentRoute = writable({});
 export const searchInfo = writable({});
 export const isSearching = writable(false);
 export const searchResults = createListStore();
-export const searchQuery = writable("");
 
 // sort
 export const isSorted = createBooleanStore(true);

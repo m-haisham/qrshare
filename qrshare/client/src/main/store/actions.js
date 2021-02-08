@@ -39,7 +39,7 @@ export async function updateStore(path) {
 export async function search({ path = "/", query, exts, types, limit = 100 }) {
     // reset previous results
     isSearching.set(true);
-    searchInfo.set({ query, path, limit });
+    searchInfo.set({ path, query, exts, types, limit });
     searchResults.clear();
 
     // Build search query url
@@ -103,10 +103,10 @@ export async function search({ path = "/", query, exts, types, limit = 100 }) {
 
     source.onerror = (e) => {
         if (e.eventPhase === EventSource.CLOSED) {
-            source.close();
             isSearching.set(false);
         } else {
             console.error(e.target.message);
         }
+        source.close();
     };
 }

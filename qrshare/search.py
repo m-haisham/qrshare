@@ -158,14 +158,14 @@ class Search:
                 if count > limit:
                     return
 
-    def _is_route_of_type(self, route: Route, types: List[str]) -> bool:
+    def _is_route_of_type(self, route: Route, types: Union[List[str], None]) -> bool:
         """
         :param route: route to check
         :param types: possible route types
         :return: whether the route is of any of the provided types
         """
         # if type is an empty is or an empty string or none
-        # return true, negetive boolean is as taken as default
+        # return true, negative boolean is taken as default
         if not types:
             return True
 

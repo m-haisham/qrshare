@@ -3,7 +3,7 @@
     import { routes, options } from "./routes";
     import { Header, HeaderExtension, Search } from "../components/header";
     import { SizedBox } from "../utilities";
-    import { currentRoute as current, isSearching, searchQuery } from "./store";
+    import { currentRoute as current, isSearching } from "./store";
     import Divider from "../components/Divider.svelte";
     import { createLink, createSearchUrl } from "../helper";
     import { navigateTo, activeRoute } from "../module/router";
@@ -50,9 +50,6 @@
             }),
             name: "Search",
         });
-
-        // update query state
-        searchQuery.set(e.detail.query);
 
         // close the menu when navigating to search menu
         expanded = false;

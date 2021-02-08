@@ -1,7 +1,7 @@
 <script>
     import {
         isSearching,
-        searchInfo,
+        currentRoute,
         searchResults,
         isSorted,
         processedResults,
@@ -30,7 +30,7 @@
 </script>
 
 <svelte:head>
-    <title>~{$searchInfo.href} | Search</title>
+    <title>Search in ~{$currentRoute.href || "/"}</title>
 </svelte:head>
 
 <!-- Searchbar -->
@@ -48,7 +48,7 @@
             {:else}Found {$searchResults.length} matches{/if}
         </h4>
         <button disabled={$isSearching} on:click={sort}
-            >{$isSorted ? "Sorted" : "Unsorted"}</button
+            >{$isSorted ? "Relevance" : "Unsorted"}</button
         >
     </div>
 
@@ -80,11 +80,12 @@
 
     .header h4 {
         text-align: start;
+        margin-bottom: 0;
     }
 
     @media (min-width: 550px) {
         .grid {
-            grid-template-columns: 50% 50%;
+            grid-template-columns: repeat(2, calc(50% - 1rem / 2));
         }
     }
     .container {

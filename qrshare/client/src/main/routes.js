@@ -33,14 +33,14 @@ const routes = [
     {
         id: 2,
         key: 1,
-        name: "/search",
+        name: "/results",
         component: SearchResult,
         on: updateSearch,
     },
     {
         id: 3,
         key: 1,
-        name: "/:path:/search",
+        name: "/:path:/results",
         component: SearchResult,
         on: updateSearch,
     },
