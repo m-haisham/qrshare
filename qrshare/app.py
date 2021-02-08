@@ -1,14 +1,13 @@
-import json
-import regex
 from io import BytesIO
 from pathlib import Path
 from typing import List
 
 import waitress
-from flask import Flask, send_from_directory, abort, send_file, request, Response, render_template
+from flask import Flask, send_from_directory, abort, send_file, render_template
 
 from .auth import Authentication
 from .models import Route, QRContainer, ZipContent
+from .search import Search
 from .tools import NetworkTools
 
 
@@ -18,6 +17,7 @@ class App:
     def __init__(self, paths: List[Path], code=None, port=5000):
         self.app = self.init()
         self.auth = Authentication(self.app, code)
+        self.search = Search(self, self.auth)
 
         self.paths = paths
         self.port = port
@@ -49,7 +49,7 @@ class App:
                 return render_template('error.html', code=error.code, name=error.name,  message=error.description),\
                        error.code
             except:
-                return render_template('client/public/error.html', code=500, message="Something went wrong"), 500
+                return render_template('error.html', code=500, message="Something went wrong"), 500
 
         @self.app.route('/')
         @self.auth.require_auth
@@ -113,70 +113,9 @@ class App:
 
             return route.zip()
 
-        @self.app.route('/search')
-        @self.auth.require_auth
-        def search_point():
-            # query parameters
-            query = request.args.get('query')
-            path = request.args.get('path') or '/'
-            try:
-                limit = int(request.args.get('limit') or 200)
-            except ValueError as e:
-                return e
-
-            # get routes
-            search_routes = []
-            if path == '/':
-                search_routes.extend(self.routes)
-            else:
-                try:
-                    route = self.route_map[path]
-                    search_routes.append(route)
-                except KeyError:
-                    return abort(403)
-
-            # remove all file routes
-            search_routes = [route for route in search_routes if not route.path.is_file()]
-
-            # single char words would makes s... search complicated
-            words = [word for word in query.split(' ') if len(word) > 1]
-
-            # regex matcher
-            rx = regex.compile(
-                '|'.join(words),
-                regex.IGNORECASE
-            )
-
-            def generate():
-                count = 1
-                while True:
-                    try:
-                        route = search_routes.pop(0)
-                    except IndexError:
-                        break
-
-                    # get sub routes and queue to be searched
-                    self.map(route)
-
-                    if not route.is_file:
-                        search_routes.extend(route.sub_routes)
-
-                    # check if current route matches search parameter
-                    result = [match for match in rx.finditer(route.name)]
-                    if result:
-                        data = route.to_dict()
-                        data['matches'] = [match.regs[0] for match in result]
-                        data['parent'] = route.parent.to_dict()
-                        data['zip'] = route.zip_path()
-
-                        yield f'data: {json.dumps(data)}\n\n'
-
-                        # limit search space
-                        count += 1
-                        if count > limit:
-                            return
-
-            return Response(generate(), mimetype='text/event-stream')
+        # create endpoints from other modules
+        self.auth.create_endpoints()
+        self.search.create_endpoints()
 
     def map(self, route):
         # check whether sub routes need refreshing
