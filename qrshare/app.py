@@ -30,7 +30,13 @@ class App:
         }
 
     def init(self) -> Flask:
-        app = Flask(__name__, instance_relative_config=True)
+        app = Flask(
+            __name__,
+            instance_relative_config=True,
+            template_folder='client/public',
+            static_folder='client/public/static'
+        )
+
         app.secret_key = 'entwicklung'  # development key
 
         # load config for deployment environments

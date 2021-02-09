@@ -1,6 +1,4 @@
 <script>
-    import Divider from "./Divider.svelte";
-
     // the variable is not used currently
     // just added to satisfy linter
     let dark = false;
@@ -36,12 +34,6 @@
 
     a:hover {
         filter: none;
-    }
-
-    @media (min-width: 550px) {
-        a {
-            margin: 1rem auto;
-        }
     }
 
     /* DARK MODE */

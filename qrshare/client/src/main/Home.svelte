@@ -80,5 +80,4 @@
         {/if}
     </HeaderExtension>
 </Header>
-<Divider />
 <Router {routes} {options} />

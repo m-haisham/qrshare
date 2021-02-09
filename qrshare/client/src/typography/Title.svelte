@@ -1,3 +1,7 @@
+<h4 class="line-clamp">
+    <slot />
+</h4>
+
 <style>
     h4 {
         font-weight: bold;
@@ -14,7 +18,3 @@
         }
     }
 </style>
-
-<h4 class="line-clamp">
-    <slot />
-</h4>
