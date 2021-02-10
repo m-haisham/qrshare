@@ -37,7 +37,7 @@
      */
     function cancelRedirect() {
         if (!redirectCancelled) {
-            redirectMessage = `Redirect cancelled`;
+            redirectMessage = `Click to redirect (Auto redirect cancelled)`;
             value = 1;
             redirectCancelled = true;
         }
@@ -91,10 +91,18 @@
     </div>
     <footer>
         <div class="container redirect">
-            <HorizontalProgress trails={true} bind:value on:click={redirectNow}
-                >{redirectMessage}</HorizontalProgress
+            <HorizontalProgress
+                trails={!redirectCancelled}
+                bind:value
+                on:click={redirectNow}
             >
-            <button class="stop" on:click={cancelRedirect}>STOP</button>
+                <div class="line-clamp">{redirectMessage}</div>
+            </HorizontalProgress>
+            <button
+                class="stop"
+                class:hide={redirectCancelled}
+                on:click={cancelRedirect}>STOP</button
+            >
         </div>
         <Footer />
     </footer>
@@ -115,6 +123,10 @@
         font-size: 1.9rem;
         margin-top: 1rem;
         text-align: center;
+    }
+
+    .hide {
+        display: none;
     }
 
     @media (min-width: 550px) {

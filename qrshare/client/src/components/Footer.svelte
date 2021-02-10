@@ -6,7 +6,7 @@
 
 <div class:dark>
     <a href="https://github.com/mHaisham/qrshare">
-        <img src="assets/github.svg" alt="Github Source" />
+        <img src="/assets/github.svg" alt="Github Source" />
     </a>
 </div>
 
