@@ -2,6 +2,7 @@
     import Footer from "../components/Footer.svelte";
     import Header from "../components/header/Header.svelte";
     import { HorizontalProgress } from "../components/progressbars";
+    import { delay } from "../helper";
     import { onMount } from "svelte";
 
     /* global values are retrieved */
@@ -42,9 +43,6 @@
             redirectCancelled = true;
         }
     }
-
-    /* delay for the given time */
-    const delay = (ms) => new Promise((res) => setTimeout(res, ms));
 
     /**
      * redirect countdown

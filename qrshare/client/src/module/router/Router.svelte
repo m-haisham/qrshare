@@ -1,14 +1,18 @@
 <script>
     export let routes;
     export let options;
+    export let init = true;
 
     import { onMount } from "svelte";
     import { activeRoute } from "./store";
-    import { init } from "./actions";
+    import { init as initActions } from "./actions";
 
     onMount(async () => {
-        init({ routes, ...options });
-        options.onMount();
+        if (!init) {
+            return;
+        }
+
+        initActions({ routes, options });
     });
 </script>
 

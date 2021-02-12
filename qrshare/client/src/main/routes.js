@@ -54,7 +54,7 @@ const options = {
             href: "/",
         },
     },
-    onMount: async () => {
+    init: async () => {
         qrUrl.set(await toDataURL("/svg"));
     },
 };

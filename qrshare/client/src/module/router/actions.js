@@ -1,54 +1,75 @@
-import { activeRoute } from './store'
-import { getRouteById, parseNamedParams } from './utils'
+import { activeRoute } from "./store";
+import { getRouteById, parseNamedParams } from "./utils";
 
-let definedRoutes = []
+let definedRoutes = [];
 
-export function init({routes, initial}) {
-    definedRoutes = routes
+export async function init({ routes, options }) {
+    definedRoutes = routes;
 
-    registerPopStateListener()
-    setInitialRoute(initial)
+    // initialize options
+    options.init();
+
+    registerPopStateListener();
+    setInitialRoute(options.initial);
 }
 
-export async function navigateTo({id, url, state = {}, name = '', push=true}) {
-    const route = getRouteById(definedRoutes, id)
-    
+export async function navigateTo({
+    id,
+    url,
+    state = {},
+    name = "",
+    push = true,
+}) {
+    const route = getRouteById(definedRoutes, id);
+
     // extract information from url
-    let params = {}
+    let params = {};
     if (url) {
-        params = parseNamedParams(url, route.name)
+        params = parseNamedParams(url, route.name);
     }
 
     // prevent modification to params
-    Object.freeze(params)
+    Object.freeze(params);
 
     // change active route
-    activeRoute.set({...route, params, state})
-    route.on(params, state)
-    
+    activeRoute.set({ ...route, params, state });
+    route.on(params, state);
+
     // change browser url
     if (push)
-        window.history.pushState({id: route.id, state}, name, url || route.name)
+        window.history.pushState(
+            { id: route.id, state },
+            name,
+            url || route.name
+        );
 }
 
 function registerPopStateListener() {
-    window.onpopstate = function(e) {
+    window.onpopstate = function (e) {
         if (e.state) {
-            navigateTo({url: e.target.location.pathname, ...e.state, push: false})
+            navigateTo({
+                url: e.target.location.pathname,
+                ...e.state,
+                push: false,
+            });
         }
-    }
+    };
 }
 
-function setInitialRoute({ id, params={}, state={} }) {
+function setInitialRoute({ id, params = {}, state = {} }) {
     let route = getRouteById(definedRoutes, id);
-    
+
     activeRoute.set({
         ...route,
         params,
-        state
-    })
+        state,
+    });
 
-    route.on(params, state)
+    route.on(params, state);
 
-    window.history.pushState({id, state, name: route.name}, 'Home', route.name)
+    window.history.pushState(
+        { id, state, name: route.name },
+        "Home",
+        route.name
+    );
 }

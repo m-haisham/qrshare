@@ -4,7 +4,6 @@
     import { Header, HeaderExtension, Search } from "../components/header";
     import { SizedBox } from "../utilities";
     import { currentRoute as current, isSearching } from "./store";
-    import Divider from "../components/Divider.svelte";
     import { createLink, createSearchUrl } from "../helper";
     import { navigateTo, activeRoute } from "../module/router";
 
@@ -80,4 +79,4 @@
         {/if}
     </HeaderExtension>
 </Header>
-<Router {routes} {options} />
+<Router {routes} {options} init={false} />
