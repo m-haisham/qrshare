@@ -7,6 +7,8 @@
     --color-warning: #cc3300;
 
     --color-background: #ffffff;
+    --color-divider: #ccc;
+    --color-subtitle: #333;
 }
 
 body {

@@ -1,23 +1,14 @@
 <script>
-    /**
-     * navs specify the navigation routes
-     *
-     * navs is a list of objects with each object containing
-     * - click: function to be called on nav clicked
-     * - component: component to render inside button
-     * - props: props to be passed to component (optional)
-     */
+    import NavigationElements from "./NavigationElements.svelte";
+
     export let navs;
+    export let active = null;
 </script>
 
 <div class="bottom-nav-wrapper">
-    <div class="bottom-nav">
-        {#each navs as nav}
-            <button on:click={nav.click}>
-                <svelte:component this={nav.component} {...nav.props || {}} />
-            </button>
-        {/each}
-    </div>
+    <nav class="bottom-nav">
+        <NavigationElements {navs} {active} />
+    </nav>
 </div>
 
 <style>
@@ -33,8 +24,6 @@
     }
 
     .bottom-nav {
-        --content-height: 4rem;
-
         /* set bottom bar posiition */
         position: fixed;
         bottom: 0;
@@ -43,27 +32,11 @@
         width: 100%;
 
         background-color: var(--color-background);
-        border-top: 1px solid var(--color-light-dark);
+        border-top: 1px solid var(--color-divider);
 
         display: flex;
         align-items: center;
         justify-content: space-around;
         padding: 0;
-    }
-
-    button {
-        border: none;
-
-        /* center svgs vertically */
-        display: flex;
-        align-items: center;
-
-        margin: 0;
-        padding: auto 1rem;
-    }
-
-    button :global(svg) {
-        width: 2rem;
-        height: 2rem;
     }
 </style>

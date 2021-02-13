@@ -59,9 +59,9 @@
     <title>{title}</title>
 </svelte:head>
 
+<!--
 <Header {title} {subtitle}>
     <HeaderExtension bind:show={expanded}>
-        <!-- There is a more advanced searchbar available in search -->
         {#if !inSearch}
             <Search on:submit={search} disabled={$isSearching} {value} />
         {/if}
@@ -79,4 +79,5 @@
         {/if}
     </HeaderExtension>
 </Header>
+-->
 <Router {routes} {options} init={false} />

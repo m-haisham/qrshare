@@ -10,14 +10,42 @@
     import { onMount } from "svelte";
     import { init } from "../module/router/actions";
     import { routes, options } from "./routes";
+
     import BottomNavigationBar from "../components/navigation/BottomNavigationBar.svelte";
+    import AppBar from "../components/navigation/AppBar.svelte";
 
     onMount(async () => {
         init({ routes, options });
     });
+
+    const navs = [
+        {
+            click: () => {},
+            component: List,
+        },
+        {
+            click: () => {},
+            component: Search,
+        },
+        {
+            click: () => {},
+            component: App,
+        },
+        {
+            click: () => {},
+            component: ThreeDots,
+        },
+    ];
 </script>
 
 <main>
+    <AppBar
+        title="title"
+        subtitle="this is the subtitle"
+        {navs}
+        active={0}
+        sticky={true}
+    />
     <div>
         {#if !$currentRoute.name || !$qrUrl}
             <!-- this is displayed when the routes are loading -->
@@ -26,31 +54,11 @@
             <Home />
         {/if}
     </div>
-    <BottomNavigationBar
-        navs={[
-            {
-                click: () => {},
-                component: List,
-            },
-            {
-                click: () => {},
-                component: Search,
-            },
-            {
-                click: () => {},
-                component: App,
-            },
-            {
-                click: () => {},
-                component: ThreeDots,
-            },
-        ]}
-    />
+    <BottomNavigationBar {navs} active={0} />
 </main>
 
 <style>
     main {
-        height: 100vh;
         display: flex;
         flex-direction: column;
     }
