@@ -52,15 +52,3 @@
 {:else}
     <p>Empty</p>
 {/if}
-
-<style>
-    ul {
-        margin: 1rem auto 0 auto;
-    }
-
-    @media (min-width: 550px) {
-        ul {
-            margin: auto;
-        }
-    }
-</style>

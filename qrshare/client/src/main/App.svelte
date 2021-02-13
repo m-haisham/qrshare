@@ -1,65 +1,70 @@
 <script>
-    import Footer from "../components/Footer.svelte";
-    import Home from "./Home.svelte";
-    import { IndefiniteLoader } from "../components/progressbars";
+    import BaseApp from "../components/BaseApp.svelte";
     import { List, Search, App, ThreeDots } from "../module/icons";
-    import { currentRoute, qrUrl } from "./store";
 
-    /* since router object is only created after route is loaded
-       we manually call the initialize on router */
-    import { onMount } from "svelte";
-    import { init } from "../module/router/actions";
+    import { Router, activeRoute, navigateTo } from "../module/router";
     import { routes, options } from "./routes";
 
-    import BottomNavigationBar from "../components/navigation/BottomNavigationBar.svelte";
-    import AppBar from "../components/navigation/AppBar.svelte";
-
-    onMount(async () => {
-        init({ routes, options });
-    });
+    import { title, subtitle, currentRoute, updateStore } from "./store";
 
     const navs = [
         {
-            click: () => {},
+            /* its not checked for prior visit in home
+               since the routes options calls updateStore onMount which is a visit to home */
+            click: () => {
+                title.apply(0);
+                subtitle.apply(0);
+
+                updateStore($currentRoute.last);
+
+                const { id, url } = $activeRoute[0];
+                navigateTo({ id, url, execute: false });
+            },
             component: List,
         },
         {
-            click: () => {},
+            click: () => {
+                if ($activeRoute.key === 1) return;
+
+                // if there were no prior visit to search
+                if ($activeRoute[1] === undefined) {
+                    title.cache(1, "Search");
+                    subtitle.cache(1, null);
+
+                    navigateTo({ id: 2, execute: false });
+
+                    // apply from prior visit
+                } else {
+                    title.apply(1);
+                    subtitle.apply(1);
+
+                    const { id, url } = $activeRoute[1];
+                    navigateTo({ id, url, execute: false });
+                }
+            },
             component: Search,
         },
         {
-            click: () => {},
+            click: () => {
+                viewIndex.set(2);
+            },
             component: App,
         },
         {
-            click: () => {},
+            click: () => {
+                viewIndex.set(3);
+            },
             component: ThreeDots,
         },
     ];
 </script>
 
-<main>
-    <AppBar
-        title="title"
-        subtitle="this is the subtitle"
-        {navs}
-        active={0}
-        sticky={true}
-    />
-    <div>
-        {#if !$currentRoute.name || !$qrUrl}
-            <!-- this is displayed when the routes are loading -->
-            <IndefiniteLoader />
-        {:else}
-            <Home />
-        {/if}
-    </div>
-    <BottomNavigationBar {navs} active={0} />
-</main>
-
-<style>
-    main {
-        display: flex;
-        flex-direction: column;
-    }
-</style>
+<BaseApp
+    title={$title.current}
+    subtitle={$subtitle.current}
+    {navs}
+    active={$activeRoute.key}
+    sticky={true}
+>
+    <Router {routes} {options} />
+</BaseApp>

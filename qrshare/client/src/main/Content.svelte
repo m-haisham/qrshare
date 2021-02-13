@@ -6,9 +6,7 @@
 
 <div class="container">
     <DualDisplay>
-        <div slot="top">
-            <RouteList />
-        </div>
+        <div slot="top" />
         <div slot="bottom">
             <QR url={$qrUrl} />
         </div>
