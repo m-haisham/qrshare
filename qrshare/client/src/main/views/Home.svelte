@@ -6,7 +6,7 @@
 </script>
 
 <svelte:head>
-    <title>{$title.current}</title>
+    <title>{$title.current} - qrshare</title>
 </svelte:head>
 
 <div class="container">

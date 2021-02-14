@@ -30,7 +30,7 @@
 </script>
 
 <svelte:head>
-    <title>Search in ~{$currentRoute.href || "/"}</title>
+    <title>Search in ~{$currentRoute.href || "/"} - qrshare</title>
 </svelte:head>
 
 <!-- Searchbar -->
