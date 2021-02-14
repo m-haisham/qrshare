@@ -1,7 +1,7 @@
 export {
+    meta,
     title,
     subtitle,
-    viewIndex,
     currentRoute,
     routes,
     qrUrl,

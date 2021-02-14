@@ -65,10 +65,11 @@ function compare(a, b) {
     return 0;
 }
 
+export const meta = writable({});
+
 // view
 export const title = createCachedStore("Loading...");
 export const subtitle = createCachedStore("");
-export const viewIndex = writable(0);
 
 // shared routes
 export const routes = writable([]);

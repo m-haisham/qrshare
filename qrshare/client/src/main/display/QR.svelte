@@ -2,6 +2,12 @@
     export let url;
 </script>
 
+<div class="qr">
+    <object data={url} type="image/svg+xml" title="QR"
+        ><img src={url} alt="QR" />
+    </object>
+</div>
+
 <style>
     div {
         display: flex;
@@ -14,17 +20,4 @@
         width: 100%;
         max-width: 40rem;
     }
-
-    @media (min-width: 550px) {
-        div {
-            margin: auto;
-        }
-    }
 </style>
-
-<div>
-    <object data={url} type="image/svg+xml" title="QR"><img
-            src={url}
-            alt="QR" />
-    </object>
-</div>

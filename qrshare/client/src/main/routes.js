@@ -1,7 +1,6 @@
-import Home from "./views/Home.svelte";
-import Results from "./views/Results.svelte";
-import { qrUrl, updateStore, search } from "./store";
-import { toDataURL } from "../request";
+import { Home, Results, Qrcode } from "./views";
+import { meta, qrUrl, updateStore, search } from "./store";
+import { jsonOrRedirect, toDataURL } from "../request";
 
 function updateSharedRoutes(params, state) {
     updateStore(state.path);
@@ -44,6 +43,12 @@ const routes = [
         component: Results,
         on: updateSearch,
     },
+    {
+        id: 4,
+        key: 2,
+        name: "/qrcode",
+        component: Qrcode,
+    },
 ];
 
 const options = {
@@ -56,6 +61,7 @@ const options = {
     },
     init: async () => {
         qrUrl.set(await toDataURL("/svg"));
+        meta.set(await jsonOrRedirect("/meta"));
     },
 };
 

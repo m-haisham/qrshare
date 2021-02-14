@@ -46,14 +46,17 @@
         },
         {
             click: () => {
-                viewIndex.set(2);
+                if ($activeRoute.key === 2) return;
+
+                title.cache(2, "QR");
+                subtitle.cache(2, "scan to share");
+
+                navigateTo({ id: 4, execute: false });
             },
             component: App,
         },
         {
-            click: () => {
-                viewIndex.set(3);
-            },
+            click: () => {},
             component: ThreeDots,
         },
     ];
