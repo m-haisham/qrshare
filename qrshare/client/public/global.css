@@ -9,6 +9,8 @@
     --color-background: #ffffff;
     --color-divider: #ccc;
     --color-subtitle: #333;
+    --color-button-border: #bbb;
+    --color-button-hover-border: #888;
 }
 
 body {

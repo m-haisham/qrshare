@@ -4,7 +4,6 @@
     export let path;
     export let isFile;
 
-    import { SizedBox } from "../../utilities";
     import { createEventDispatcher } from "svelte";
 
     const dispatch = createEventDispatcher();
@@ -21,6 +20,15 @@
         dispatch("zip", { name, path, href });
     }
 </script>
+
+{#if isFile}
+    <button class="ct-button line-clamp" on:click={file}> {name} </button>
+{:else}
+    <div>
+        <button class="ct-button line-clamp" on:click={folder}>{name}</button>
+        <button on:click={zip}>ZIP</button>
+    </div>
+{/if}
 
 <style>
     .ct-button {
@@ -44,12 +52,3 @@
         border-radius: 0 4px 4px 0;
     }
 </style>
-
-{#if isFile}
-    <button class="ct-button line-clamp" on:click={file}> {name} </button>
-{:else}
-    <div>
-        <button class="ct-button line-clamp" on:click={folder}>{name}</button>
-        <button on:click={zip}>ZIP</button>
-    </div>
-{/if}
