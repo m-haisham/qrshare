@@ -1,6 +1,5 @@
-import Home from "./Home.svelte";
-import Content from "./Content.svelte";
-import SearchResult from "./SearchResult.svelte";
+import Home from "./views/Home.svelte";
+import Results from "./views/Results.svelte";
 import { qrUrl, updateStore, search } from "./store";
 import { toDataURL } from "../request";
 
@@ -21,7 +20,7 @@ const routes = [
         name: "/",
         component: Home,
         on: updateSharedRoutes,
-        // component: SearchResult,
+        // component: Results,
         // on: updateSearch,
     },
     {
@@ -35,14 +34,14 @@ const routes = [
         id: 2,
         key: 1,
         name: "/results",
-        component: SearchResult,
+        component: Results,
         on: updateSearch,
     },
     {
         id: 3,
         key: 1,
         name: "/:path:/results",
-        component: SearchResult,
+        component: Results,
         on: updateSearch,
     },
 ];

@@ -5,11 +5,11 @@
         searchResults,
         isSorted,
         processedResults,
-    } from "./store";
-    import { SearchListItem } from "./display";
-    import { navigateTo } from "../module/router";
-    import { createLink } from "../helper";
-    import SearchBar from "./components/Searchbar.svelte";
+    } from "../store";
+    import { SearchListItem } from "../display";
+    import { navigateTo } from "../../module/router";
+    import { createLink } from "../../helper";
+    import SearchBar from "../components/Searchbar.svelte";
 
     function load(e) {
         const route = e.detail;
@@ -66,6 +66,7 @@
     </li>
 </div>
 
+<!-- main body -->
 <style>
     .grid {
         display: grid;
