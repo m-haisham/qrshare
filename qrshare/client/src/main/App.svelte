@@ -36,7 +36,7 @@
                     // apply from prior visit
                 } else {
                     title.apply(1);
-                    subtitle.apply(1);
+                    subtitle.cache(1, $currentRoute.href);
 
                     const { id, url } = $activeRoute[1];
                     navigateTo({ id, url, execute: false });
