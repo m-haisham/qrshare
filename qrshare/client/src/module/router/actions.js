@@ -31,15 +31,16 @@ export async function navigateTo({
         url = route.name;
     }
 
-    // prevent modification to params
-    Object.freeze(params);
-
     /* this allows execute to be accessed during pop state */
     if (state.execute === undefined) state.execute = execute;
 
+    // prevent further modification to params and state
+    Object.freeze(params);
+    Object.freeze(state);
+
     // change active route
     activeRoute.set({ ...route, url, params, state });
-    if (execute) route.on && route.on(params, state);
+    if (state.execute) route.on && route.on(params, state);
 
     // change browser url
     if (push)

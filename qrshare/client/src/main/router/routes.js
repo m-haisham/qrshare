@@ -1,8 +1,8 @@
-import { Home, Results, Qrcode } from "./views";
-import { meta, qrUrl, updateStore, search } from "./store";
-import { jsonOrRedirect, toDataURL } from "../request";
+import { Home, Results, Qrcode } from "../views";
+import { meta, qrUrl, updateStore, search } from "../store";
+import { jsonOrRedirect, toDataURL } from "../../request";
 
-function updateSharedRoutes(params, state) {
+function updateRoutes(params, state) {
     updateStore(state.path);
 }
 
@@ -18,7 +18,7 @@ const routes = [
         key: 0,
         name: "/",
         component: Home,
-        on: updateSharedRoutes,
+        on: updateRoutes,
         // component: Results,
         // on: updateSearch,
     },
@@ -27,7 +27,7 @@ const routes = [
         key: 0,
         name: "/:path",
         component: Home,
-        on: updateSharedRoutes,
+        on: updateRoutes,
     },
     {
         id: 2,

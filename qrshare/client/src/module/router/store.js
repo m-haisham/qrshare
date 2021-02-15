@@ -6,13 +6,11 @@ function UniqueKeyRouteStore() {
     return {
         subscribe,
         set: (route) =>
-            update((routes) => {
-                return {
-                    ...routes,
-                    [route.key]: route,
-                    ...route,
-                };
-            }),
+            update((routes) => ({
+                ...routes,
+                [route.key]: route,
+                ...route,
+            })),
     };
 }
 
