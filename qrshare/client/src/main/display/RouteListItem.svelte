@@ -34,7 +34,8 @@
     .ct-button {
         display: block;
         width: 100%;
-        font-weight: bold;
+        font-size: 1.3rem;
+        text-transform: none;
         text-align: start;
     }
 
