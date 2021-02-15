@@ -60,3 +60,24 @@ body {
         margin-bottom: 0;
     }
 }
+
+/* SCROLL BAR */
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: var(--color-light);
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: var(--color-light-dark);
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #999;
+}
