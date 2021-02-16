@@ -35,6 +35,13 @@ class Authentication:
 
             return send_from_directory('client/public', 'login.html')
 
+        @self.app.route('/logout', methods=['POST'])
+        def logout():
+            # revoke authenticated status
+            session['ukey'] = ''
+
+            return redirect('/login')
+
     def require_auth(self, func):
 
         # to prevent usage of self in wrapper
@@ -50,6 +57,6 @@ class Authentication:
             if authenticated:
                 return func(*args, **kwargs)
             else:
-                return redirect(f'/login')
+                return redirect('/login')
 
         return wrapper

@@ -66,7 +66,8 @@ class App:
         def meta():
             return {
                 'ip': f'{NetworkTools.local_ip()}:{self.port}',
-                'version': __version__
+                'version': __version__,
+                'login': bool(self.auth.code),
             }
 
         @self.app.route('/root')

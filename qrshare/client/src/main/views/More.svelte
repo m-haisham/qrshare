@@ -1,5 +1,6 @@
 <script>
     import { Github } from "../../module/icons";
+    import { fetchOrRedirect } from "../../request";
     import { ListGroup, ListTile } from "../../components/list";
     import { createLink } from "../../helper";
     import { meta } from "../store";
@@ -8,6 +9,11 @@
     const source = () => goTo("https://github.com/mHaisham/qrshare");
     const issue = () =>
         goTo("https://github.com/mHaisham/qrshare/issues/new/choose");
+
+    /** logout the client from current session and redirect to auth screen */
+    function logout() {
+        fetchOrRedirect("/logout", "POST");
+    }
 </script>
 
 <svelte:head>
@@ -15,6 +21,11 @@
 </svelte:head>
 
 <div class="container">
+    {#if $meta.login}
+        <ListGroup title="Client">
+            <ListTile on:click={logout} disabled={false}>Logout</ListTile>
+        </ListGroup>
+    {/if}
     <ListGroup title="Server">
         <ListTile>
             IP Address
