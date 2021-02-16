@@ -12,7 +12,7 @@
     }
 </script>
 
-<button on:click={onClick}>
+<button on:click={onClick} class="normalized">
     <div class="content line-clamp"><slot /></div>
     <div class="check">
         {#if checked}

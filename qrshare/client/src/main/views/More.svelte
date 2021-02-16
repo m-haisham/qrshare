@@ -1,4 +1,5 @@
 <script>
+    import { Github } from "../../module/icons";
     import { ListGroup, ListTile } from "../../components/list";
     import { createLink } from "../../helper";
     import { meta } from "../store";
@@ -23,9 +24,12 @@
     <ListGroup title="About">
         <ListTile on:click={source} disabled={false}>
             Source
-            <div name="trailing">Github</div>
+            <div name="trailing" class="icon"><Github /></div>
         </ListTile>
-        <ListTile on:click={issue} disabled={false}>Issue</ListTile>
+        <ListTile on:click={issue} disabled={false}>
+            Issue
+            <div name="trailing" class="icon"><Github /></div>
+        </ListTile>
         <ListTile>
             Version
             <div name="trailing">v{$meta.version}</div>

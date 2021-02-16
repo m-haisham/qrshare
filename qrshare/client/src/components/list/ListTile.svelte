@@ -26,4 +26,10 @@
         color: var(--color-subtitle);
         font-size: 1.3rem;
     }
+
+    button :global(.icon) {
+        display: flex;
+        align-items: center;
+        height: 100%;
+    }
 </style>
