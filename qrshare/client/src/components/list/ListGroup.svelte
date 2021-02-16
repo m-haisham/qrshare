@@ -16,7 +16,6 @@
         padding: 0 20px;
 
         font-size: 1.5rem;
-        letter-spacing: 0.1rem;
         font-weight: bolder;
 
         margin: 2rem 0;
