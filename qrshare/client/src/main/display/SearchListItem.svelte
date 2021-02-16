@@ -58,7 +58,7 @@
         line-height: 2.5rem;
         letter-spacing: 0.1rem;
         border-radius: 4px;
-        border: 1px solid #bbb;
+        border: 1px solid var(--color-divider);
     }
 
     li :global(span) {
@@ -100,7 +100,7 @@
         width: 100%;
         border-radius: 0;
         border: none;
-        border-top: 1px solid #bbb;
+        border-top: 1px solid var(--color-divider);
         text-align: start;
     }
 

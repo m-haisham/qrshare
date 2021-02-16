@@ -66,7 +66,10 @@
                     // apply from prior visit
                 } else {
                     title.apply(1);
-                    subtitle.cache(1, $currentRoute.href);
+                    subtitle.cache(
+                        1,
+                        $currentRoute.href ? "~" + $currentRoute.href : null
+                    );
 
                     navigateTo(buildNavigationDefined(1));
                 }
@@ -85,7 +88,14 @@
             component: App,
         },
         {
-            click: () => {},
+            click: () => {
+                if ($activeRoute.key === 3) return;
+
+                title.cache(3, "More");
+                subtitle.cache(3, null);
+
+                navigateTo(buildNavigation({ id: 5, key: 3 }));
+            },
             component: ThreeDots,
         },
     ];

@@ -1,4 +1,4 @@
-import { Home, Results, Qrcode } from "../views";
+import { Home, Results, Qrcode, More } from "../views";
 import { meta, qrUrl, updateStore, search } from "../store";
 import { jsonOrRedirect, toDataURL } from "../../request";
 
@@ -48,6 +48,12 @@ const routes = [
         key: 2,
         name: "/qrcode",
         component: Qrcode,
+    },
+    {
+        id: 5,
+        key: 3,
+        name: "/more",
+        component: More,
     },
 ];
 

@@ -8,8 +8,9 @@
 
     --color-background: #ffffff;
     --color-divider: #ccc;
-    --color-subtitle: #333;
+    --color-subtitle: #666;
     --color-button-border: #bbb;
+    --color-button-disabled-border: #ddd;
     --color-button-hover-border: #888;
 }
 
@@ -35,6 +36,17 @@ body {
     .no-phone {
         display: block;
     }
+}
+
+button.normalized {
+    font-size: 1.3rem;
+    text-transform: none;
+}
+
+button[disabled],
+button:disabled {
+    color: #555;
+    border: 1px solid var(--color-button-disabled-border);
 }
 
 /* TRUNCATING */
