@@ -64,12 +64,12 @@ export async function search({ path = "/", query, exts, types, limit = 100 }) {
     params.push("limit=" + limit);
 
     // add query
-    if (query !== null && query !== undefined) {
+    if (query != null) {
         params.push("query=" + query);
     }
 
     // add extensions
-    if (exts !== null && exts !== undefined) {
+    if (exts != null) {
         // exts is expected to be an array
         // this constructs a url with multiple values for exts
         if (Array.isArray(exts)) {
@@ -86,7 +86,7 @@ export async function search({ path = "/", query, exts, types, limit = 100 }) {
     }
 
     // add types
-    if (types !== null && types !== undefined) {
+    if (types != null) {
         // types is expected to be an array
         // this constructs a url with multiple values for types
         if (Array.isArray(types)) {

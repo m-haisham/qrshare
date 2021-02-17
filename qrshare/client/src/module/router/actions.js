@@ -1,10 +1,13 @@
 import { activeRoute } from "./store";
-import { getRouteById, parseNamedParams } from "./utils";
+import { parseNamedParams } from "./utils";
 
-let definedRoutes = [];
+let definedRoutes = {};
 
 export async function init({ routes, options }) {
-    definedRoutes = routes;
+    definedRoutes = {};
+    for (let route of routes) {
+        definedRoutes[route.id] = route;
+    }
 
     // initialize options
     options.init();
@@ -21,7 +24,7 @@ export async function navigateTo({
     execute = true,
     push = true,
 }) {
-    const route = getRouteById(definedRoutes, id);
+    const route = definedRoutes[id];
 
     // extract information from url
     let params = {};
@@ -64,7 +67,7 @@ function registerPopStateListener() {
 }
 
 function setInitialRoute({ id, params = {}, state = {} }) {
-    let route = getRouteById(definedRoutes, id);
+    let route = definedRoutes[id];
 
     activeRoute.set({
         ...route,

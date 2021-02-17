@@ -251,9 +251,6 @@ dmypy.json
 
 *.xml
 
-# svelte
-/qrshare/svelte/node_modules/
-/qrshare/svelte/public/build/
 
 .DS_Store
 example.py

@@ -58,6 +58,9 @@ class App:
                 return render_template('error.html', code=500, message="Something went wrong"), 500
 
         @self.app.route('/')
+        @self.app.route('/results')
+        @self.app.route('/qrcode')
+        @self.app.route('/morse')
         @self.auth.require_auth
         def home():
             return send_from_directory('client/public', 'index.html')
@@ -78,6 +81,7 @@ class App:
                 'isRoot': True,
                 'routes': [r.to_dict() for r in self.routes],
                 'parent': None,
+                'href': '/',
                 'zip': '/root.zip',
             }
 
@@ -100,7 +104,6 @@ class App:
 
         @self.app.route('/<path:path>')
         def depend(path):
-            # TODO create a whitelist
             return send_from_directory('client/public', path)
 
         @self.app.route('/path/<path:path>')

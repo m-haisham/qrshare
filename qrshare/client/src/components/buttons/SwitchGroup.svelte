@@ -5,7 +5,7 @@
 
     // create selection values array
     $: values = Array.from({ length: options.length }, (v, i) =>
-        values === undefined ? initial : i < values.length ? values[i] : initial
+        values === undefined ? initial : values[i]
     );
 
     // update selected

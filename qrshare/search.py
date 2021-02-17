@@ -124,11 +124,15 @@ class Search:
                 # number of matches is directly proportional to result relevance
                 relevance += len(matches)
 
-                data: dict = route.to_dict()
-                data['matches'] = matches
-                data['relevance'] = relevance
-                data['parent'] = route.parent.to_dict()
-                data['zip'] = route.zip_path()
+                data = route.to_dict()
+
+                # add information relevant to search
+                data.update({
+                    'matches': matches,
+                    'relevance': relevance,
+                    'parent': route.parent.to_dict(),
+                    'zip': route.zip_path(),
+                })
 
                 return data
 

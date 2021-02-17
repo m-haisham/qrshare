@@ -18,8 +18,13 @@
         const query = $searchInfo.query ? $searchInfo.query : null;
         const exts = $searchInfo.extensions.split(" ").filter((v) => v);
 
+        /* this checks if there are any search values */
+        if ((query == null || query.trim() === "") && exts.length === 0) {
+            return;
+        }
+
         navigateTo({
-            id: $current.href === undefined ? 2 : 3,
+            id: $current.href === "/" ? 2 : 3,
             url: createSearchUrl({
                 path: $current.href,
                 query,

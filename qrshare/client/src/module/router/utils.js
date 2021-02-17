@@ -1,11 +1,3 @@
-export function getRouteById(routes, id) {
-    for (let route of routes) if (route.id == id) return route;
-}
-
-export function getRouteByName(routes, name) {
-    for (let route of routes) if (route.name == name) return route;
-}
-
 function escape(string) {
     return string.replace(/[-\/\\^$*+?.()|[\]{}]/g, "\\$&");
 }
@@ -29,7 +21,7 @@ export function parseNamedParams(url, namedUrl) {
             const [key, value] = query.split("=");
 
             // if there is no value, skip the query field
-            if (value === undefined || value === null || value === "") continue;
+            if (value == null || value === "") continue;
 
             // split between commas to get values list
             const values = value.split(",");
@@ -43,35 +35,30 @@ export function parseNamedParams(url, namedUrl) {
         }
     }
 
-    // if namedUrl is undefined, dont continue to parse named url
     if (
-        namedUrl === null ||
-        namedUrl === undefined ||
-        // cant parse from non existent information
+        namedUrl == null ||
+        /* '/' does not have any further information that can be extracted */
         path === "/"
     ) {
-        // params require no further changes
-        Object.freeze(params);
-
         return params;
     }
 
-    // extract all the values from named Url
+    /* extract all the values from named Url
+       filter is applied to remove any empty elements such as whitespace */
     const namedKeys = namedUrl.split("/").filter((v) => v);
 
-    // build regular expression using named keys
+    /* build regular expression using named keys */
     let rx_builder = "\\/";
     for (let [index, key] of namedKeys.entries()) {
         if (key.startsWith(":")) {
-            // start group, match everything (greedy)
+            /* start group, start by matching everything after (greedy) */
             rx_builder += "(.+";
 
-            // switch to (lazy) matching
+            /* switch to (lazy) matching, stop at next slash */
             if (!key.endsWith(":") && index < namedKeys.length) {
                 rx_builder += "?";
             }
 
-            // end group
             rx_builder += ")";
         } else {
             rx_builder += escape(key);
@@ -90,13 +77,11 @@ export function parseNamedParams(url, namedUrl) {
     let index = 1;
     for (let key of namedKeys) {
         if (key.startsWith(":")) {
+            /* the following regex removes leading and trailing colons (:) */
             params[key.replace(/^:+|:+$/g, "")] = result[index];
             index++;
         }
     }
-
-    // params require no further changes
-    Object.freeze(params);
 
     return params;
 }

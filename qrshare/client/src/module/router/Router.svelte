@@ -8,11 +8,9 @@
     import { init as initActions } from "./actions";
 
     onMount(async () => {
-        if (!init) {
-            return;
+        if (init) {
+            initActions({ routes, options });
         }
-
-        initActions({ routes, options });
     });
 </script>
 

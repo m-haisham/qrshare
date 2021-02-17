@@ -43,7 +43,7 @@ function createCachedStore(initial) {
             })),
 
         /**
-         * apply cached data belonging to [key] to current
+         * apply cached data belonging to `key` to current
          */
         apply: (key) =>
             update((store) => ({
@@ -77,7 +77,7 @@ export const qrUrl = writable("");
 export const currentRoute = writable({});
 
 // search
-export const searchInfo = writable({});
+export const searchInfo = writable({ query: "", extensions: "" });
 export const isSearching = writable(false);
 export const searchResults = createListStore();
 

@@ -47,9 +47,9 @@
                 No matches found
             {:else}Found {$searchResults.length} matches{/if}
         </h4>
-        <button disabled={$isSearching} on:click={sort}
-            >{$isSorted ? "Relevance" : "Unsorted"}</button
-        >
+        <button disabled={$isSearching} on:click={sort}>
+            {$isSorted ? "Relevance" : "Unsorted"}
+        </button>
     </div>
 
     <!-- Results -->
