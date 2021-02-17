@@ -2,11 +2,10 @@
     import { Github } from "../../module/icons";
     import { fetchOrRedirect } from "../../request";
     import { ListGroup, ListTile } from "../../components/list";
-    import { createLink } from "../../helper";
+    import { createLink, openSource } from "../../helper";
     import { meta } from "../store";
 
     const goTo = (href) => window.open(href);
-    const source = () => goTo("https://github.com/mHaisham/qrshare");
     const issue = () =>
         goTo("https://github.com/mHaisham/qrshare/issues/new/choose");
 
@@ -33,7 +32,7 @@
         </ListTile>
     </ListGroup>
     <ListGroup title="About">
-        <ListTile on:click={source} disabled={false}>
+        <ListTile on:click={openSource} disabled={false}>
             Source
             <div name="trailing" class="icon"><Github /></div>
         </ListTile>

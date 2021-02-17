@@ -13,6 +13,7 @@ export async function fetchOrRedirect(url, method = "GET") {
         return;
     }
 
+    console.log(response);
     return response;
 }
 
@@ -21,8 +22,8 @@ export async function fetchOrRedirect(url, method = "GET") {
  * and converts to js object
  * @param {string} url
  */
-export async function jsonOrRedirect(url) {
-    return fetchOrRedirect(url).then((r) => r.json());
+export async function jsonOrRedirect(url, method = "GET") {
+    return fetchOrRedirect(url, method).then((r) => r.json());
 }
 
 /**

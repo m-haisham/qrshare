@@ -1,4 +1,3 @@
-export { default as Global } from './Global.svelte'
-export { default as Footer } from './Footer.svelte'
-export { default as Divider } from './Divider.svelte'
-export { default as DualDisplay } from './DualDisplay.svelte'
+export { default as BaseApp } from "./BaseApp.svelte";
+export { default as Collapsible } from "./Collapsible.svelte";
+export { default as Divider } from "./Divider.svelte";
