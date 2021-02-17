@@ -22,6 +22,37 @@ function createBooleanStore(initial) {
     };
 }
 
+function createCachedStore(initial) {
+    const { subscribe, set, update } = writable({ current: initial });
+
+    return {
+        subscribe,
+        set,
+
+        /**
+         * cache with key and apply given data to current
+         *
+         * @param {number} key cache identifier
+         * @param {any} value data to store
+         */
+        cache: (key, value) =>
+            update((store) => ({
+                ...store,
+                [key]: value,
+                current: value,
+            })),
+
+        /**
+         * apply cached data belonging to [key] to current
+         */
+        apply: (key) =>
+            update((store) => ({
+                ...store,
+                current: store[key],
+            })),
+    };
+}
+
 /**
  * Compare via number of matches
  */
@@ -33,6 +64,12 @@ function compare(a, b) {
     else if (lenA > lenB) return -1;
     return 0;
 }
+
+export const meta = writable({});
+
+// view
+export const title = createCachedStore("Loading...");
+export const subtitle = createCachedStore("");
 
 // shared routes
 export const routes = writable([]);

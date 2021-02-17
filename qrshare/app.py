@@ -5,11 +5,11 @@ from typing import List
 import waitress
 from flask import Flask, send_from_directory, abort, send_file, render_template
 
+from .meta import __version__
 from .auth import Authentication
 from .models import Route, QRContainer, ZipContent
 from .search import Search
 from .tools import NetworkTools
-
 
 class App:
     cache_timeout = 300
@@ -61,6 +61,14 @@ class App:
         @self.auth.require_auth
         def home():
             return send_from_directory('client/public', 'index.html')
+
+        @self.app.route('/meta')
+        def meta():
+            return {
+                'ip': f'{NetworkTools.local_ip()}:{self.port}',
+                'version': __version__,
+                'login': bool(self.auth.code),
+            }
 
         @self.app.route('/root')
         @self.auth.require_auth

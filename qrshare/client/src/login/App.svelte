@@ -1,60 +1,117 @@
 <script>
-    import Footer from "../components/Footer.svelte";
-    import Desktop from "./Desktop.svelte";
-    import Mobile from "./Mobile.svelte";
-    import { MediaQuery } from "../utilities";
+    import { AppBar, BottomNavigationBar } from "../components/navigation";
+    import { openSource } from "../helper";
+    import { DoorClosed, Key, Github } from "../module/icons";
+    import { jsonOrRedirect } from "../request";
 
     let msg = "";
-    async function auth(e) {
-        const { value } = e.detail;
-
-        try {
-            let response = await fetch(`./login?key=${value}`, {
-                method: "POST",
-                redirect: "follow",
-            });
-
-            // redirect or
-            if (response.redirected) {
-                window.location.assign(response.url);
-            } else {
-                let data = await response.json();
-
-                // hack: setting same thing twice removes it so...
-                msg = "";
-                msg = !data ? "The key does not match, try again." : data.msg;
-            }
-        } catch (e) {
-            alert(e);
+    let value;
+    function auth(e) {
+        if (!value) {
+            msg = "This field is required";
+            return;
         }
+
+        jsonOrRedirect(`/login?key=${value}`, "POST").then((data) => {
+            msg = data ? data.msg : "The key does not match, try again.";
+        });
     }
+
+    /** when input changes, clear the error */
+    const change = (e) => (msg = "");
+
+    /** give focus to element */
+    const focus = (e) => e.focus();
+
+    const navs = [
+        {
+            click: () => {},
+            component: Key,
+        },
+        {
+            click: openSource,
+            component: Github,
+        },
+    ];
+
+    /* active navigation value does not change */
+    const active = 0;
 </script>
+
+<main>
+    <AppBar title="Locked" {navs} {active} sticky={true} />
+    <div class="content">
+        <div class="container">
+            <DoorClosed />
+            <h4>Knock Knock ...</h4>
+            <form action="Submit" on:submit|preventDefault={auth}>
+                <input
+                    type="password"
+                    name="code"
+                    class:warn={msg}
+                    bind:value
+                    on:change={change}
+                    use:focus
+                />
+                <div class="error">
+                    {msg}
+                </div>
+                <button class="button-primary">Submit</button>
+            </form>
+        </div>
+    </div>
+    <BottomNavigationBar {navs} {active} />
+</main>
 
 <style>
     main {
-        height: 100vh;
+        height: 100%;
         display: flex;
         flex-direction: column;
     }
 
-    footer {
-        margin-top: auto;
+    .content {
+        width: 100%;
+
+        /* center the elements */
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        -ms-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+    }
+
+    @media (min-width: 550px) {
+        .content {
+            width: 400px;
+        }
+    }
+
+    h4 {
+        margin: 1rem 0;
+    }
+
+    input {
+        display: block;
+        width: 100%;
+        margin: 0;
+    }
+
+    button {
+        margin: 1.5rem 0;
+    }
+
+    .container :global(svg) {
+        height: 5rem;
+        width: 5rem;
+    }
+
+    .error {
+        color: var(--color-warning);
+    }
+
+    .warn,
+    .warn:focus {
+        border-color: var(--color-warning);
     }
 </style>
-
-<main>
-    <div>
-        <MediaQuery query="(min-width: 550px)" let:matches>
-            {#if matches}
-                <!-- other -->
-                <Desktop {msg} on:submit={auth} />
-            {:else}
-                <!-- mobile -->
-                <Mobile {msg} on:submit={auth} />
-            {/if}
-        </MediaQuery>
-    </div>
-    <footer>
-        <Footer />
-    </footer>
-</main>

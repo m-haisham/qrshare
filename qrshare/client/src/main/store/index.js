@@ -1,4 +1,7 @@
 export {
+    meta,
+    title,
+    subtitle,
     currentRoute,
     routes,
     qrUrl,

@@ -5,7 +5,13 @@
     --color-light-dark: #ccc;
     --color-dark: #222222;
     --color-warning: #cc3300;
+
     --color-background: #ffffff;
+    --color-divider: #ccc;
+    --color-subtitle: #666;
+    --color-button-border: #bbb;
+    --color-button-disabled-border: #ddd;
+    --color-button-hover-border: #888;
 }
 
 body {
@@ -32,6 +38,17 @@ body {
     }
 }
 
+button.normalized {
+    font-size: 1.3rem;
+    text-transform: none;
+}
+
+button[disabled],
+button:disabled {
+    color: #555;
+    border: 1px solid var(--color-button-disabled-border);
+}
+
 /* TRUNCATING */
 .line-clamp,
 .line-clamp[wrap="1"] {
@@ -54,4 +71,25 @@ body {
     .header-button {
         margin-bottom: 0;
     }
+}
+
+/* SCROLL BAR */
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: var(--color-light);
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: var(--color-light-dark);
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #999;
 }

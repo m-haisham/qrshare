@@ -1,10 +1,11 @@
-import { fetchOrRedirect, jsonOrRedirect } from "../../request";
+import { jsonOrRedirect } from "../../request";
 import {
+    title,
+    subtitle,
     currentRoute,
     isSearching,
     routes,
     searchResults,
-    searchInfo,
 } from "./store";
 
 /**
@@ -16,11 +17,19 @@ export async function updateStore(path) {
     let data = await jsonOrRedirect(path);
 
     // overwrite on the current store
-    let current = (({ routes, ...others }) => ({ ...others }))(data);
-    currentRoute.set(current);
+    let current = (({ routes, ...others }) => others)(data);
+    currentRoute.set({ ...current, last: path });
 
     // set sub routes
     routes.set(data.routes);
+
+    // set titles
+    title.cache(0, current.name);
+    if (current.parent) {
+        subtitle.cache(0, "~" + current.parent.href);
+    } else {
+        subtitle.cache(0, null);
+    }
 
     return { current, routes };
 }
@@ -39,7 +48,6 @@ export async function updateStore(path) {
 export async function search({ path = "/", query, exts, types, limit = 100 }) {
     // reset previous results
     isSearching.set(true);
-    searchInfo.set({ path, query, exts, types, limit });
     searchResults.clear();
 
     // Build search query url

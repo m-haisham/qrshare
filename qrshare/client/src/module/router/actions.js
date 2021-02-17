@@ -18,6 +18,7 @@ export async function navigateTo({
     url,
     state = {},
     name = "",
+    execute = true,
     push = true,
 }) {
     const route = getRouteById(definedRoutes, id);
@@ -26,14 +27,20 @@ export async function navigateTo({
     let params = {};
     if (url) {
         params = parseNamedParams(url, route.name);
+    } else {
+        url = route.name;
     }
 
-    // prevent modification to params
+    /* this allows execute to be accessed during pop state */
+    if (state.execute === undefined) state.execute = execute;
+
+    // prevent further modification to params and state
     Object.freeze(params);
+    Object.freeze(state);
 
     // change active route
-    activeRoute.set({ ...route, params, state });
-    route.on(params, state);
+    activeRoute.set({ ...route, url, params, state });
+    if (state.execute) route.on && route.on(params, state);
 
     // change browser url
     if (push)
@@ -61,6 +68,7 @@ function setInitialRoute({ id, params = {}, state = {} }) {
 
     activeRoute.set({
         ...route,
+        url: route.name,
         params,
         state,
     });
