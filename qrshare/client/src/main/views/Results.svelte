@@ -6,7 +6,7 @@
         isSorted,
         processedResults,
     } from "../store";
-    import { SearchListItem } from "../display";
+    import { SearchListItem } from "../components";
     import { navigateTo } from "../../module/router";
     import { createLink } from "../../helper";
     import SearchBar from "../components/Searchbar.svelte";

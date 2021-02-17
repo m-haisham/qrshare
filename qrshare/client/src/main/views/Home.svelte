@@ -1,7 +1,7 @@
 <script>
     import { IndefiniteLoader } from "../../components/progressbars";
 
-    import RouteList from "../display/RouteList.svelte";
+    import { RouteList } from "../components";
     import { title, currentRoute } from "../store";
 </script>
 

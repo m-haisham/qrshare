@@ -1,5 +1,5 @@
 <script>
-    import { QR } from "../display";
+    import { QR } from "../components";
     import { meta, qrUrl } from "../store";
 </script>
 

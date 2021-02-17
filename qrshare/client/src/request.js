@@ -13,7 +13,6 @@ export async function fetchOrRedirect(url, method = "GET") {
         return;
     }
 
-    console.log(response);
     return response;
 }
 
