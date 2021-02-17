@@ -12,12 +12,11 @@
     import { navigateTo } from "../../module/router";
 
     let types = [];
-    let extensions = "";
 
     function submit(e) {
         // query
         const query = $searchInfo.query ? $searchInfo.query : null;
-        const exts = extensions.split(" ").filter((v) => v);
+        const exts = $searchInfo.extensions.split(" ").filter((v) => v);
 
         navigateTo({
             id: $current.href === undefined ? 2 : 3,
@@ -46,7 +45,7 @@
                         <input
                             type="text"
                             placeholder="Extensions"
-                            bind:value={extensions}
+                            bind:value={$searchInfo.extensions}
                         />
                         <SwitchGroup
                             options={["is_file", "is_dir"]}

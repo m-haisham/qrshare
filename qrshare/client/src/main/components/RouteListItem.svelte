@@ -22,10 +22,14 @@
 </script>
 
 {#if isFile}
-    <button class="ct-button line-clamp" on:click={file}> {name} </button>
+    <button class="ct-button normalized line-clamp" on:click={file}>
+        {name}
+    </button>
 {:else}
     <div>
-        <button class="ct-button line-clamp" on:click={folder}>{name}</button>
+        <button class="ct-button normalized line-clamp" on:click={folder}
+            >{name}</button
+        >
         <button on:click={zip}>ZIP</button>
     </div>
 {/if}
@@ -34,8 +38,6 @@
     .ct-button {
         display: block;
         width: 100%;
-        font-size: 1.3rem;
-        text-transform: none;
         text-align: start;
     }
 

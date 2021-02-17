@@ -14,8 +14,6 @@
 
         display: flex;
         justify-content: space-between;
-
-        font-size: 1.5rem;
     }
 
     button:disabled {
@@ -24,7 +22,6 @@
 
     button > :global(*[name="trailing"]) {
         color: var(--color-subtitle);
-        font-size: 1.3rem;
         font-weight: normal;
     }
 

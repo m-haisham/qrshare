@@ -20,7 +20,9 @@
     /** when input changes, clear the error */
     const change = (e) => (msg = "");
 
-    /*  */
+    /** give focus to element */
+    const focus = (e) => e.focus();
+
     const navs = [
         {
             click: () => {},
@@ -46,9 +48,10 @@
                 <input
                     type="password"
                     name="code"
-                    on:change={change}
-                    bind:value
                     class:warn={msg}
+                    bind:value
+                    on:change={change}
+                    use:focus
                 />
                 <div class="error">
                     {msg}

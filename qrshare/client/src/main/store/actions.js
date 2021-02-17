@@ -6,7 +6,6 @@ import {
     isSearching,
     routes,
     searchResults,
-    searchInfo,
 } from "./store";
 
 /**
@@ -49,7 +48,6 @@ export async function updateStore(path) {
 export async function search({ path = "/", query, exts, types, limit = 100 }) {
     // reset previous results
     isSearching.set(true);
-    searchInfo.set({ path, query, exts, types, limit });
     searchResults.clear();
 
     // Build search query url
