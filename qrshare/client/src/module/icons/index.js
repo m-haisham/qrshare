@@ -4,3 +4,4 @@ export { default as Search } from "./Search.svelte";
 export { default as ThreeDots } from "./ThreeDots.svelte";
 export { default as Check } from "./Check.svelte";
 export { default as Github } from "./Github.svelte";
+export { default as ExclamationSquareFill } from "./ExclamationSquareFill.svelte";

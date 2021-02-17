@@ -1,8 +1,8 @@
 <script>
-    import Footer from "../components/Footer.svelte";
-    import Header from "../components/header/Header.svelte";
+    import { AppBar, BottomNavigationBar } from "../components/navigation";
     import { HorizontalProgress } from "../components/progressbars";
-    import { delay } from "../helper";
+    import { ExclamationSquareFill, Github } from "../module/icons";
+    import { delay, openSource } from "../helper";
     import { onMount } from "svelte";
 
     /* global values are retrieved */
@@ -74,6 +74,18 @@
     onMount(async () => {
         countdown();
     });
+
+    const navs = [
+        {
+            click: () => {},
+            component: ExclamationSquareFill,
+        },
+        {
+            click: openSource,
+            component: Github,
+        },
+    ];
+    const active = 0;
 </script>
 
 <svelte:head>
@@ -81,29 +93,25 @@
 </svelte:head>
 
 <main>
-    <div>
-        <Header title={`${code}`} subtitle={name} />
-        <div class="container">
-            <p>{message}</p>
-        </div>
+    <AppBar title={code} subtitle={name} {navs} {active} />
+    <div class="container">
+        <p>{message}</p>
     </div>
-    <footer>
-        <div class="container redirect">
-            <HorizontalProgress
-                trails={!redirectCancelled}
-                bind:value
-                on:click={redirectNow}
-            >
-                <div class="line-clamp">{redirectMessage}</div>
-            </HorizontalProgress>
-            <button
-                class="stop"
-                class:hide={redirectCancelled}
-                on:click={cancelRedirect}>STOP</button
-            >
-        </div>
-        <Footer />
-    </footer>
+    <div class="container redirect">
+        <HorizontalProgress
+            trails={!redirectCancelled}
+            bind:value
+            on:click={redirectNow}
+        >
+            <div class="line-clamp">{redirectMessage}</div>
+        </HorizontalProgress>
+        <button
+            class="stop"
+            class:hide={redirectCancelled}
+            on:click={cancelRedirect}>STOP</button
+        >
+    </div>
+    <BottomNavigationBar {navs} {active} />
 </main>
 
 <style>
@@ -113,14 +121,9 @@
         flex-direction: column;
     }
 
-    footer {
-        margin-top: auto;
-    }
-
     p {
         font-size: 1.9rem;
         margin-top: 1rem;
-        text-align: center;
     }
 
     .hide {
@@ -133,11 +136,12 @@
             text-align: start;
         }
     }
-
     /* REDIRECT STYLES */
     .redirect {
         display: flex;
         flex-direction: row;
+
+        margin-top: auto;
     }
 
     .stop {

@@ -5,7 +5,7 @@
     import { createLink } from "../../helper";
     import { meta } from "../store";
 
-    const goTo = (href) => createLink(href).click();
+    const goTo = (href) => window.open(href);
     const source = () => goTo("https://github.com/mHaisham/qrshare");
     const issue = () =>
         goTo("https://github.com/mHaisham/qrshare/issues/new/choose");

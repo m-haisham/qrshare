@@ -13,12 +13,9 @@
     }
 
     h5 {
-        padding: 0 20px;
-
         font-size: 1.5rem;
         font-weight: bolder;
 
         margin: 2rem 0;
-        border-left: 1px solid var(--color-button-border);
     }
 </style>

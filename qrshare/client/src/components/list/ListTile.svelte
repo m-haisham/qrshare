@@ -25,6 +25,7 @@
     button > :global(*[name="trailing"]) {
         color: var(--color-subtitle);
         font-size: 1.3rem;
+        font-weight: normal;
     }
 
     button :global(.icon) {
