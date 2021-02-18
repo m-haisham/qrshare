@@ -5,11 +5,10 @@ from qrshare import App
 paths = [
     Path(r'C:\Users\User\Documents\Projects\Web\share\index.html'),
     Path(r'C:\Users\User\Documents\Projects'),
-    # Path(r'C:\Users\User\Documents'),
-    # Path(r'C:\Users\User'),
+    Path(r'C:\Users\User\novels'),
 ]
 
 if __name__ == '__main__':
-    app = App(paths)
+    app = App(paths, port=4000)
 
     app.serve(True)

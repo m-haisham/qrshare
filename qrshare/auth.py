@@ -1,7 +1,7 @@
 import uuid
 from functools import wraps
 
-from flask import request, session, render_template, redirect
+from flask import session, redirect, send_from_directory, request
 
 
 class Authentication:
@@ -9,7 +9,6 @@ class Authentication:
         self.app = app
         self.code = code
         self.ukey = str(uuid.uuid4())
-        self.create_endpoints()
 
     def create_endpoints(self):
 
@@ -20,21 +19,28 @@ class Authentication:
         def login():
             if request.method == 'POST':
                 # validate submission
-                if request.form['passcode'] == code:
+                if request.args.get('key') == code:
                     session['ukey'] = ukey
                 else:
-                    return render_template('login.html', message='Incorrect code, Try again!', warning=True)
+                    return {'msg': 'The key does not match, try again.'}
 
             # check if already authenticated
             try:
-                authenticated = session['ukey'] == ukey
+                authenticated = not(code and session['ukey'] != ukey)
             except KeyError:
                 authenticated = False
-            finally:
-                if authenticated:
-                    return redirect('/')
 
-            return render_template('login.html')
+            if authenticated:
+                return redirect('/')
+
+            return send_from_directory('client/public', 'login.html')
+
+        @self.app.route('/logout', methods=['POST'])
+        def logout():
+            # revoke authenticated status
+            session['ukey'] = ''
+
+            return redirect('/login')
 
     def require_auth(self, func):
 
@@ -51,6 +57,6 @@ class Authentication:
             if authenticated:
                 return func(*args, **kwargs)
             else:
-                return redirect(f'/login')
+                return redirect('/login')
 
         return wrapper

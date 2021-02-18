@@ -12,7 +12,7 @@ setup(
     name='qrshare',
     version=qrshare.__version__,
     author="Schicksal",
-    description="flask waitress file share program",
+    description="flask waitress svelte file share program",
     author_email='mhaisham79@gmail.com',
     long_description=long_description,
     long_description_content_type='text/markdown',
@@ -22,7 +22,14 @@ setup(
     },
     install_requires=requirements,
     package_data={
-        'qrshare': ['templates/*.html', 'static/assets/*.svg', 'static/style/*.css']
+        'qrshare': [
+            'client/public/build/*',
+            'client/public/*',
+            'client/scripts/*',
+            'client/src/**/*',
+            'client/src/*',
+            'client/*',
+        ]
     },
     include_package_data=True,
 
@@ -41,3 +48,4 @@ setup(
     packages=find_packages(),
     python_requires='>=3.6'
 )
+
