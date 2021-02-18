@@ -18,7 +18,7 @@ setup(
     long_description_content_type='text/markdown',
 
     entry_points={
-        "console_scripts": ["qrshare=qrshare.__main__:serve"]
+        "console_scripts": ["qrshare=qrshare.__main__:cli"]
     },
     install_requires=requirements,
     package_data={

@@ -18,24 +18,53 @@ pip install qrshare
 
 ### Send to
 
+> Windows only
+
+Creating a shortcut in `shell:sendto` provides for easier use of convenience
+
+#### commandline
+
+```bash
+qrshare config --sendto
+```
+
+#### manually
+
 Press `Windows` + `r` and enter `shell:sendto`
 
-> C:\Users\(user)\AppData\Roaming\Microsoft\Windows\SendTo
+> %USERPROFILE%\AppData\Roaming\Microsoft\Windows\SendTo
 
-Create shortcut with command `qrshare` in folder
+Create shortcut with command `qrshare serve` in folder
 
 now option qrshare should appear when you right click to a file
 
 ### Commandline
 
+> `qrshare --help`
+
 ```bash
-qrshare --help
+Usage: __main__.py [OPTIONS] COMMAND [ARGS]...
+
+Options:
+  --help  Show this message and exit.
+
+Commands:
+  config  change user configurations
+  serve   serve given list paths as per given options
 ```
 
-```bash
-Usage: __main__.py [OPTIONS] PATHS...
+> `qrshare config --help`
 
-Options:****
+```bash
+Options:
+  --sendto  reset windows 'Send To' shortcut
+  --help    Show this message and exit.
+```
+
+> `qrshare serve --help`
+
+```bash
+Options:
   -p, --password TEXT  when provided every device require authentication
   --port INTEGER       waitress server port
   --help               Show this message and exit.
