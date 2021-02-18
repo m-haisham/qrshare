@@ -52,18 +52,18 @@ class App:
         @self.app.errorhandler(Exception)
         def error_handler(error):
             try:
-                return render_template('error.html', code=error.code, name=error.name,  message=error.description),\
+                return render_template('error.jinja2', code=error.code, name=error.name,  message=error.description),\
                        error.code
             except:
-                return render_template('error.html', code=500, message="Something went wrong"), 500
+                return render_template('error.jinja2', code=500, message="Something went wrong"), 500
 
-        @self.app.route('/')
-        @self.app.route('/results')
-        @self.app.route('/qrcode')
-        @self.app.route('/morse')
+        @self.app.route('/', defaults={'id': 0})
+        @self.app.route('/results', defaults={'id': 2})
+        @self.app.route('/qrcode', defaults={'id': 4})
+        @self.app.route('/more', defaults={'id': 5})
         @self.auth.require_auth
-        def home():
-            return send_from_directory('client/public', 'index.html')
+        def home(id):
+            return render_template('index.jinja2', id=id)
 
         @self.app.route('/meta')
         def meta():

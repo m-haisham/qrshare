@@ -13,7 +13,7 @@ export async function init({ routes, options }) {
     options.init();
 
     registerPopStateListener();
-    setInitialRoute(options.initial);
+    navigateTo(options.initial);
 }
 
 export async function navigateTo({
@@ -64,23 +64,4 @@ function registerPopStateListener() {
             });
         }
     };
-}
-
-function setInitialRoute({ id, params = {}, state = {} }) {
-    let route = definedRoutes[id];
-
-    activeRoute.set({
-        ...route,
-        url: route.name,
-        params,
-        state,
-    });
-
-    route.on(params, state);
-
-    window.history.pushState(
-        { id, state, name: route.name },
-        "Home",
-        route.name
-    );
 }

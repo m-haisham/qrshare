@@ -1,4 +1,7 @@
 include LICENSE
+include *.py
+include *.txt
+
 graft qrshare/client/public
 graft qrshare/client/scripts
 graft qrshare/client/src

@@ -1,6 +1,7 @@
 import { Home, Results, Qrcode, More } from "../views";
 import { meta, qrUrl, updateStore, search } from "../store";
 import { jsonOrRedirect, toDataURL } from "../../request";
+import { navigateTo } from "../../module/router";
 
 function updateRoutes(params, state) {
     updateStore(state.path);
@@ -59,13 +60,18 @@ const routes = [
 
 const options = {
     initial: {
-        id: 0,
-        state: {
-            path: "/root",
-            href: "/",
-        },
+        id: initialId,
+        execute: false,
     },
     init: async () => {
+        navigateTo({
+            id: 0,
+            state: {
+                path: "/root",
+                href: "/",
+            },
+            push: false,
+        });
         qrUrl.set(await toDataURL("/svg"));
         meta.set(await jsonOrRedirect("/meta"));
     },
