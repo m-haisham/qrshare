@@ -2,8 +2,11 @@ import json
 from typing import List, Callable, Union, Optional, Iterable
 
 from flask import request, Response, abort
-from regex import regex
-import re
+
+try:
+    from regex import regex as re
+except ImportError:
+    import re
 
 from .auth import Authentication
 from .models import Route
@@ -60,9 +63,9 @@ class Search:
             # single char words would makes s... search complicated
             words = {word for word in query.split(' ') if len(word) > 1}
 
-            rx_query = regex.compile(
+            rx_query = re.compile(
                 '|'.join(words),
-                regex.IGNORECASE
+                re.IGNORECASE
             )
 
         rx_exts = None
@@ -74,7 +77,7 @@ class Search:
             # ensure extension has a dot at the start and build individual expressions
             exts = {f'(\\.{ext.lstrip(".")})(\\.|$)' for ext in exts}
 
-            rx_exts = regex.compile(
+            rx_exts = re.compile(
                 '|'.join(exts)
             )
 
