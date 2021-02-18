@@ -1,6 +1,6 @@
 from io import BytesIO
 from pathlib import Path
-from typing import List
+from typing import List, Optional
 
 import waitress
 from flask import Flask, send_from_directory, abort, send_file, render_template
@@ -112,6 +112,9 @@ class App:
             try:
                 route = self.route_map[path]
             except KeyError:
+                route = self.detect(path)
+
+            if route is None:
                 return abort(404)
 
             self.map(route)
@@ -121,9 +124,14 @@ class App:
         @self.app.route('/zip/<path:path>')
         @self.auth.require_auth
         def zip_access_point(path):
+            path = path.rstrip('.zip')
+
             try:
-                route = self.route_map[path.rstrip('.zip')]
+                route = self.route_map[path]
             except KeyError:
+                route = self.detect(path)
+
+            if route is None:
                 return abort(404)
 
             route.populate()
@@ -142,6 +150,32 @@ class App:
                 # make it english; remove the url specific encoding
                 path = sub_route.general_path(False, True).lstrip('/')
                 self.route_map[path] = sub_route
+
+    def detect(self, path) -> Optional[Route]:
+        for r in self.routes:
+            if r.path.is_file():
+                continue
+
+            # check if the requested path is a subdirectory of existing root directories
+            if not path.startswith(r.general_path(False, True).strip('/')):
+                continue
+
+            requested_path = r.path.parent / path
+            if requested_path.exists():
+
+                # make sure root route has been mapped
+                self.map(r)
+
+                # the loop below methodically populates all the sub routes leading to requested route
+                segments = path.split('/')
+                for i in range(2, len(segments)):
+                    try:
+                        sub_route = self.route_map['/'.join(segments[:i])]
+                        self.map(sub_route)
+                    except IndexError:
+                        break
+
+                return self.route_map[path]
 
     def serve(self, debug=False):
         self.create_endpoints()
