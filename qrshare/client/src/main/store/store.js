@@ -77,7 +77,11 @@ export const qrMarkup = writable("");
 export const currentRoute = writable({});
 
 // search
-export const searchInfo = writable({ query: "", extensions: "" });
+export const searchInfo = writable({
+    query: "",
+    extensions: "",
+    types: [true, true],
+});
 export const isSearching = writable(false);
 export const searchResults = createListStore();
 

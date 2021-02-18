@@ -56,20 +56,20 @@
             click: () => {
                 if ($activeRoute.key === 1) return;
 
+                subtitle.cache(
+                    1,
+                    $currentRoute.href ? "~" + $currentRoute.href : null
+                );
+
                 // if there were no prior visit to search
                 if ($activeRoute[1] === undefined) {
                     title.cache(1, "Search");
-                    subtitle.cache(1, null);
 
                     navigateTo(buildNavigation({ id: 2, key: 1 }));
 
                     // apply from prior visit
                 } else {
                     title.apply(1);
-                    subtitle.cache(
-                        1,
-                        $currentRoute.href ? "~" + $currentRoute.href : null
-                    );
 
                     navigateTo(buildNavigationDefined(1));
                 }

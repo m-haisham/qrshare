@@ -1,33 +1,22 @@
 <script>
+    import { createEventDispatcher } from "svelte";
+
     export let options;
-    export let selected = [];
-    export let initial = false;
+    export let selected;
 
-    // create selection values array
-    $: values = Array.from({ length: options.length }, (v, i) =>
-        values === undefined ? initial : values[i]
-    );
+    const dispatch = createEventDispatcher();
 
-    // update selected
-    $: selected = options.filter((v, i) => values[i]);
-
-    /**
-     * Toggles the given button via the text
-     * @param e element instance
-     */
-    function toggle(e) {
-        const index = e.target.dataset.index;
-        values[index] = !values[index];
-    }
+    /** this dispatchs custom event with contains index of button clicked */
+    const click = (e) => dispatch("toggle", { index: e.target.dataset.index });
 </script>
 
 <div>
     {#each options as option, index}
         <button
             type="button"
-            class:button-primary={values[index]}
+            class:button-primary={selected[index]}
             data-index={index}
-            on:click={toggle}>{option}</button
+            on:click={click}>{option}</button
         >
     {/each}
 </div>

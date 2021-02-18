@@ -5,18 +5,26 @@
     import Divider from "../../components/Divider.svelte";
 
     // state values
-    import { currentRoute as current, isSearching, searchInfo } from "../store";
+    import { currentRoute, isSearching, searchInfo } from "../store";
 
     // functions
     import { createSearchUrl } from "../../helper";
     import { navigateTo } from "../../module/router";
 
-    let types = [];
+    const options = ["is_file", "is_dir"];
+    function toggle(e) {
+        const { index } = e.detail;
+        searchInfo.update((info) => ({
+            ...info,
+            types: info.types.map((v, i) => (index == i ? !v : v)),
+        }));
+    }
 
     function submit(e) {
         // query
         const query = $searchInfo.query ? $searchInfo.query : null;
         const exts = $searchInfo.extensions.split(" ").filter((v) => v);
+        const types = $searchInfo.types;
 
         /* this checks if there are any search values */
         if ((query == null || query.trim() === "") && exts.length === 0) {
@@ -24,9 +32,9 @@
         }
 
         navigateTo({
-            id: $current.href === "/" ? 2 : 3,
+            id: $currentRoute.href === "/" ? 2 : 3,
             url: createSearchUrl({
-                path: $current.href,
+                path: $currentRoute.href,
                 query,
                 exts,
                 types,
@@ -53,9 +61,9 @@
                             bind:value={$searchInfo.extensions}
                         />
                         <SwitchGroup
-                            options={["is_file", "is_dir"]}
-                            initial={true}
-                            bind:selected={types}
+                            {options}
+                            selected={$searchInfo.types}
+                            on:toggle={toggle}
                         />
                     </div>
                     <button>SEARCH</button>
