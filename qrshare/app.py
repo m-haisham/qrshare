@@ -12,6 +12,7 @@ from .search import Search
 from .tools import NetworkTools
 from .config import UserConfig
 
+
 class App:
     cache_timeout = 300
 
@@ -45,9 +46,6 @@ class App:
 
         app.secret_key = 'entwicklung'  # development key
 
-        # load config for deployment environments
-        app.config.from_pyfile('config.py', silent=True)
-
         app.config['TRAP_HTTP_EXCEPTIONS'] = True
         app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 
@@ -58,7 +56,7 @@ class App:
         @self.app.errorhandler(Exception)
         def error_handler(error):
             try:
-                return render_template('error.jinja2', code=error.code, name=error.name,  message=error.description),\
+                return render_template('error.jinja2', code=error.code, name=error.name, message=error.description), \
                        error.code
             except:
                 return render_template('error.jinja2', code=500, message="Something went wrong"), 500
