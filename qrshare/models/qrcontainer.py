@@ -9,7 +9,10 @@ class QRContainer:
     def __init__(self, s):
         self.string = s
 
-    def to_svg(self, s):
+    def to_svg(self, s=None):
+        if s is None:
+            s = self.string
+
         with BytesIO() as handle:
             # create and save to svg
             img = qr.make(s, image_factory=SvgPathImage)
@@ -23,7 +26,10 @@ class QRContainer:
 
         return text
 
-    def to_ascii(self, s):
+    def to_ascii(self, s=None):
+        if s is None:
+            s = self.string
+
         with StringIO() as handle:
             code = qr.QRCode()
             code.add_data(s)

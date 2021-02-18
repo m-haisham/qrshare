@@ -1,11 +1,9 @@
 <script>
-    export let url;
+    import { qrMarkup } from "../store";
 </script>
 
 <div class="qr">
-    <object data={url} type="image/svg+xml" title="QR"
-        ><img src={url} alt="QR" />
-    </object>
+    {@html $qrMarkup}
 </div>
 
 <style>
@@ -16,8 +14,7 @@
         margin: 2rem auto;
     }
 
-    object {
-        width: 100%;
+    div :global(svg) {
         max-width: 40rem;
     }
 </style>

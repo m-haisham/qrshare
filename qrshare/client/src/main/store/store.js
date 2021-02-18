@@ -73,7 +73,7 @@ export const subtitle = createCachedStore("");
 
 // shared routes
 export const routes = writable([]);
-export const qrUrl = writable("");
+export const qrMarkup = writable("");
 export const currentRoute = writable({});
 
 // search

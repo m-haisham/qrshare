@@ -6,7 +6,7 @@
  * fetches url but prioritizing redirect
  * @param {string} url
  */
-export async function fetchOrRedirect(url, method = "GET") {
+async function fetchOrRedirect(url, method = "GET") {
     let response = await fetch(url, { method, redirect: "follow" });
     if (response.redirected) {
         window.location.assign(response.url);
@@ -21,7 +21,7 @@ export async function fetchOrRedirect(url, method = "GET") {
  * and converts to js object
  * @param {string} url
  */
-export async function jsonOrRedirect(url, method = "GET") {
+async function jsonOrRedirect(url, method = "GET") {
     return fetchOrRedirect(url, method).then((r) => r.json());
 }
 
@@ -30,7 +30,7 @@ export async function jsonOrRedirect(url, method = "GET") {
  * used for images
  * @param {string} url
  */
-export async function toDataURL(url) {
+async function toDataURL(url) {
     let response = await fetch(url);
     let blob = await response.blob();
     return new Promise((resolve, reject) => {
@@ -40,3 +40,18 @@ export async function toDataURL(url) {
         reader.readAsDataURL(blob);
     });
 }
+
+/**
+ * makes a request to the provided url and converts (or tries to)
+ * the response to text
+ *
+ * the method is primarily used for fetching html
+ *
+ * @param {string} url
+ * @param {string} method request method GET, POST, PUT
+ */
+async function request_text(url, method = "GET") {
+    return fetchOrRedirect(url, method).then((r) => r.text());
+}
+
+export { fetchOrRedirect, jsonOrRedirect, toDataURL, request_text };

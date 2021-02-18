@@ -1,6 +1,6 @@
 <script>
     import { QR } from "../components";
-    import { meta, qrUrl } from "../store";
+    import { meta } from "../store";
 </script>
 
 <svelte:head>
@@ -8,7 +8,7 @@
 </svelte:head>
 
 <div class="container">
-    <QR url={$qrUrl} />
+    <QR />
     <div class="manual">
         <h4>Manual</h4>
         <p>Enter the following in your favourite browser</p>

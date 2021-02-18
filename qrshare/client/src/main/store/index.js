@@ -4,7 +4,7 @@ export {
     subtitle,
     currentRoute,
     routes,
-    qrUrl,
+    qrMarkup,
     isSearching,
     searchInfo,
     searchResults,

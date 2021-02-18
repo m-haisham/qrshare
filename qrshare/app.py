@@ -102,10 +102,7 @@ class App:
 
         @self.app.route('/svg')
         def svg():
-            svg_io = BytesIO()
-            self.qr.write(self.qr.string, svg_io)
-            svg_io.seek(0)
-            return send_file(svg_io, mimetype='image/svg+xml', cache_timeout=self.cache_timeout)
+            return self.qr.to_svg()
 
         @self.app.route('/<path:path>')
         def depend(path):
