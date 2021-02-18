@@ -57,14 +57,6 @@ Commands:
   serve   serve given list paths as per given options
 ```
 
-> `qrshare config --help`
-
-```bash
-Options:
-  --sendto  reset windows 'Send To' shortcut
-  --help    Show this message and exit.
-```
-
 > `qrshare serve --help`
 
 ```bash
@@ -73,6 +65,21 @@ Options:
   --port INTEGER       waitress server port
   --help               Show this message and exit.
 ```
+
+- `password` is given preference over global password
+
+> `qrshare config --help`
+
+```bash
+Options:
+  -p, --password TEXT  set a global password
+  --sendto             reset windows 'Send To' shortcut
+  --open               open config directory
+  --help               Show this message and exit.
+```
+
+- `global password` can be removed by setting it an empty string ("")
+
 
 ### Code Example
 

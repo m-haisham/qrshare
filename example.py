@@ -9,6 +9,6 @@ paths = [
 ]
 
 if __name__ == '__main__':
-    app = App(paths, port=4000)
+    app = App(paths, port=4000, debug=True)
 
-    app.serve(True)
+    app.serve()

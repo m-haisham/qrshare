@@ -3,7 +3,7 @@ from pathlib import Path
 import click
 
 from qrshare import App, create_shortcut
-
+from qrshare.config import UserConfig
 
 @click.group()
 def cli():
@@ -33,11 +33,15 @@ def serve(paths, password, port):
 
 
 @cli.command()
+@click.option('-p', '--password', type=str, help='set a global password')
 @click.option('--sendto', is_flag=True, help='reset windows \'Send To\' shortcut')
-def config(sendto):
+@click.option('--open', 'open_config', is_flag=True, help='open config directory')
+def config(password, sendto, open_config):
     """
     change user configurations
     """
+    user = UserConfig()
+
     if sendto:
         # windows send to path
         path = Path.home() / Path(r'AppData\Roaming\Microsoft\Windows\SendTo')
@@ -50,6 +54,17 @@ def config(sendto):
             print(e)
         else:
             print('done')
+
+    if password:
+        user.config.put('password', password)
+        print(f'New global password set: {password}')
+    elif password == "":
+        user.config.put('password', None)
+        print('Removed global password')
+
+    if open_config:
+        import os
+        os.startfile(user.path)
 
 
 if __name__ == '__main__':

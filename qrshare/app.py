@@ -16,14 +16,11 @@ from .config import UserConfig
 class App:
     cache_timeout = 300
 
-    def __init__(self, paths: List[Path], code=None, port=5000):
-        self.app = self.init()
+    def __init__(self, paths: List[Path], code=None, port=5000, debug=False):
         self.user = UserConfig()
+        self.app = self.init(debug)
 
-        # set config
-        self.app.config.from_mapping(self.user.config.data)
-
-        self.auth = Authentication(self.app, code)
+        self.auth = Authentication(self.app, code or self.user.config.get('password'))
         self.search = Search(self, self.auth)
 
         self.paths = paths
@@ -36,7 +33,7 @@ class App:
             for route in self.routes
         }
 
-    def init(self) -> Flask:
+    def init(self, debug) -> Flask:
         app = Flask(
             __name__,
             instance_relative_config=True,
@@ -44,7 +41,12 @@ class App:
             static_folder='client/public/static'
         )
 
-        app.secret_key = 'entwicklung'  # development key
+        app.debug = debug
+
+        if app.debug:
+            app.secret_key = 'entwicklung'  # development key
+        else:
+            app.config.from_mapping(self.user.config.data)
 
         app.config['TRAP_HTTP_EXCEPTIONS'] = True
         app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
@@ -85,7 +87,6 @@ class App:
                 'isRoot': True,
                 'routes': [r.to_dict() for r in self.routes],
                 'parent': None,
-                'href': '/',
                 'zip': '/root.zip',
             }
 
@@ -181,11 +182,10 @@ class App:
 
                 return self.route_map[path]
 
-    def serve(self, debug=False):
+    def serve(self):
         self.create_endpoints()
 
-        if debug:
-            self.app.debug = True
+        if self.app.debug:
             self.app.run(port=self.port, use_reloader=False)
         else:
             waitress.serve(self.app, port=self.port, _quiet=True)
