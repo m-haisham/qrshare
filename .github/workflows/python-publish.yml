@@ -18,14 +18,28 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: '3.7'
-    - name: Install dependencies
+    - name: Setup Node.js environment
+      uses: actions/setup-node@v2.1.4
+      with:
+        node-version: '14.x'
+    - name: Install python dependencies
       run: |
         python -m pip install --upgrade pip
         pip install setuptools wheel twine
     - name: Install requirements
       run: |
         pip install -r requirements.txt
-    - name: Build
+    - name: Install node dependencies
+      run: |
+        cd qrshare/client
+        npm install
+        cd ../..
+    - name: Build Client
+      run: |
+        cd qrshare/client
+        npm run build
+        cd ../..
+    - name: Build Package
       run: |
         python setup.py sdist bdist_wheel
     - name: Publish
