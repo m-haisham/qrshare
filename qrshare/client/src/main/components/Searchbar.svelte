@@ -1,8 +1,6 @@
 <script>
     // components
     import { SwitchGroup } from "../../components/list";
-    import { Funnel } from "../../module/icons";
-    import Collapsible from "../../components/Collapsible.svelte";
     import OrderSelector from "./OrderSelector.svelte";
 
     // state values
@@ -11,11 +9,6 @@
     // functions
     import { createSearchUrl } from "../../helper";
     import { navigateTo } from "../../module/router";
-
-    export let title;
-
-    let collapsed = false;
-    const collapse = () => (collapsed = !collapsed);
 
     const options = ["is_file", "is_dir"];
     function toggle(e) {
@@ -55,41 +48,29 @@
     }
 </script>
 
-<div class="container">
-    <Collapsible {title} icon={Funnel} hide={collapsed} on:click={collapse}>
-        <form on:submit|preventDefault={submit}>
-            <fieldset disabled={$isSearching}>
-                <label for="search-query">Query</label>
-                <input
-                    type="text"
-                    id="search-query"
-                    bind:value={$searchInfo.query}
-                />
-                <label for="search-extensions">
-                    Extensions <span>[separated by space]</span>
-                </label>
-                <input type="text" bind:value={$searchInfo.extensions} />
-                <label for="filter-types">Types <span>[Multiple]</span></label>
-                <SwitchGroup
-                    id="filter-types"
-                    {options}
-                    selected={$searchInfo.types}
-                    on:toggle={toggle}
-                />
-                <OrderSelector />
-                <button class="button-primary">SEARCH</button>
-            </fieldset>
-        </form>
-    </Collapsible>
-</div>
+<form on:submit|preventDefault={submit}>
+    <fieldset disabled={$isSearching}>
+        <label for="search-query">Query</label>
+        <input type="text" id="search-query" bind:value={$searchInfo.query} />
+        <label for="search-extensions">
+            Extensions <span>[separated by space]</span>
+        </label>
+        <input type="text" bind:value={$searchInfo.extensions} />
+        <label for="filter-types">Types <span>[Multiple]</span></label>
+        <SwitchGroup
+            id="filter-types"
+            {options}
+            selected={$searchInfo.types}
+            on:toggle={toggle}
+        />
+        <OrderSelector />
+        <button class="button-primary">SEARCH</button>
+    </fieldset>
+</form>
 
 <style>
-    .container {
-        margin-top: 1rem;
-        margin-bottom: 1rem;
-    }
-
     form {
+        grid-area: search;
         border-bottom: 1px solid var(--color-divider);
     }
 
@@ -121,6 +102,11 @@
             width: auto;
             padding-left: 2rem;
             padding-right: 2rem;
+        }
+    }
+    @media (min-width: 750px) {
+        form {
+            border-bottom: none;
         }
     }
 
