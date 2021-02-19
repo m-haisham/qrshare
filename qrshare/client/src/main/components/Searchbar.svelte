@@ -1,8 +1,9 @@
 <script>
     // components
-    import { SwitchGroup } from "../../components/buttons";
+    import { SwitchGroup } from "../../components/list";
+    import { Funnel } from "../../module/icons";
     import Collapsible from "../../components/Collapsible.svelte";
-    import Divider from "../../components/Divider.svelte";
+    import OrderSelector from "./OrderSelector.svelte";
 
     // state values
     import { currentRoute, isSearching, searchInfo } from "../store";
@@ -10,6 +11,11 @@
     // functions
     import { createSearchUrl } from "../../helper";
     import { navigateTo } from "../../module/router";
+
+    export let title;
+
+    let collapsed = false;
+    const collapse = () => (collapsed = !collapsed);
 
     const options = ["is_file", "is_dir"];
     function toggle(e) {
@@ -32,7 +38,12 @@
         }
 
         navigateTo({
-            id: $currentRoute.href === "/" ? 2 : 3,
+            /* checks whether current route is root
+               root search url is different from rest */
+            id:
+                $currentRoute.href == null || $currentRoute.href === "/"
+                    ? 2
+                    : 3,
             url: createSearchUrl({
                 path: $currentRoute.href,
                 query,
@@ -44,40 +55,42 @@
     }
 </script>
 
-<div class="stick">
-    <div class="container">
-        <Collapsible textH="OPTIONS" secondary={true}>
-            <form on:submit|preventDefault={submit}>
-                <fieldset disabled={$isSearching}>
-                    <input
-                        type="text"
-                        placeholder="Search"
-                        bind:value={$searchInfo.query}
-                    />
-                    <div class="more">
-                        <input
-                            type="text"
-                            placeholder="Extensions"
-                            bind:value={$searchInfo.extensions}
-                        />
-                        <SwitchGroup
-                            {options}
-                            selected={$searchInfo.types}
-                            on:toggle={toggle}
-                        />
-                    </div>
-                    <button>SEARCH</button>
-                </fieldset>
-            </form>
-        </Collapsible>
-    </div>
-    <Divider />
+<div class="container">
+    <Collapsible {title} icon={Funnel} hide={collapsed} on:click={collapse}>
+        <form on:submit|preventDefault={submit}>
+            <fieldset disabled={$isSearching}>
+                <label for="search-query">Query</label>
+                <input
+                    type="text"
+                    id="search-query"
+                    bind:value={$searchInfo.query}
+                />
+                <label for="search-extensions">
+                    Extensions <span>[separated by space]</span>
+                </label>
+                <input type="text" bind:value={$searchInfo.extensions} />
+                <label for="filter-types">Types <span>[Multiple]</span></label>
+                <SwitchGroup
+                    id="filter-types"
+                    {options}
+                    selected={$searchInfo.types}
+                    on:toggle={toggle}
+                />
+                <OrderSelector />
+                <button class="button-primary">SEARCH</button>
+            </fieldset>
+        </form>
+    </Collapsible>
 </div>
 
 <style>
     .container {
         margin-top: 1rem;
         margin-bottom: 1rem;
+    }
+
+    form {
+        border-bottom: 1px solid var(--color-divider);
     }
 
     form,
@@ -88,11 +101,15 @@
     input {
         width: 100%;
         margin-bottom: 1rem;
-        text-align: center;
+        /* text-align: center; */
     }
 
     button {
         width: 100%;
+    }
+
+    .button-primary {
+        margin-top: 1rem;
     }
 
     @media (min-width: 550px) {
@@ -104,28 +121,11 @@
             width: auto;
             padding-left: 2rem;
             padding-right: 2rem;
-            margin-bottom: 0;
         }
     }
 
-    /* STYLE MORE OPTIONS */
-    .more {
-        display: flex;
-        flex-direction: column;
-    }
-
-    @media (min-width: 550px) {
-        .more {
-            flex-direction: row;
-            gap: 1rem;
-        }
-
-        .more > *:first-child {
-            flex-grow: 8;
-        }
-
-        .more > *:last-child {
-            flex-grow: 4;
-        }
+    label span {
+        font-size: 1.2rem;
+        color: var(--color-subtitle);
     }
 </style>

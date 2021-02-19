@@ -11,6 +11,13 @@
     import { createLink } from "../../helper";
     import SearchBar from "../components/Searchbar.svelte";
 
+    let title = "No matches found";
+    $: {
+        if ($isSearching) title = `Searching... (${$searchResults.length})`;
+        else if ($searchResults.length == 0) title = "No matches found";
+        else title = `Found ${$searchResults.length} matches`;
+    }
+
     function load(e) {
         const route = e.detail;
         navigateTo({ id: 1, url: route.href, state: route, name: route.name });
@@ -23,10 +30,6 @@
     function zip(e) {
         createLink(e.detail.zip).click();
     }
-
-    function sort(e) {
-        isSorted.flip();
-    }
 </script>
 
 <svelte:head>
@@ -34,24 +37,10 @@
 </svelte:head>
 
 <!-- Searchbar -->
-<SearchBar />
+<SearchBar {title} />
 
 <!-- main body -->
 <div class="container">
-    <!-- Heading -->
-    <div class="header">
-        <h4>
-            {#if $isSearching}
-                Searching... ({$searchResults.length})
-            {:else if $searchResults.length == 0}
-                No matches found
-            {:else}Found {$searchResults.length} matches{/if}
-        </h4>
-        <button disabled={$isSearching} on:click={sort}>
-            {$isSorted ? "Relevance" : "Unsorted"}
-        </button>
-    </div>
-
     <!-- Results -->
     <li class="grid">
         {#each $processedResults as route, i}
@@ -73,29 +62,9 @@
         grid-template-columns: 100%;
         column-gap: 1rem;
     }
-
-    .header {
-        display: flex;
-        justify-content: space-between;
-    }
-
-    .header h4 {
-        text-align: start;
-        margin-bottom: 0;
-    }
-
     @media (min-width: 550px) {
         .grid {
             grid-template-columns: repeat(2, calc(50% - 1rem / 2));
-        }
-    }
-    .container {
-        margin-top: 1rem;
-    }
-
-    @media (min-width: 550px) {
-        .container {
-            margin-top: 2rem;
         }
     }
 </style>
