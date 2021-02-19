@@ -1,16 +1,15 @@
-from io import BytesIO
 from pathlib import Path
 from typing import List, Optional
 
 import waitress
 from flask import Flask, send_from_directory, abort, send_file, render_template
 
+from .auth import Auth
+from .config import UserConfig
 from .meta import __version__
-from .auth import Authentication
 from .models import Route, QRContainer, ZipContent
 from .search import Search
 from .tools import NetworkTools
-from .config import UserConfig
 
 
 class App:
@@ -20,7 +19,7 @@ class App:
         self.user = UserConfig()
         self.app = self.init(debug)
 
-        self.auth = Authentication(self.app, code or self.user.config.get('password'))
+        self.auth = Auth(self.app, code or self.user.config.get('password'))
         self.search = Search(self, self.auth)
 
         self.paths = paths
@@ -29,7 +28,7 @@ class App:
         self.qr = QRContainer(f'{NetworkTools.local_ip()}:{self.port}')
         self.routes = sorted([Route(path) for path in self.paths], key=lambda r: (r.is_file, r.general_path()))
         self.route_map = {
-            route.general_path(False, True).lstrip('/'): route
+            route.general_path(True).lstrip('/'): route
             for route in self.routes
         }
 
@@ -150,7 +149,7 @@ class App:
             # add newly explored routes to map
             for sub_route in route.sub_routes:
                 # make it english; remove the url specific encoding
-                path = sub_route.general_path(False, True).lstrip('/')
+                path = sub_route.general_path(True).lstrip('/')
                 self.route_map[path] = sub_route
 
     def detect(self, path) -> Optional[Route]:
@@ -159,7 +158,7 @@ class App:
                 continue
 
             # check if the requested path is a subdirectory of existing root directories
-            if not path.startswith(r.general_path(False, True).strip('/')):
+            if not path.startswith(r.general_path(True).strip('/')):
                 continue
 
             requested_path = r.path.parent / path

@@ -8,12 +8,12 @@ try:
 except ImportError:
     import re
 
-from .auth import Authentication
+from .auth import Auth
 from .models import Route
 
 
 class Search:
-    def __init__(self, app, auth: Authentication):
+    def __init__(self, app, auth: Auth):
         self.app = app
         self.auth = auth
 

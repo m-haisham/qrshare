@@ -7,6 +7,7 @@ from .base import ConfigBase
 appname = 'qrshare'
 appauthor = 'mHaisham'
 
+
 class UserConfig:
     def __init__(self):
         # get cross os configuration path

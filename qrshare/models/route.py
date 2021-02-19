@@ -49,7 +49,7 @@ class Route:
                 'isRoot': self.is_root,
                 'routes': [r.to_dict() for r in self.sub_routes],
                 'parent': parent_data,
-                'href': self.general_path(False, True),
+                'href': self.general_path(True),
                 'zip': self.zip_path(),
             }
 
@@ -72,15 +72,14 @@ class Route:
         return self.path.is_file()
 
     @lru_cache(maxsize=1024)
-    def general_path(self, quoted=True, clean=False):
+    def general_path(self, clean=False):
         # root?
         if self.parent is None:
             parent_route = '' if clean else '/path'
         else:
-            parent_route = self.parent.general_path(False, clean)
+            parent_route = self.parent.general_path(clean)
 
-        path = f'{parent_route}/{self.path.name}'
-        return quote(path) if quoted else path
+        return f'{parent_route}/{self.path.name}'
 
     def zip_path(self):
         return f'/zip{self.general_path(clean=True).rstrip("/")}.zip'
@@ -88,7 +87,7 @@ class Route:
     def to_dict(self):
         return {
             'name': self.name,
-            'path': self.general_path(False, False),
-            'href': self.general_path(False, True),
+            'path': self.general_path(False),
+            'href': self.general_path(True),
             'isFile': self.is_file,
         }

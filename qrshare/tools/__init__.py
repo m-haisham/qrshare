@@ -1,9 +1,4 @@
-import re
-from io import BytesIO
 from socket import socket, AF_INET, SOCK_DGRAM
-
-import qrcode as qr
-from qrcode.image.svg import SvgPathImage
 
 
 class NetworkTools:

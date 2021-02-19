@@ -2,7 +2,7 @@
     import { Github } from "../../module/icons";
     import { fetchOrRedirect } from "../../request";
     import { ListGroup, ListTile } from "../../components/list";
-    import { createLink, openSource } from "../../helper";
+    import { openSource } from "../../helper";
     import { meta } from "../store";
 
     const goTo = (href) => window.open(href);
@@ -28,7 +28,7 @@
     <ListGroup title="Server">
         <ListTile>
             IP Address
-            <div name="trailing">{$meta.ip}</div>
+            <div name="trailing">{$meta.ip ?? ""}</div>
         </ListTile>
     </ListGroup>
     <ListGroup title="About">
@@ -42,7 +42,7 @@
         </ListTile>
         <ListTile>
             Version
-            <div name="trailing">v{$meta.version}</div>
+            <div name="trailing">v{$meta.version ?? "?"}</div>
         </ListTile>
     </ListGroup>
 </div>

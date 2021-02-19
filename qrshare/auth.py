@@ -4,7 +4,7 @@ from functools import wraps
 from flask import session, redirect, send_from_directory, request
 
 
-class Authentication:
+class Auth:
     def __init__(self, app, code=None):
         self.app = app
         self.code = code
@@ -50,7 +50,7 @@ class Authentication:
         @wraps(func)
         def wrapper(*args, **kwargs):
             try:
-                authenticated = not(code and session['ukey'] != ukey)
+                authenticated = not code or session['ukey'] == ukey
             except KeyError:
                 authenticated = False
 
