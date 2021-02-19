@@ -14,7 +14,7 @@
     }
 
     function zip(e) {
-        createLink(e.detail.zip).click();
+        window.open(e.detail.zip);
     }
 </script>
 
@@ -23,18 +23,7 @@
         <!-- back item -->
         {#if $current.parent}
             <RouteListItem
-                name="..."
-                path={$current.parent.path}
-                href={$current.parent.href}
-                isFile={true}
-                on:file={load}
-            />
-        {:else if !$current.isRoot}
-            <RouteListItem
-                name="..."
-                path="/root"
-                href="/"
-                isFile={true}
+                route={{ ...$current.parent, name: "...", isFile: true }}
                 on:file={load}
             />
         {/if}
@@ -42,7 +31,7 @@
         <!-- item list -->
         {#each $routes as route}
             <RouteListItem
-                {...route}
+                {route}
                 on:folder={load}
                 on:file={file}
                 on:zip={zip}

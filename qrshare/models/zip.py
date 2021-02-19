@@ -1,7 +1,7 @@
+import tempfile
 from pathlib import Path
 from typing import List
 from zipfile import ZipFile
-import tempfile
 
 
 class ZipContent:
@@ -23,3 +23,8 @@ class ZipContent:
 
     def reset_hand(self):
         self.file.seek(0)
+
+    def enclose(self):
+        self.write()
+        self.reset_hand()
+        return self.file

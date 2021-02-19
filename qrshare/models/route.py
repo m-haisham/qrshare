@@ -44,24 +44,17 @@ class Route:
                     'zip': '/root.zip',
                 }
 
-            return {
-                'name': self.path.name,
-                'isRoot': self.is_root,
-                'routes': [r.to_dict() for r in self.sub_routes],
-                'parent': parent_data,
-                'href': self.general_path(True),
-                'zip': self.zip_path(),
-            }
+            return dict(
+                **self.to_dict(),
+                routes=[r.to_dict() for r in self.sub_routes],
+                parent=parent_data,
+            )
 
     def zip(self):
         if self.is_file:
             return ValueError('path of type "file" cannot be zipped')
         else:
-            zipper = ZipContent(self.path.iterdir())
-            zipper.write()
-            zipper.reset_hand()
-
-            return send_file(zipper.file, mimetype='application/zip')
+            return send_file(ZipContent(self.path.iterdir()).enclose(), mimetype='application/zip')
 
     @property
     def name(self):
@@ -89,5 +82,6 @@ class Route:
             'name': self.name,
             'path': self.general_path(False),
             'href': self.general_path(True),
+            'zip': self.zip_path(),
             'isFile': self.is_file,
         }

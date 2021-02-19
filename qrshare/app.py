@@ -92,12 +92,7 @@ class App:
         @self.app.route('/root.zip')
         @self.auth.require_auth
         def zip():
-            zipper = ZipContent(self.paths)
-            # write the marked files into zip
-            zipper.write()
-            zipper.reset_hand()
-
-            return send_file(zipper.file, mimetype='application/zip')
+            return send_file(ZipContent(self.paths).enclose(), mimetype='application/zip')
 
         @self.app.route('/svg')
         def svg():

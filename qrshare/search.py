@@ -134,7 +134,6 @@ class Search:
                     'matches': matches,
                     'relevance': relevance,
                     'parent': route.parent.to_dict(),
-                    'zip': route.zip_path(),
                 })
 
                 return data

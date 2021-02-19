@@ -1,34 +1,31 @@
 <script>
-    export let href;
-    export let name;
-    export let path;
-    export let isFile;
-
     import { createEventDispatcher } from "svelte";
+
+    export let route;
 
     const dispatch = createEventDispatcher();
 
     function folder() {
-        dispatch("folder", { name, path, href });
+        dispatch("folder", route);
     }
 
     function file() {
-        dispatch("file", { name, path, href });
+        dispatch("file", route);
     }
 
     function zip() {
-        dispatch("zip", { name, path, href });
+        dispatch("zip", route);
     }
 </script>
 
-{#if isFile}
+{#if route.isFile}
     <button class="ct-button normalized line-clamp" on:click={file}>
-        {name}
+        {route.name}
     </button>
 {:else}
     <div>
         <button class="ct-button normalized line-clamp" on:click={folder}
-            >{name}</button
+            >{route.name}</button
         >
         <button on:click={zip}>ZIP</button>
     </div>
