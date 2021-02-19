@@ -95,6 +95,10 @@
         font-weight: bold;
     }
 
+    .subtitle {
+        width: 100%;
+    }
+
     .button-extension {
         margin: 0;
         width: 100%;
