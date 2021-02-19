@@ -24,7 +24,7 @@
         // query
         const query = $searchInfo.query ? $searchInfo.query : null;
         const exts = $searchInfo.extensions.split(" ").filter((v) => v);
-        const types = $searchInfo.types;
+        const types = options.filter((v, i) => $searchInfo.types[i]);
 
         /* this checks if there are any search values */
         if ((query == null || query.trim() === "") && exts.length === 0) {
