@@ -6,7 +6,7 @@
  * fetches url but prioritizing redirect
  * @param {string} url
  */
-async function fetchOrRedirect(url, method = "GET") {
+async function request(url, method = "GET") {
     let response = await fetch(url, { method, redirect: "follow" });
     if (response.redirected) {
         window.location.assign(response.url);
@@ -21,8 +21,8 @@ async function fetchOrRedirect(url, method = "GET") {
  * and converts to js object
  * @param {string} url
  */
-async function jsonOrRedirect(url, method = "GET") {
-    return fetchOrRedirect(url, method).then((r) => r.json());
+async function requestJson(url, method = "GET") {
+    return request(url, method).then((r) => r.json());
 }
 
 /**
@@ -50,8 +50,8 @@ async function toDataURL(url) {
  * @param {string} url
  * @param {string} method request method GET, POST, PUT
  */
-async function request_text(url, method = "GET") {
-    return fetchOrRedirect(url, method).then((r) => r.text());
+async function requestText(url, method = "GET") {
+    return request(url, method).then((r) => r.text());
 }
 
-export { fetchOrRedirect, jsonOrRedirect, toDataURL, request_text };
+export { request, requestJson, toDataURL, requestText };

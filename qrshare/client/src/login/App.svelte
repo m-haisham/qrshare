@@ -2,7 +2,7 @@
     import { AppBar, BottomNavigationBar } from "../components/navigation";
     import { openSource } from "../helper";
     import { DoorClosed, Key, Github } from "../module/icons";
-    import { jsonOrRedirect } from "../request";
+    import { requestJson } from "../request";
 
     let msg = "";
     let value;
@@ -12,7 +12,7 @@
             return;
         }
 
-        jsonOrRedirect(`/login?key=${value}`, "POST").then((data) => {
+        requestJson(`/login?key=${value}`, "POST").then((data) => {
             msg = data ? data.msg : "The key does not match, try again.";
         });
     }

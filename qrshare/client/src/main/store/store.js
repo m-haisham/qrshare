@@ -27,7 +27,7 @@ function createCachedStore(initial) {
 
     return {
         subscribe,
-        set,
+        _set: set,
 
         /**
          * cache with key and apply given data to current
@@ -35,10 +35,21 @@ function createCachedStore(initial) {
          * @param {number} key cache identifier
          * @param {any} value data to store
          */
-        cache: (key, value) =>
+        cached: (key, value) =>
             update((store) => ({
                 ...store,
                 [key]: value,
+                current: value,
+            })),
+
+        /**
+         * sets the data to current without caching to a key
+         *
+         * @param {any} value data to store
+         */
+        set: (value) =>
+            update((store) => ({
+                ...store,
                 current: value,
             })),
 

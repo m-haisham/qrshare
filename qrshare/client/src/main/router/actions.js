@@ -14,11 +14,11 @@ function extendPopStateListener() {
                in state and applies them */
             if (key !== undefined) {
                 if (title !== undefined) {
-                    titleStore.cache(key, title);
+                    titleStore.cached(key, title);
                 }
 
                 if (subtitle !== undefined) {
-                    subtitleStore.cache(key, subtitle);
+                    subtitleStore.cached(key, subtitle);
                 }
             }
 

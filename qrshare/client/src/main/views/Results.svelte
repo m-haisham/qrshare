@@ -99,12 +99,15 @@
             /* hack to give form an fixed height */
             height: calc(100vh - 16rem);
             position: sticky;
+            position: -webkit-sticky;
             top: 12rem;
         }
+
         .grid {
             grid-area: auto;
             padding-top: 0.9rem;
         }
+
         .content {
             grid-template-columns:
                 calc(100% - 240px - 0.5rem)

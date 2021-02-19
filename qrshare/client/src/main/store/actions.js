@@ -1,4 +1,4 @@
-import { jsonOrRedirect } from "../../request";
+import { requestJson } from "../../request";
 import {
     title,
     subtitle,
@@ -14,7 +14,7 @@ import {
  */
 export async function updateStore(path) {
     // get data
-    let data = await jsonOrRedirect(path);
+    let data = await requestJson(path);
 
     // overwrite on the current store
     let current = (({ routes, ...others }) => others)(data);
@@ -24,11 +24,11 @@ export async function updateStore(path) {
     routes.set(data.routes);
 
     // set titles
-    title.cache(0, current.name);
+    title.cached(0, current.name);
     if (current.parent) {
-        subtitle.cache(0, "~" + current.parent.href);
+        subtitle.cached(0, "~" + current.parent.href);
     } else {
-        subtitle.cache(0, null);
+        subtitle.cached(0, null);
     }
 
     return { current, routes };

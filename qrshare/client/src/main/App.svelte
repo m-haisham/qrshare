@@ -39,7 +39,7 @@
     const navs = [
         {
             /* its not checked for prior visit in home
-           since the routes options calls updateStore onMount which is a visit to home */
+           since the routes options calls updateStore onMount which is basically a visit to home */
             click: () => {
                 /* clicking on routes while being there serves as a reload */
                 updateStore($currentRoute.last);
@@ -56,9 +56,8 @@
             click: () => {
                 if ($activeRoute.key === 1) return;
 
-                title.cache(1, "Search");
-                subtitle.cache(
-                    1,
+                title.set("Search");
+                subtitle.set(
                     $currentRoute.href ? "~" + $currentRoute.href : null
                 );
 
@@ -76,8 +75,8 @@
             click: () => {
                 if ($activeRoute.key === 2) return;
 
-                title.cache(2, "QR");
-                subtitle.cache(2, "scan to share");
+                title.set("QR");
+                subtitle.set("scan to share");
 
                 navigateTo(buildNavigation({ id: 4, key: 2 }));
             },
@@ -87,8 +86,8 @@
             click: () => {
                 if ($activeRoute.key === 3) return;
 
-                title.cache(3, "More");
-                subtitle.cache(3, null);
+                title.set("More");
+                subtitle.set(null);
 
                 navigateTo(buildNavigation({ id: 5, key: 3 }));
             },

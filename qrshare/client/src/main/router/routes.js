@@ -1,6 +1,6 @@
 import { Home, Results, Qrcode, More } from "../views";
 import { meta, qrMarkup, updateStore, search } from "../store";
-import { jsonOrRedirect, request_text } from "../../request";
+import { requestJson, requestText } from "../../request";
 import { navigateTo } from "../../module/router";
 
 function updateRoutes(params, state) {
@@ -72,8 +72,8 @@ const options = {
             },
             push: false,
         });
-        qrMarkup.set(await request_text("/svg"));
-        meta.set(await jsonOrRedirect("/meta"));
+        qrMarkup.set(await requestText("/svg"));
+        meta.set(await requestJson("/meta"));
     },
 };
 

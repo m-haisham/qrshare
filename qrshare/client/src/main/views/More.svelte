@@ -1,6 +1,6 @@
 <script>
     import { Github } from "../../module/icons";
-    import { fetchOrRedirect } from "../../request";
+    import { request } from "../../request";
     import { ListGroup, ListTile } from "../../components/list";
     import { openSource } from "../../helper";
     import { meta } from "../store";
@@ -11,7 +11,7 @@
 
     /** logout the client from current session and redirect to auth screen */
     function logout() {
-        fetchOrRedirect("/logout", "POST");
+        request("/logout", "POST");
     }
 </script>
 
