@@ -3,9 +3,10 @@
 [![PyPI version](https://badge.fury.io/py/qrshare.svg)](https://badge.fury.io/py/qrshare)
 
 <p float="left" align="middle">
-  <img title="qrshare client home screen" src="./.github/images/Home-iPhoneX-Screenshot.png" width="32%" />
-  <img title="qrshare client search screen" src="./.github/images/Search-iPhoneX-Screenshot.png" width="32%" />
-  <img title="qrshare client qr screen" src="./.github/images/QR-iPhoneX-Screenshot.png" width="32%" />
+  <img title="login screen" src="https://raw.githubusercontent.com/mHaisham/qrshare/master/.github/images/login.png" width="24%" />
+  <img title="home screen" src="https://raw.githubusercontent.com/mHaisham/qrshare/master/.github/images/home.png" width="24%" />
+  <img title="search screen" src="https://raw.githubusercontent.com/mHaisham/qrshare/master/.github/images/search.png" width="24%" />
+  <img title="qrcode screen" src="https://raw.githubusercontent.com/mHaisham/qrshare/master/.github/images/qr.png" width="24%" />
 </p>
 
 Serve a file on local network and give the url in qrcode form on console
