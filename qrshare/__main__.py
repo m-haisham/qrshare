@@ -34,9 +34,10 @@ def serve(paths, password, port):
 
 @cli.command()
 @click.option('-p', '--password', type=str, help='set a global password')
+@click.option('--remove-password', is_flag=True, help='remove currently set global password')
 @click.option('--sendto', is_flag=True, help='reset windows \'Send To\' shortcut')
 @click.option('--open', 'open_config', is_flag=True, help='open config directory')
-def config(password, sendto, open_config):
+def config(password, remove_password, sendto, open_config):
     """
     change user configurations
     """
@@ -58,7 +59,8 @@ def config(password, sendto, open_config):
     if password:
         user.config.put('password', password)
         print(f'New global password set: {password}')
-    elif password == "":
+
+    elif remove_password:
         user.config.put('password', None)
         print('Removed global password')
 

@@ -73,6 +73,7 @@ Options:
 ```bash
 Options:
   -p, --password TEXT  set a global password
+  --remove-password    remove currently set global password
   --sendto             reset windows 'Send To' shortcut
   --open               open config directory
   --help               Show this message and exit.
