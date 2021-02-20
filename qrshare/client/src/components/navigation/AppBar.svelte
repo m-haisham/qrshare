@@ -13,11 +13,10 @@
     $: actions = navs[active]?.actions;
 </script>
 
-<header class:sticky class:adjust-for-subtitle={true}>
-    <div class="container">
+<header class:sticky>
+    <div class="container content">
         <div class="title-wrapper">
             <h4 class="title line-clamp">{title}</h4>
-            <div class="subtitle line-clamp">{subtitle ?? ""}</div>
         </div>
         <nav class="actions">
             {#if actions}
@@ -29,6 +28,15 @@
             </div>
         </nav>
     </div>
+    {#if subtitle}
+        <div class="subtitle">
+            <div class="container">
+                <pre>
+                    {subtitle}
+                </pre>
+            </div>
+        </div>
+    {/if}
 </header>
 
 <style>
@@ -39,6 +47,11 @@
 
         /* header and content divider */
         border-bottom: 1px solid var(--color-divider);
+        padding-bottom: none;
+    }
+
+    h4 {
+        padding: 0;
     }
 
     .sticky {
@@ -48,7 +61,7 @@
         left: 0;
     }
 
-    .container {
+    .content {
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -69,23 +82,35 @@
         font-weight: bold;
         padding: 1rem 0;
         margin-bottom: 0rem;
-    }
-
-    .adjust-for-subtitle {
-        padding-bottom: 1rem;
-    }
-
-    .adjust-for-subtitle .title {
-        padding-bottom: 0rem;
-    }
-
-    .adjust-for-subtitle .actions {
-        padding-top: 1rem;
+        word-break: none;
     }
 
     .subtitle {
-        color: var(--color-subtitle);
-        margin-bottom: 0.5rem;
+        background-color: var(--color-secondary-background);
+    }
+
+    pre {
+        margin: 0;
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem;
+
+        font-size: 1.4rem;
+
+        overflow-y: hidden;
+    }
+
+    pre::-webkit-scrollbar {
+        height: 1px;
+        display: absolute;
+    }
+
+    pre::-webkit-scrollbar-track {
+        background: var(--color-light);
+    }
+
+    /* Handle */
+    pre::-webkit-scrollbar-thumb {
+        background: var(--color-light-dark);
     }
 
     .actions {

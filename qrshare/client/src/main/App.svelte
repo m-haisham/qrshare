@@ -62,11 +62,6 @@
             click: () => {
                 if ($activeRoute.key === 1) return;
 
-                subtitle.set(
-                    1,
-                    $currentRoute.href ? "~" + $currentRoute.href : null
-                );
-
                 // if there were no prior visit to search
                 if ($activeRoute[1] === undefined) {
                     title.cached(1, "Search");

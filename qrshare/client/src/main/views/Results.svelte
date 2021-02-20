@@ -1,4 +1,5 @@
 <script>
+    import { onMount } from "svelte";
     import {
         title,
         subtitle,
@@ -23,6 +24,10 @@
         }
     }
 
+    onMount(() => {
+        subtitle.set(1, $currentRoute.href ? "~" + $currentRoute.href : "~/");
+    });
+
     function load(e) {
         const route = e.detail;
         navigateTo({ id: 1, url: route.href, state: route, name: route.name });
@@ -45,12 +50,12 @@
 <div class="container">
     <div class="content" class:collapsed={$searchCollapsed}>
         <!-- Searchbar -->
-        <div class="search-bar" class:depress={$subtitle.current}>
+        <div class="search-bar">
             <SearchBar />
         </div>
 
         <!-- Results -->
-        <li class="grid">
+        <ul class="grid">
             {#each $processedResults as route, i}
                 <SearchListItem
                     id={i}
@@ -60,7 +65,7 @@
                     on:zip={zip}
                 />
             {/each}
-        </li>
+        </ul>
     </div>
 </div>
 
@@ -93,6 +98,7 @@
         column-gap: 1rem;
 
         margin-top: 1rem;
+        margin-bottom: 1rem;
     }
     @media (min-width: 750px) {
         .content :global(form) {
@@ -101,11 +107,7 @@
             /* hack to give form an fixed height */
             position: sticky;
             position: -webkit-sticky;
-            top: 7.6rem;
-        }
-
-        .depress :global(form) {
-            top: 10rem;
+            top: 10.3rem;
         }
 
         .grid {

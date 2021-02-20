@@ -1,5 +1,5 @@
 import { Home, Results, Qrcode, More } from "../views";
-import { meta, qrMarkup, updateStore, search, title } from "../store";
+import { meta, qrMarkup, updateStore, search, title, subtitle } from "../store";
 import { requestJson, requestText } from "../../request";
 import { navigateTo } from "../../module/router";
 
@@ -66,6 +66,7 @@ const options = {
     init: async (route) => {
         /* setting default titles */
         title._set({ key: route.key });
+        subtitle._set({ key: route.key });
         title.update(0, "Loading...");
 
         navigateTo({

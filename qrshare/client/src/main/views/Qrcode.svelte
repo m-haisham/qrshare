@@ -6,7 +6,7 @@
 
     onMount(() => {
         title.set(2, "QR");
-        subtitle.set(2, "scan to share");
+        subtitle.set(2, "Scan to share");
     });
 </script>
 

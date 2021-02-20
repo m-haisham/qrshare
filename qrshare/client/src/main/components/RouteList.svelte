@@ -41,3 +41,9 @@
 {:else}
     <p>Empty</p>
 {/if}
+
+<style>
+    ul {
+        margin-bottom: 0;
+    }
+</style>
