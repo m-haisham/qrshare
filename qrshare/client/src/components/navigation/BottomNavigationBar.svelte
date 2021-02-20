@@ -18,7 +18,7 @@
         padding-top: var(--nav-height);
     }
 
-    @media (min-width: 550px) {
+    @media (min-width: 750px) {
         .bottom-nav-wrapper {
             display: none;
         }
@@ -39,5 +39,12 @@
         align-items: center;
         justify-content: space-around;
         padding: 0;
+    }
+
+    @media (min-width: 550px) {
+        .bottom-nav {
+            justify-content: center;
+            gap: 1rem;
+        }
     }
 </style>

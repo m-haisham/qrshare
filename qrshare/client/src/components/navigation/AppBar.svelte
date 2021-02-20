@@ -107,7 +107,7 @@
         margin: auto 0;
     }
 
-    @media (min-width: 550px) {
+    @media (min-width: 750px) {
         .static {
             display: flex;
         }
