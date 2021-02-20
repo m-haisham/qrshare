@@ -92,7 +92,9 @@ export const searchInfo = writable({
     query: "",
     extensions: "",
     types: [true, true],
+    limit: 100,
 });
+export const searchCollapsed = createBooleanStore(false);
 export const isSearching = writable(false);
 export const searchResults = createListStore();
 

@@ -7,6 +7,7 @@ export {
     qrMarkup,
     isSearching,
     searchInfo,
+    searchCollapsed,
     searchResults,
     searchQuery,
     isSorted,

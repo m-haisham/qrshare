@@ -1,5 +1,6 @@
 <script>
     import {
+        searchCollapsed,
         isSearching,
         currentRoute,
         searchResults,
@@ -18,9 +19,6 @@
         else if ($searchResults.length == 0) title = "No matches found";
         else title = `Found ${$searchResults.length} matches`;
     }
-
-    let collapsed = false;
-    const collapse = () => (collapsed = !collapsed);
 
     function load(e) {
         const route = e.detail;
@@ -42,9 +40,14 @@
 
 <!-- main body -->
 <div class="container">
-    <Collapsible {title} icon={Funnel} hide={collapsed} on:click={collapse} />
+    <Collapsible
+        {title}
+        icon={Funnel}
+        hide={$searchCollapsed}
+        on:click={searchCollapsed.flip}
+    />
 
-    <div class="content" class:collapsed>
+    <div class="content" class:collapsed={$searchCollapsed}>
         <!-- Searchbar -->
         <SearchBar />
 
@@ -97,7 +100,7 @@
             border-bottom: none;
 
             /* hack to give form an fixed height */
-            height: calc(100vh - 16rem);
+            /* height: calc(100vh - 16rem); */
             position: sticky;
             position: -webkit-sticky;
             top: 12rem;
