@@ -1,12 +1,18 @@
 <script>
     import { onMount } from "svelte";
     import BaseApp from "../components/BaseApp.svelte";
-    import { List, Search, App, ThreeDots } from "../module/icons";
+    import { List, Search, App, ThreeDots, Funnel } from "../module/icons";
     import { Router, init, navigateTo, activeRoute } from "../module/router";
 
     import { routes, options, extendPopStateListener } from "./router";
 
-    import { title, subtitle, currentRoute, updateStore } from "./store";
+    import {
+        title,
+        subtitle,
+        currentRoute,
+        searchCollapsed,
+        updateStore,
+    } from "./store";
 
     /* router is initialized manually to control function call flow
        this ensures that extend is called after router initialization */
@@ -56,28 +62,32 @@
             click: () => {
                 if ($activeRoute.key === 1) return;
 
-                title.set("Search");
                 subtitle.set(
+                    1,
                     $currentRoute.href ? "~" + $currentRoute.href : null
                 );
 
                 // if there were no prior visit to search
                 if ($activeRoute[1] === undefined) {
+                    title.cached(1, "Search");
                     navigateTo(buildNavigation({ id: 2, key: 1 }));
                 } else {
                     // apply from prior visit
+                    title.apply(1);
                     navigateTo(buildNavigationDefined(1));
                 }
             },
             component: Search,
+            actions: [
+                {
+                    click: searchCollapsed.flip,
+                    component: Funnel,
+                },
+            ],
         },
         {
             click: () => {
                 if ($activeRoute.key === 2) return;
-
-                title.set("QR");
-                subtitle.set("scan to share");
-
                 navigateTo(buildNavigation({ id: 4, key: 2 }));
             },
             component: App,
@@ -85,10 +95,6 @@
         {
             click: () => {
                 if ($activeRoute.key === 3) return;
-
-                title.set("More");
-                subtitle.set(null);
-
                 navigateTo(buildNavigation({ id: 5, key: 3 }));
             },
             component: ThreeDots,
@@ -101,6 +107,7 @@
     subtitle={$subtitle.current}
     {navs}
     active={$activeRoute.key}
+    actionStates={[!$searchCollapsed]}
     sticky={true}
 >
     <Router {routes} {options} init={false} />

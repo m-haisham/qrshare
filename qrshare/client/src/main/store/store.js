@@ -40,6 +40,19 @@ function createCachedStore(initial) {
                 ...store,
                 [key]: value,
                 current: value,
+                key: key,
+            })),
+
+        /**
+         * applies data to cache without effecting current
+         *
+         * @param {number} key cache identifer
+         * @param {any} value data to store
+         */
+        cache: (key, value) =>
+            update((store) => ({
+                ...store,
+                [key]: value,
             })),
 
         /**
@@ -47,11 +60,33 @@ function createCachedStore(initial) {
          *
          * @param {any} value data to store
          */
-        set: (value) =>
+        set: (key, value) =>
             update((store) => ({
                 ...store,
                 current: value,
+                key: key,
             })),
+
+        /**
+         * data is stored to the identifier
+         * and set to current if current key is same is given key
+         *
+         * @param {number} key cache identifer
+         * @param {any} value data to store
+         */
+        update: (key, value) =>
+            update((store) => {
+                const updated = {
+                    ...store,
+                    [key]: value,
+                };
+
+                if (key === store.key) {
+                    updated.current = value;
+                }
+
+                return updated;
+            }),
 
         /**
          * apply cached data belonging to `key` to current
@@ -60,6 +95,7 @@ function createCachedStore(initial) {
             update((store) => ({
                 ...store,
                 current: store[key],
+                key: key,
             })),
     };
 }

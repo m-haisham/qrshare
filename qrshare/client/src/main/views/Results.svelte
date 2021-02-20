@@ -1,5 +1,7 @@
 <script>
     import {
+        title,
+        subtitle,
         searchCollapsed,
         isSearching,
         currentRoute,
@@ -7,17 +9,18 @@
         processedResults,
     } from "../store";
     import { SearchListItem } from "../components";
-    import { Collapsible } from "../../components";
-    import { Funnel } from "../../module/icons";
-    import { navigateTo } from "../../module/router";
     import { createLink } from "../../helper";
     import SearchBar from "../components/Searchbar.svelte";
 
-    let title = "No matches found";
     $: {
-        if ($isSearching) title = `Searching... (${$searchResults.length})`;
-        else if ($searchResults.length == 0) title = "No matches found";
-        else title = `Found ${$searchResults.length} matches`;
+        /* set title based on search state */
+        if ($isSearching) {
+            title.update(1, `Searching... (${$searchResults.length})`);
+        } else if ($searchResults.length == 0) {
+            title.update(1, "No matches found");
+        } else {
+            title.update(1, `Found ${$searchResults.length} matches`);
+        }
     }
 
     function load(e) {
@@ -40,16 +43,11 @@
 
 <!-- main body -->
 <div class="container">
-    <Collapsible
-        {title}
-        icon={Funnel}
-        hide={$searchCollapsed}
-        on:click={searchCollapsed.flip}
-    />
-
     <div class="content" class:collapsed={$searchCollapsed}>
         <!-- Searchbar -->
-        <SearchBar />
+        <div class="search-bar" class:depress={$subtitle.current}>
+            <SearchBar />
+        </div>
 
         <!-- Results -->
         <li class="grid">
@@ -71,6 +69,7 @@
     .container {
         margin-top: 1rem;
         margin-bottom: 1rem;
+        height: 100%;
     }
     .content {
         display: grid;
@@ -82,7 +81,7 @@
         column-gap: 1rem;
     }
 
-    .content :global(form) {
+    .search-bar {
         grid-area: search;
     }
 
@@ -100,10 +99,13 @@
             border-bottom: none;
 
             /* hack to give form an fixed height */
-            /* height: calc(100vh - 16rem); */
             position: sticky;
             position: -webkit-sticky;
-            top: 12rem;
+            top: 7.6rem;
+        }
+
+        .depress :global(form) {
+            top: 10rem;
         }
 
         .grid {
@@ -130,7 +132,7 @@
     }
 
     /* collapsing */
-    .collapsed :global(form) {
+    .collapsed .search-bar {
         display: none;
     }
 

@@ -1,6 +1,13 @@
 <script>
+    import { onMount } from "svelte";
+
     import { QR } from "../components";
-    import { meta } from "../store";
+    import { title, subtitle, meta } from "../store";
+
+    onMount(() => {
+        title.set(2, "QR");
+        subtitle.set(2, "scan to share");
+    });
 </script>
 
 <svelte:head>

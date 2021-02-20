@@ -1,9 +1,15 @@
 <script>
+    import { onMount } from "svelte";
     import { Github } from "../../module/icons";
     import { request } from "../../request";
     import { ListGroup, ListTile } from "../../components/list";
     import { openSource } from "../../helper";
-    import { meta } from "../store";
+    import { title, subtitle, meta } from "../store";
+
+    onMount(() => {
+        title.set(3, "More");
+        subtitle.set(3, null);
+    });
 
     const goTo = (href) => window.open(href);
     const issue = () =>

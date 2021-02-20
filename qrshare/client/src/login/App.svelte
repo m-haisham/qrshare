@@ -36,10 +36,11 @@
 
     /* active navigation value does not change */
     const active = 0;
+    const navStates = [true, false];
 </script>
 
 <main>
-    <AppBar title="Locked" {navs} {active} sticky={true} />
+    <AppBar title="Locked" {navs} {active} {navStates} sticky={true} />
     <div class="content">
         <div class="container">
             <DoorClosed />
@@ -60,7 +61,7 @@
             </form>
         </div>
     </div>
-    <BottomNavigationBar {navs} {active} />
+    <BottomNavigationBar {navs} {navStates} />
 </main>
 
 <style>

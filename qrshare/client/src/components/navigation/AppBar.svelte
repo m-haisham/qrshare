@@ -4,20 +4,29 @@
     export let title;
     export let subtitle = null;
     export let navs = [];
+    export let navStates = [];
     export let active = null;
+    export let actionStates = [];
     export let sticky = false;
+
+    /* extract actions of the currently active view */
+    $: actions = navs[active]?.actions;
 </script>
 
 <header class:sticky class:adjust-for-subtitle={true}>
     <div class="container">
         <div class="title-wrapper">
             <h4 class="title line-clamp">{title}</h4>
-            {#if subtitle}
-                <div class="subtitle line-clamp">{subtitle}</div>
-            {/if}
+            <div class="subtitle line-clamp">{subtitle ?? ""}</div>
         </div>
         <nav class="actions">
-            <NavigationElements {navs} {active} />
+            {#if actions}
+                <NavigationElements navs={actions} active={actionStates} />
+                <div class="divider" />
+            {/if}
+            <div class="static">
+                <NavigationElements {navs} active={navStates} />
+            </div>
         </nav>
     </div>
 </header>
@@ -43,6 +52,12 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
+
+        height: 100%;
+
+        /* this is a hack applied to make sure that height
+           remains same with or without actions */
+        min-height: calc(59px - 1rem);
     }
 
     /* this is applied to all buttons under appbar */
@@ -78,14 +93,27 @@
         gap: 1rem;
 
         margin-left: auto;
+    }
 
+    .static,
+    .divider {
         /* hide in mobile view */
         display: none;
     }
+    .divider {
+        height: 3rem;
+        border-left: 1px solid var(--color-divider);
+
+        margin: auto 0;
+    }
 
     @media (min-width: 550px) {
-        .actions {
+        .static {
             display: flex;
+        }
+
+        .divider {
+            display: block;
         }
     }
 </style>

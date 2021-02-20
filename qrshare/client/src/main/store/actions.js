@@ -24,11 +24,11 @@ export async function updateStore(path) {
     routes.set(data.routes);
 
     // set titles
-    title.cached(0, current.name);
+    title.update(0, current.name);
     if (current.parent) {
-        subtitle.cached(0, "~" + current.parent.href);
+        subtitle.update(0, "~" + current.parent.href);
     } else {
-        subtitle.cached(0, null);
+        subtitle.update(0, null);
     }
 
     return { current, routes };

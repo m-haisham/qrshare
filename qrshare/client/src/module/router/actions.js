@@ -10,7 +10,7 @@ export async function init({ routes, options }) {
     }
 
     // initialize options
-    options.init();
+    options.init(definedRoutes[options.initial.id]);
 
     registerPopStateListener();
     navigateTo(options.initial);

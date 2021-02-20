@@ -87,6 +87,7 @@
         },
     ];
     const active = 0;
+    const navStates = [true, false];
 </script>
 
 <svelte:head>
@@ -94,7 +95,7 @@
 </svelte:head>
 
 <main>
-    <AppBar title={code} subtitle={name} {navs} {active} />
+    <AppBar title={code} subtitle={name} {navs} {active} {navStates} />
     <div class="container">
         <p>{message}</p>
     </div>
@@ -112,7 +113,7 @@
             on:click={cancelRedirect}>STOP</button
         >
     </div>
-    <BottomNavigationBar {navs} {active} />
+    <BottomNavigationBar {navs} {navStates} />
 </main>
 
 <style>

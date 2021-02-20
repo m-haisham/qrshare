@@ -2,12 +2,13 @@
     import NavigationElements from "./NavigationElements.svelte";
 
     export let navs;
-    export let active = null;
+    // export let active = null;
+    export let navStates = null;
 </script>
 
 <div class="bottom-nav-wrapper">
     <nav class="bottom-nav">
-        <NavigationElements {navs} {active} />
+        <NavigationElements {navs} active={navStates} />
     </nav>
 </div>
 
