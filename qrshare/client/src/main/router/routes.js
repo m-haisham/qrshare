@@ -3,14 +3,12 @@ import { meta, qrMarkup, updateStore, search, title, subtitle } from "../store";
 import { requestJson, requestText } from "../../request";
 import { navigateTo } from "../../module/router";
 
-function updateRoutes(params, state) {
+async function updateRoutes(params, state) {
     updateStore(state.path);
 }
 
-function updateSearch(params, state) {
-    // search({ path: "/", exts: ["py", "pyc"] });
+async function updateSearch(params, state) {
     search(params);
-    // console.log({ params });
 }
 
 const routes = [
@@ -20,8 +18,6 @@ const routes = [
         name: "/",
         component: Home,
         on: updateRoutes,
-        // component: Results,
-        // on: updateSearch,
     },
     {
         id: 1,
@@ -69,6 +65,8 @@ const options = {
         subtitle._set({ key: route.key });
         title.update(0, "Loading...");
 
+        /* this does not actually change view 0 (home),
+           it essentially serves to load initial route data */
         navigateTo({
             id: 0,
             state: {
@@ -78,6 +76,7 @@ const options = {
             push: false,
         });
 
+        /* these data need to be loaded only once since they are static */
         qrMarkup.set(await requestText("/svg"));
         meta.set(await requestJson("/meta"));
     },

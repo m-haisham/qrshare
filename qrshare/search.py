@@ -11,6 +11,8 @@ except ImportError:
 from .auth import Auth
 from .models import Route
 
+Predicate = Callable[[Route], Optional[dict]]
+
 
 class Search:
     def __init__(self, app, auth: Auth):
@@ -47,13 +49,13 @@ class Search:
             try:
                 search_routes.append(self.app.route_map[path])
             except KeyError:
-                return abort(403)
+                return abort(404)
 
         # remove all file routes
         return [route for route in search_routes if not route.path.is_file()]
 
-    def create_predicate(self, query: str = None, exts: Union[str, Iterable[str]] = None, types: Union[str, Iterable[str]] = None) \
-            -> Callable[[Route], dict]:
+    def create_predicate(self, query: str = None, exts: Union[str, Iterable[str]] = None,
+                         types: Union[str, Iterable[str]] = None) -> Predicate:
 
         if not any((bool(query), bool(exts), bool(types))):
             raise ValueError('Require at least one argument (query, exts, types)')
@@ -71,7 +73,7 @@ class Search:
         rx_exts = None
         if exts:
             if type(exts) == str:
-                exts = (exts, )
+                exts = (exts,)
 
             # default is type iterable, any other type should be converted to iterable before this point
             # ensure extension has a dot at the start and build individual expressions
@@ -85,7 +87,7 @@ class Search:
         # :throws: value error if unexpected type received
         if types:
             if type(types) == str:
-                types = (types, )
+                types = (types,)
 
             # default is type iterable, any other type should be converted to iterable before this point
             for t in types:
@@ -140,7 +142,7 @@ class Search:
 
         return predicate
 
-    def generator(self, routes: List[Route], predicate=Callable[[Route], Optional[dict]], limit=200):
+    def generator(self, routes: List[Route], predicate: Predicate, limit=200):
         count = 1
         while True:
             try:

@@ -46,7 +46,6 @@
     <title>Search in ~{$currentRoute.href || "/"} - qrshare</title>
 </svelte:head>
 
-<!-- main body -->
 <div class="container">
     <div class="content" class:collapsed={$searchCollapsed}>
         <!-- Searchbar -->
@@ -69,7 +68,6 @@
     </div>
 </div>
 
-<!-- main body -->
 <style>
     .container {
         margin-top: 1rem;

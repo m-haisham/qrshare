@@ -11,9 +11,9 @@
         subtitle.set(3, null);
     });
 
-    const goTo = (href) => window.open(href);
-    const issue = () =>
-        goTo("https://github.com/mHaisham/qrshare/issues/new/choose");
+    function issue() {
+        window.open("https://github.com/mHaisham/qrshare/issues/new/choose");
+    }
 
     /** logout the client from current session and redirect to auth screen */
     function logout() {

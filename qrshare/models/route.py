@@ -1,10 +1,8 @@
-import re
+from functools import lru_cache
 from pathlib import Path
 from typing import List, Union
-from urllib.parse import quote
-from functools import lru_cache
 
-from flask import send_file, render_template, Markup
+from flask import send_file
 
 from .zip import ZipContent
 
@@ -78,10 +76,14 @@ class Route:
         return f'/zip{self.general_path(clean=True).rstrip("/")}.zip'
 
     def to_dict(self):
-        return {
+        route_d = {
             'name': self.name,
             'path': self.general_path(False),
             'href': self.general_path(True),
-            'zip': self.zip_path(),
             'isFile': self.is_file,
         }
+
+        if not self.is_file:
+            route_d.update({'zip': self.zip_path()})
+
+        return route_d

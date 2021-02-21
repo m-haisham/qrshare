@@ -7,12 +7,12 @@
 
     const dispatch = createEventDispatcher();
 
-    function onClick() {
+    function click() {
         dispatch("click", !checked);
     }
 </script>
 
-<button on:click|preventDefault={onClick} class="normalized">
+<button on:click|preventDefault class="normalized">
     <div class="content line-clamp"><slot /></div>
     <div class="check">
         {#if checked}

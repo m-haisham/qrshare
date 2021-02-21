@@ -2,7 +2,9 @@ import { title as titleStore, subtitle as subtitleStore } from "../store";
 
 /**
  * extends functionality of onpopstate by adding mutations to store
- * it checks for presence of titles and applies them to appbar
+ *
+ * mutations include
+ * - checking for presence of title and subtitle and applying them to appbar
  */
 function extendPopStateListener() {
     const onpopstate = window.onpopstate;

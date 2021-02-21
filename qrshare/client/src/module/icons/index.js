@@ -1,3 +1,12 @@
+/*
+All the icons under this directory are from https://www.npmjs.com/package/svelte-bootstrap-icons
+
+Icons are added to the directory when they are required
+
+The reason its done this ways is because i noticed that compiling significantly slowed down
+when using the full installation of the package
+*/
+
 export { default as App } from "./App.svelte";
 export { default as List } from "./List.svelte";
 export { default as Search } from "./Search.svelte";

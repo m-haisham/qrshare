@@ -26,11 +26,12 @@
      * Redirects the user to root
      */
     function redirectNow() {
-        // so that the new message isnt overwritten
-        value = 0;
+        /* this is set to stop the countdown */
         redirectCancelled = true;
 
+        value = 0;
         redirectMessage = "Redirecting now";
+
         window.location.assign(redirect);
     }
 
@@ -49,11 +50,11 @@
      * redirect countdown
      */
     async function countdown() {
-        // set initial values
+        /* set initial values */
         value = 1;
         redirectMessage = `Redirecting in ${timeout} seconds`;
 
-        // actual countdown
+        /* this begins the actual countdown */
         for (
             let timeLeft = maximumTime;
             timeLeft >= 0;
@@ -68,7 +69,7 @@
             redirectMessage = `Redirecting in ${Math.ceil(timeLeft)} seconds`;
         }
 
-        // initiate redirect
+        /* countdown has ended, initiate redirect */
         redirectNow();
     }
 

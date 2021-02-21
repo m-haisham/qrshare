@@ -16,6 +16,17 @@ export async function init({ routes, options }) {
     navigateTo(options.initial);
 }
 
+/**
+ * @param {number} id id of the route to travel to
+ * @param {string} url url of the route, params are extracted from this according to id
+ *
+ * @param {object} state a custom object that would also be passed down to `route.on`,
+ * this can be used to provided values to the on function that cannot be passed through params
+ *
+ * @param {string} name name is just an optional argument that is passed onto pushState
+ * @param {boolean} execute determines whether to execute `route.on`
+ * @param {boolean} push determines whether url is pushed onto url history
+ */
 export async function navigateTo({
     id,
     url,
@@ -26,7 +37,6 @@ export async function navigateTo({
 }) {
     const route = definedRoutes[id];
 
-    // extract information from url
     let params = {};
     if (url) {
         params = parseNamedParams(url, route.name);
@@ -37,21 +47,22 @@ export async function navigateTo({
     /* this allows execute to be accessed during pop state */
     if (state.execute === undefined) state.execute = execute;
 
-    // prevent further modification to params and state
+    /* no more mutations */
     Object.freeze(params);
     Object.freeze(state);
 
-    // change active route
+    /* change active route */
     activeRoute.set({ ...route, url, params, state });
     if (state.execute) route.on && route.on(params, state);
 
-    // change browser url
-    if (push)
+    /* change browser url */
+    if (push) {
         window.history.pushState(
             { id: route.id, state },
             name,
             url || route.name
         );
+    }
 }
 
 function registerPopStateListener() {

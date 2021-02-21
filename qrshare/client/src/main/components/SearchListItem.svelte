@@ -20,6 +20,9 @@
 
         title = "";
         let start = 0;
+
+        /* this constructs a rich text html by wrapping some text with span
+           text inside span is styled different from others to give the effect */
         for (let match of matches) {
             title +=
                 name.slice(start, match[0]) +
@@ -27,7 +30,7 @@
             start = match[1];
         }
 
-        // piece after all the matches
+        /* add the text thats left after the matches */
         title += name.slice(start);
     }
 </script>

@@ -50,15 +50,14 @@
         const types = options.filter((v, i) => $searchInfo.types[i]);
         const limit = $searchInfo.limit;
 
-        /* query and extensions validation
-           there must be atleast one input */
+        /* query and extensions validation, atleast one of the fields must be filled */
         if ((query == null || query.trim() === "") && exts.length === 0) {
             errors = { ...errors, query: true, exts: true };
         } else {
             errors = { ...errors, query: false, exts: false };
         }
 
-        /* limit */
+        /* limit must be greator than 0 */
         if (!limit) {
             errors = { ...errors, limit: "[Required]" };
         } else if (limit <= 0) {
@@ -67,6 +66,7 @@
             errors = { ...errors, limit: "" };
         }
 
+        /* gate keeping, no errors shall here forth */
         if (hasErrors()) {
             return;
         }
@@ -114,6 +114,7 @@
 
 <form on:submit|preventDefault={submit}>
     <fieldset disabled={$isSearching}>
+        <!-- query -->
         <label for="search-query">Query</label>
         <input
             type="text"
@@ -121,6 +122,8 @@
             bind:value={$searchInfo.query}
             class:error={errors.query}
         />
+
+        <!-- extensions -->
         <label for="search-extensions">
             Extensions <span>[separated by space]</span>
         </label>
@@ -129,6 +132,8 @@
             bind:value={$searchInfo.extensions}
             class:error={errors.exts}
         />
+
+        <!-- route types -->
         <label for="filter-types">Types <span>[Multiple]</span></label>
         <SwitchGroup
             id="filter-types"
@@ -136,6 +141,8 @@
             selected={$searchInfo.types}
             on:toggle={toggle}
         />
+
+        <!-- limit -->
         <label for="result-limit">
             Limit <span class="error">{errors.limit}</span>
         </label>
@@ -145,7 +152,11 @@
             bind:value={$searchInfo.limit}
             class:error={$searchInfo.limit <= 0}
         />
+
+        <!-- order by -->
         <OrderSelector />
+
+        <!-- action buttons [search] -->
         <ButtonGroup {buttons} />
     </fieldset>
 </form>

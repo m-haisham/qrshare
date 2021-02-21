@@ -1,10 +1,10 @@
-/* 
-    Functions used to request and process data from access points
-*/
-
 /**
- * fetches url but prioritizing redirect
+ * makes a request to the provided url and returns the response,
+ *
+ * redirects are followed
+ *
  * @param {string} url
+ * @param {string} method request method GET, POST, PUT
  */
 async function request(url, method = "GET") {
     let response = await fetch(url, { method, redirect: "follow" });
@@ -17,28 +17,14 @@ async function request(url, method = "GET") {
 }
 
 /**
- * fetches url but prioritizing redirect
- * and converts to js object
+ * makes a request to the provided url and converts (or tries to)
+ * the response to text
+ *
  * @param {string} url
+ * @param {string} method request method GET, POST, PUT
  */
 async function requestJson(url, method = "GET") {
     return request(url, method).then((r) => r.json());
-}
-
-/**
- * Downloads the url and converts to data url
- * used for images
- * @param {string} url
- */
-async function toDataURL(url) {
-    let response = await fetch(url);
-    let blob = await response.blob();
-    return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onloadend = () => resolve(reader.result);
-        reader.onerror = reject;
-        reader.readAsDataURL(blob);
-    });
 }
 
 /**
@@ -54,4 +40,4 @@ async function requestText(url, method = "GET") {
     return request(url, method).then((r) => r.text());
 }
 
-export { request, requestJson, toDataURL, requestText };
+export { request, requestJson, requestText };

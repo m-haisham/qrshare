@@ -54,7 +54,7 @@ export function parseNamedParams(url, namedUrl) {
             /* start group, start by matching everything after (greedy) */
             rx_builder += "(.+";
 
-            /* switch to (lazy) matching, stop at next slash */
+            /* switch to lazy matching, stop at next slash */
             if (!key.endsWith(":") && index < namedKeys.length) {
                 rx_builder += "?";
             }
@@ -70,7 +70,7 @@ export function parseNamedParams(url, namedUrl) {
         }
     }
 
-    // ^[]$ added so that the rx would be a full match
+    /* ^[]$ added so that the rx would be a fully matching regex */
     const result = path.match(RegExp(`^${rx_builder}$`));
 
     // parse the result into named keys

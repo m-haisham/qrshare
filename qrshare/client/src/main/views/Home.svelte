@@ -1,6 +1,5 @@
 <script>
     import { IndefiniteLoader } from "../../components/progressbars";
-
     import { RouteList } from "../components";
     import { title, currentRoute } from "../store";
 </script>

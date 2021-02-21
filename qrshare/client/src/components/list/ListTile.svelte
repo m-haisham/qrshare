@@ -1,8 +1,9 @@
 <script>
     export let disabled = true;
+    export let id = null;
 </script>
 
-<button class="normalized" on:click {disabled}>
+<button {id} class="normalized" on:click {disabled}>
     <slot />
     <slot name="trailing" />
 </button>
