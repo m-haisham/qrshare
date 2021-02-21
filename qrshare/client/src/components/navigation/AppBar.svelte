@@ -37,16 +37,14 @@
             </div>
         </nav>
     </div>
-    {#if subtitle}
-        <div class="subtitle">
-            <div class="container">
-                <pre
-                    bind:this={pre}>
-                    {subtitle}
-                </pre>
-            </div>
+    <div class="subtitle">
+        <div class="container">
+            <pre
+                bind:this={pre}>
+                    {subtitle ?? ' '}
+            </pre>
         </div>
-    {/if}
+    </div>
 </header>
 
 <style>
