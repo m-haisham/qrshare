@@ -1,5 +1,5 @@
 <script>
-    import { AppBar, BottomNavigationBar } from "../components/navigation";
+    import { BaseApp } from "../components";
     import { HorizontalProgress } from "../components/progressbars";
     import { ExclamationSquareFill, Github } from "../module/icons";
     import { delay, openSource } from "../helper";
@@ -87,42 +87,35 @@
         },
     ];
     const active = 0;
-    const navStates = [true, false];
 </script>
 
 <svelte:head>
-    <title>Error {code}: {name}</title>
+    <title>{code}: {name}</title>
 </svelte:head>
 
-<main>
-    <AppBar title={code} subtitle={name} {navs} {active} {navStates} />
+<BaseApp title={code} subtitle={name} {navs} {active}>
     <div class="container">
         <p>{message}</p>
     </div>
-    <div class="container redirect">
-        <HorizontalProgress
-            trails={!redirectCancelled}
-            bind:value
-            on:click={redirectNow}
-        >
-            <div class="line-clamp">{redirectMessage}</div>
-        </HorizontalProgress>
-        <button
-            class="stop"
-            class:hide={redirectCancelled}
-            on:click={cancelRedirect}>STOP</button
-        >
+    <div class="redirect">
+        <div class="container">
+            <HorizontalProgress
+                trails={!redirectCancelled}
+                bind:value
+                on:click={redirectNow}
+            >
+                <div class="line-clamp">{redirectMessage}</div>
+            </HorizontalProgress>
+            <button
+                class="stop"
+                class:hide={redirectCancelled}
+                on:click={cancelRedirect}>STOP</button
+            >
+        </div>
     </div>
-    <BottomNavigationBar {navs} {navStates} />
-</main>
+</BaseApp>
 
 <style>
-    main {
-        height: 100vh;
-        display: flex;
-        flex-direction: column;
-    }
-
     p {
         font-size: 1.9rem;
         margin-top: 1rem;
@@ -138,12 +131,22 @@
             text-align: start;
         }
     }
-    /* REDIRECT STYLES */
+
     .redirect {
+        position: fixed;
+        width: 100%;
+        bottom: 5rem;
+    }
+
+    .redirect .container {
         display: flex;
         flex-direction: row;
+    }
 
-        margin-top: auto;
+    @media (min-width: 550px) {
+        .redirect {
+            bottom: 0;
+        }
     }
 
     .stop {
