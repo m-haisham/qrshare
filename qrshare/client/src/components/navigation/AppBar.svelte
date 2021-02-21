@@ -1,16 +1,25 @@
 <script>
+    import { afterUpdate } from "svelte";
     import NavigationElements from "./NavigationElements.svelte";
 
     export let title;
     export let subtitle = null;
-    export let navs = [];
-    export let navStates = [];
+    export let navs;
+    export let navStates;
     export let active = null;
     export let actionStates = [];
     export let sticky = false;
 
     /* extract actions of the currently active view */
     $: actions = navs[active]?.actions;
+
+    let pre;
+
+    afterUpdate(() => {
+        /* auto scroll subtitle to the furthest, subtitle is most commonly used to display path
+           where the last added paths are the most important */
+        if (pre) pre.scrollLeft = pre.scrollWidth;
+    });
 </script>
 
 <header class:sticky>
@@ -31,7 +40,8 @@
     {#if subtitle}
         <div class="subtitle">
             <div class="container">
-                <pre>
+                <pre
+                    bind:this={pre}>
                     {subtitle}
                 </pre>
             </div>
