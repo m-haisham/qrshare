@@ -36,7 +36,7 @@ function serve() {
 
 function create({ name, flask, singleBundle }) {
     return {
-        input: `src/${name}/${name}.js`,
+        input: `src/pages/${name}/${name}.js`,
         output: {
             sourcemap: true,
             format: "iife",

@@ -1,9 +1,9 @@
 <script>
     import { onMount } from "svelte";
-    import { Github } from "../../module/icons";
-    import { request } from "../../request";
-    import { ListGroup, ListTile } from "../../components/list";
-    import { openSource } from "../../helper";
+    import { Github } from "../../../module/icons";
+    import { request } from "../../../request";
+    import { ListGroup, ListTile } from "../../../components/list";
+    import { openSource } from "../../../helper";
     import { title, subtitle, meta } from "../store";
 
     onMount(() => {

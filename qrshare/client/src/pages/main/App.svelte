@@ -1,9 +1,8 @@
 <script>
     import { onMount } from "svelte";
-    import BaseApp from "../components/BaseApp.svelte";
-    import { List, Search, App, ThreeDots, Funnel } from "../module/icons";
-    import { Router, init, navigateTo, activeRoute } from "../module/router";
-
+    import BaseApp from "../../components/BaseApp.svelte";
+    import { List, Search, App, ThreeDots, Funnel } from "../../module/icons";
+    import { Router, init, navigateTo, activeRoute } from "../../module/router";
     import { routes, options, extendPopStateListener } from "./router";
 
     import {

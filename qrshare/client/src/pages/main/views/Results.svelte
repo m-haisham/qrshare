@@ -9,9 +9,8 @@
         searchResults,
         processedResults,
     } from "../store";
-    import { SearchListItem } from "../components";
-    import { createLink } from "../../helper";
-    import SearchBar from "../components/Searchbar.svelte";
+    import { createLink } from "../../../helper";
+    import { Searchbar, SearchListItem } from "../components";
 
     $: {
         /* set title based on search state */
@@ -50,7 +49,7 @@
     <div class="content" class:collapsed={$searchCollapsed}>
         <!-- Searchbar -->
         <div class="search-bar">
-            <SearchBar />
+            <Searchbar />
         </div>
 
         <!-- Results -->

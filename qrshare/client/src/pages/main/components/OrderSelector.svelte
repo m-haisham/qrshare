@@ -1,5 +1,5 @@
 <script>
-    import { ComboGroup } from "../../components/list";
+    import { ComboGroup } from "../../../components/list";
     import { isSorted } from "../store";
 
     const options = ["Relevance", "None"];

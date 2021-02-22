@@ -1,4 +1,4 @@
-import { requestJson } from "../../request";
+import { requestJson } from "../../../request";
 import {
     title,
     subtitle,

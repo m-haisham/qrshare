@@ -1,8 +1,8 @@
 <script>
-    import { BaseApp } from "../components";
-    import { HorizontalProgress } from "../components/progressbars";
-    import { ExclamationSquareFill, Github } from "../module/icons";
-    import { delay, openSource } from "../helper";
+    import { BaseApp } from "../../components";
+    import { HorizontalProgress } from "../../components/progressbars";
+    import { ExclamationSquareFill, Github } from "../../module/icons";
+    import { delay, openSource } from "../../helper";
     import { onMount } from "svelte";
 
     /* global values are retrieved

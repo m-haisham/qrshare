@@ -1,7 +1,8 @@
 <script>
     // components
-    import { ButtonGroup, SwitchGroup } from "../../components/list";
-    import OrderSelector from "./OrderSelector.svelte";
+    import { ButtonGroup, SwitchGroup } from "../../../components/list";
+    import { createSearchUrl } from "../../../helper";
+    import { navigateTo } from "../../../module/router";
 
     // state values
     import {
@@ -11,9 +12,7 @@
         searchInfo,
     } from "../store";
 
-    // functions
-    import { createSearchUrl } from "../../helper";
-    import { navigateTo } from "../../module/router";
+    import OrderSelector from "./OrderSelector.svelte";
 
     let errors = { query: false, exts: false, limit: "" };
     const hasErrors = () => Object.values(errors).some((v) => v);

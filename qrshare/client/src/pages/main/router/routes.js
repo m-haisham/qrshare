@@ -1,7 +1,7 @@
+import { navigateTo } from "../../../module/router";
+import { requestJson, requestText } from "../../../request";
 import { Home, Results, Qrcode, More } from "../views";
 import { meta, qrMarkup, updateStore, search, title, subtitle } from "../store";
-import { requestJson, requestText } from "../../request";
-import { navigateTo } from "../../module/router";
 
 async function updateRoutes(params, state) {
     updateStore(state.path);
@@ -77,7 +77,7 @@ const options = {
         });
 
         /* these data need to be loaded only once since they are static */
-        qrMarkup.set(await requestText("/svg"));
+        qrMarkup.set(await requestText("/markup/qr"));
         meta.set(await requestJson("/meta"));
     },
 };

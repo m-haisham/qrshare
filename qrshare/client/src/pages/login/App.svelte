@@ -1,8 +1,8 @@
 <script>
-    import { AppBar, BottomNavigationBar } from "../components/navigation";
-    import { openSource } from "../helper";
-    import { DoorClosed, Key, Github } from "../module/icons";
-    import { requestJson } from "../request";
+    import { AppBar, BottomNavigationBar } from "../../components/navigation";
+    import { openSource } from "../../helper";
+    import { DoorClosed, Key, Github } from "../../module/icons";
+    import { requestJson } from "../../request";
 
     let msg = "";
     let value;

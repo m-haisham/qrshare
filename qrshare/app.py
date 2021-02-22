@@ -37,7 +37,7 @@ class App:
             __name__,
             instance_relative_config=True,
             template_folder='client/public',
-            static_folder='client/public/static'
+            static_folder='client/public/static',
         )
 
         app.debug = debug
@@ -91,15 +91,15 @@ class App:
 
         @self.app.route('/root.zip')
         @self.auth.require_auth
-        def zip():
+        def root_zip():
             return send_file(ZipContent(self.paths).enclose(), mimetype='application/zip')
 
-        @self.app.route('/svg')
-        def svg():
+        @self.app.route('/markup/qr')
+        def markup_qr():
             return self.qr.to_svg()
 
-        @self.app.route('/<path:path>')
-        def depend(path):
+        @self.app.route('/public/<path:path>')
+        def public_access_point(path):
             return send_from_directory('client/public', path)
 
         @self.app.route('/path/<path:path>')
