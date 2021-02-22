@@ -1,4 +1,5 @@
 <script>
+    import { fade } from "svelte/transition";
     import RouteListItem from "./RouteListItem.svelte";
     import { currentRoute as current, routes } from "../store";
     import { createLink } from "../../../helper";
@@ -19,7 +20,7 @@
 </script>
 
 {#if routes}
-    <ul>
+    <ul in:fade={{ duration: 200 }}>
         <!-- back item -->
         {#if $current.parent}
             <RouteListItem

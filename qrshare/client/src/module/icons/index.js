@@ -17,3 +17,4 @@ export { default as ExclamationSquareFill } from "./ExclamationSquareFill.svelte
 export { default as Key } from "./Key.svelte";
 export { default as DoorClosed } from "./DoorClosed.svelte";
 export { default as Funnel } from "./Funnel.svelte";
+export { default as HourglassSplit } from "./HourglassSplit.svelte";

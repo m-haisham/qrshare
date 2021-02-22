@@ -102,7 +102,7 @@
         padding-top: 0.5rem;
         padding-bottom: 0.5rem;
 
-        font-size: 1.4rem;
+        font-size: 1.2rem;
 
         overflow-y: hidden;
     }
