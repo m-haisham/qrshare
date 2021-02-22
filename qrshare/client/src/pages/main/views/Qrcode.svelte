@@ -1,5 +1,6 @@
 <script>
     import { onMount } from "svelte";
+    import { fade } from "svelte/transition";
 
     import { QR } from "../components";
     import { title, subtitle, meta } from "../store";
@@ -14,7 +15,7 @@
     <title>QR - qrshare</title>
 </svelte:head>
 
-<div class="container">
+<div class="container" in:fade={{ duration: 100 }}>
     <QR />
     <div class="manual">
         <h4>Manual</h4>

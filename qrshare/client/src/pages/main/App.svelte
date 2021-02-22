@@ -30,6 +30,7 @@
                 key,
                 title: $title.current,
                 subtitle: $subtitle.current,
+                execute: false,
             },
         };
     }

@@ -20,7 +20,7 @@
 </script>
 
 {#if routes}
-    <ul in:fade={{ duration: 200 }}>
+    <ul in:fade={{ duration: 100 }}>
         <!-- back item -->
         {#if $current.parent}
             <RouteListItem

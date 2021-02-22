@@ -142,14 +142,15 @@ class App:
 
             return route.zip()
 
-        @self.app.errorhandler(Exception)
-        def error_handler(error):
-            try:
-                return render_template('error.jinja2', code=error.code, name=error.name, message=error.description), \
-                       error.code
-            except:
-                return render_template('error.jinja2', code=500, name="Internal Server Error",
-                                       message="Something went wrong"), 500
+        if not self.app.debug:
+            @self.app.errorhandler(Exception)
+            def error_handler(error):
+                try:
+                    return render_template('error.jinja2', code=error.code, name=error.name, message=error.description), \
+                           error.code
+                except:
+                    return render_template('error.jinja2', code=500, name="Internal Server Error",
+                                           message="Something went wrong"), 500
 
         # create endpoints from other modules
         self.auth.create_endpoints()

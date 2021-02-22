@@ -12,7 +12,7 @@
 <div class="container">
     {#if !$currentRoute.name}
         <!-- this is displayed when the routes are loading -->
-        <div class="loading" out:fade={{ duration: 200 }}>
+        <div class="loading" out:fade={{ duration: 100 }}>
             <HourglassSplit />
         </div>
     {:else}

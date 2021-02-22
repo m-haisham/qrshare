@@ -97,6 +97,12 @@ function createCachedStore(initial) {
                 current: store[key],
                 key: key,
             })),
+
+        setKey: (key) =>
+            update((store) => ({
+                ...store,
+                key: key,
+            })),
     };
 }
 

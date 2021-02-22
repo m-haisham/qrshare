@@ -1,5 +1,6 @@
 <script>
     import { onMount } from "svelte";
+    import { fade } from "svelte/transition";
     import {
         title,
         subtitle,
@@ -9,6 +10,7 @@
         searchResults,
         processedResults,
     } from "../store";
+    import { navigateTo } from "../../../module/router";
     import { downloadLink } from "../../../helper";
     import { Searchbar, SearchListItem } from "../components";
 
@@ -23,13 +25,37 @@
         }
     }
 
+    $: {
+        subtitle.update(1, "~" + $currentRoute.path);
+    }
+
     onMount(() => {
         subtitle.set(1, "~" + $currentRoute.path);
     });
 
     function load(e) {
         const route = e.detail;
-        navigateTo({ id: 1, url: route.href, state: route, name: route.name });
+
+        const { matches, relevance, ...others } = route;
+
+        const state = {
+            ...others,
+            key: $title.key,
+            title: $title.current,
+            subtitle: $subtitle.current,
+            execute: false,
+        };
+
+        /* give titles control back to home/routes view */
+        title.setKey(0);
+        subtitle.setKey(0);
+
+        navigateTo({
+            id: 1,
+            url: route.href,
+            state,
+            name: route.name,
+        });
     }
 
     function file(e) {
@@ -45,7 +71,7 @@
     <title>Search in ~{$currentRoute.href || "/"} - qrshare</title>
 </svelte:head>
 
-<div class="container">
+<div class="container" in:fade={{ duration: 100 }}>
     <div class="content" class:collapsed={$searchCollapsed}>
         <!-- Searchbar -->
         <div class="search-bar">

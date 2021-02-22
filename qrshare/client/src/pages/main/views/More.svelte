@@ -1,5 +1,6 @@
 <script>
     import { onMount } from "svelte";
+    import { fade } from "svelte/transition";
     import { Github } from "../../../module/icons";
     import { request } from "../../../request";
     import { ListGroup, ListTile } from "../../../components/list";
@@ -25,7 +26,7 @@
     <title>More - qrshare</title>
 </svelte:head>
 
-<div class="container">
+<div class="container" in:fade={{ duration: 100 }}>
     {#if $meta.login}
         <ListGroup title="Client">
             <ListTile on:click={logout} disabled={false}>Logout</ListTile>
