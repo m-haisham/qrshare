@@ -37,7 +37,7 @@ class Route:
             else:
                 parent_data = {
                     'name': '~/',
-                    'path': '/root',
+                    'path': '/',
                     'href': '/',
                     'zip': '/root.zip',
                 }
@@ -78,8 +78,8 @@ class Route:
     def to_dict(self):
         route_d = {
             'name': self.name,
-            'path': self.general_path(False),
-            'href': self.general_path(True),
+            'path': self.general_path(True),
+            'href': self.general_path(False),
             'isFile': self.is_file,
         }
 

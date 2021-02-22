@@ -24,7 +24,7 @@
     }
 
     onMount(() => {
-        subtitle.set(1, $currentRoute.href ? "~" + $currentRoute.href : "~/");
+        subtitle.set(1, "~" + $currentRoute.path);
     });
 
     function load(e) {

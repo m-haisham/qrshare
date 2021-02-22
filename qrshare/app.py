@@ -2,7 +2,7 @@ from pathlib import Path
 from typing import List, Optional
 
 import waitress
-from flask import Flask, send_from_directory, abort, send_file, render_template
+from flask import Flask, send_from_directory, abort, send_file, render_template, request
 
 from .auth import Auth
 from .config import UserConfig
@@ -54,21 +54,27 @@ class App:
 
     def create_endpoints(self):
 
-        @self.app.errorhandler(Exception)
-        def error_handler(error):
-            try:
-                return render_template('error.jinja2', code=error.code, name=error.name, message=error.description), \
-                       error.code
-            except:
-                return render_template('error.jinja2', code=500, message="Something went wrong"), 500
-
         @self.app.route('/', defaults={'id': 0})
         @self.app.route('/results', defaults={'id': 2})
         @self.app.route('/qrcode', defaults={'id': 4})
         @self.app.route('/more', defaults={'id': 5})
         @self.auth.require_auth
         def home(id):
-            return render_template('index.jinja2', id=id)
+            # this is used to differentiate from client internal request which requests json
+            # and browser requests which require html
+            return_json = request.args.get('json') or False
+            if return_json:
+                return {
+                    'name': '~/',
+                    'path': '/',
+                    'href': '/',
+                    'isRoot': True,
+                    'routes': [r.to_dict() for r in self.routes],
+                    'parent': None,
+                    'zip': '/root.zip',
+                }
+            else:
+                return render_template('index.jinja2', id=id)
 
         @self.app.route('/meta')
         def meta():
@@ -76,17 +82,6 @@ class App:
                 'ip': f'{NetworkTools.local_ip()}:{self.port}',
                 'version': __version__,
                 'login': bool(self.auth.code),
-            }
-
-        @self.app.route('/root')
-        @self.auth.require_auth
-        def root():
-            return {
-                'name': '~/',
-                'isRoot': True,
-                'routes': [r.to_dict() for r in self.routes],
-                'parent': None,
-                'zip': '/root.zip',
             }
 
         @self.app.route('/root.zip')
@@ -105,17 +100,30 @@ class App:
         @self.app.route('/path/<path:path>')
         @self.auth.require_auth
         def general_access_point(path):
+            return_json = request.args.get('json') or False
+
             try:
                 route = self.route_map[path]
             except KeyError:
-                route = self.detect(path)
+                if return_json:
+                    route = self.detect(path)
+                else:
+                    route = self.get_head(path)
 
             if route is None:
                 return abort(404)
 
-            self.map(route)
+            if return_json:
+                self.map(route)
 
-            return route.get()
+                return route.get()
+            else:
+                initial = {
+                    'path': f'/{path}',
+                    'href': f'/path/{path}'
+                }
+
+                return render_template('index.jinja2', id=1, route=initial)
 
         @self.app.route('/zip/<path:path>')
         @self.auth.require_auth
@@ -134,6 +142,15 @@ class App:
 
             return route.zip()
 
+        @self.app.errorhandler(Exception)
+        def error_handler(error):
+            try:
+                return render_template('error.jinja2', code=error.code, name=error.name, message=error.description), \
+                       error.code
+            except:
+                return render_template('error.jinja2', code=500, name="Internal Server Error",
+                                       message="Something went wrong"), 500
+
         # create endpoints from other modules
         self.auth.create_endpoints()
         self.search.create_endpoints()
@@ -147,7 +164,15 @@ class App:
                 path = sub_route.general_path(True).lstrip('/')
                 self.route_map[path] = sub_route
 
-    def detect(self, path) -> Optional[Route]:
+    def get_head(self, path) -> Optional[Route]:
+        """
+        checks whether the given route exists
+
+        the path does not need to have been mapped prior
+
+        :param path: path to search for
+        :return: the head route if it exists, otherwise returns nothing
+        """
         for r in self.routes:
             if r.path.is_file():
                 continue
@@ -157,21 +182,36 @@ class App:
                 continue
 
             requested_path = r.path.parent / path
+
             if requested_path.exists():
+                return r
 
-                # make sure root route has been mapped
-                self.map(r)
+    def detect(self, path) -> Optional[Route]:
+        """
+        recursively maps upto the given path
 
-                # the loop below methodically populates all the sub routes leading to requested route
-                segments = path.split('/')
-                for i in range(2, len(segments)):
-                    try:
-                        sub_route = self.route_map['/'.join(segments[:i])]
-                        self.map(sub_route)
-                    except IndexError:
-                        break
+        :param path: path to map upto
+        :return: route corresponding to the path, if path does not exist returns None
+        """
+        head = self.get_head(path)
 
-                return self.route_map[path]
+        # get head method can return nothing, in which case the path does not exist
+        if head is None:
+            return
+
+        # make sure root route has been mapped
+        self.map(head)
+
+        # the loop below methodically populates all the sub routes leading to requested route
+        segments = path.split('/')
+        for i in range(2, len(segments)):
+            try:
+                sub_route = self.route_map['/'.join(segments[:i])]
+                self.map(sub_route)
+            except IndexError:
+                break
+
+        return self.route_map[path]
 
     def serve(self):
         self.create_endpoints()

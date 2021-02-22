@@ -14,7 +14,7 @@ import {
  */
 export async function updateStore(path) {
     // get data
-    let data = await requestJson(path);
+    let data = await requestJson(path + "?json=true");
 
     // overwrite on the current store
     let current = (({ routes, ...others }) => others)(data);
@@ -26,7 +26,7 @@ export async function updateStore(path) {
     // set titles
     title.update(0, current.name);
     if (current.parent) {
-        subtitle.update(0, "~" + current.parent.href);
+        subtitle.update(0, "~" + current.parent.path);
     } else {
         subtitle.update(0, null);
     }

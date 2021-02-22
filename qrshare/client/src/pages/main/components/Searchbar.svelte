@@ -73,12 +73,9 @@
         navigateTo({
             /* checks whether current route is root
                root search url is different from rest */
-            id:
-                $currentRoute.href == null || $currentRoute.href === "/"
-                    ? 2
-                    : 3,
+            id: $currentRoute.href === "/" ? 2 : 3,
             url: createSearchUrl({
-                path: $currentRoute.href,
+                path: $currentRoute.path,
                 query,
                 exts,
                 types,
