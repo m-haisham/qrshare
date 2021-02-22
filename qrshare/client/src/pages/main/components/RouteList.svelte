@@ -2,7 +2,7 @@
     import { fade } from "svelte/transition";
     import RouteListItem from "./RouteListItem.svelte";
     import { currentRoute as current, routes } from "../store";
-    import { createLink } from "../../../helper";
+    import { downloadLink } from "../../../helper";
     import { navigateTo } from "../../../module/router";
 
     function load(e) {
@@ -11,11 +11,11 @@
     }
 
     function file(e) {
-        createLink(e.detail.path).click();
+        downloadLink(e.detail.href, e.detail.name).click();
     }
 
     function zip(e) {
-        window.open(e.detail.zip);
+        downloadLink(e.detail.zip).click();
     }
 </script>
 

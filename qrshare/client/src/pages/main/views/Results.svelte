@@ -9,7 +9,7 @@
         searchResults,
         processedResults,
     } from "../store";
-    import { createLink } from "../../../helper";
+    import { downloadLink } from "../../../helper";
     import { Searchbar, SearchListItem } from "../components";
 
     $: {
@@ -33,11 +33,11 @@
     }
 
     function file(e) {
-        createLink(e.detail.path).click();
+        downloadLink(e.detail.href, e.detail.name).click();
     }
 
     function zip(e) {
-        createLink(e.detail.zip).click();
+        downloadLink(e.detail.zip).click();
     }
 </script>
 

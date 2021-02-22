@@ -41,6 +41,7 @@
         <div class="container">
             <pre
                 bind:this={pre}>
+                    <!-- non-breaking whitespace -->
                     {subtitle ?? ' '}
             </pre>
         </div>
@@ -102,7 +103,7 @@
         padding-top: 0.5rem;
         padding-bottom: 0.5rem;
 
-        font-size: 1.2rem;
+        font-size: 1.35rem;
 
         overflow-y: hidden;
     }

@@ -10,7 +10,7 @@
 </svelte:head>
 
 <div class="container">
-    {#if !$currentRoute.path}
+    {#if !$currentRoute.name}
         <!-- this is displayed when the routes are loading -->
         <div class="loading" out:fade={{ duration: 200 }}>
             <HourglassSplit />
