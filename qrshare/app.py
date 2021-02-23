@@ -62,8 +62,7 @@ class App:
         def home(id):
             # this is used to differentiate from client internal request which requests json
             # and browser requests which require html
-            return_json = request.args.get('json') or False
-            if return_json:
+            if request.args.get('raw'):
                 return {
                     'name': '~/',
                     'path': '/',
@@ -100,20 +99,25 @@ class App:
         @self.app.route('/path/<path:path>')
         @self.auth.require_auth
         def general_access_point(path):
-            return_json = request.args.get('json') or False
+            request_raw = request.args.get('raw') or False
 
+            route = head = None
             try:
                 route = self.route_map[path]
             except KeyError:
-                if return_json:
-                    route = self.detect(path)
-                else:
-                    route = self.get_head(path)
+                head = self.get_head(path)
 
-            if route is None:
+            if route is not None:
+                is_file = route.is_file
+            elif head is not None:
+                is_file = (head.path.parent / path).is_file()
+            else:
                 return abort(404)
 
-            if return_json:
+            if is_file or request_raw:
+                if route is None:
+                    route = self.detect(path, head)
+
                 self.map(route)
 
                 return route.get()
@@ -187,14 +191,16 @@ class App:
             if requested_path.exists():
                 return r
 
-    def detect(self, path) -> Optional[Route]:
+    def detect(self, path, head=None) -> Optional[Route]:
         """
         recursively maps upto the given path
 
         :param path: path to map upto
+        :param head: the head route
         :return: route corresponding to the path, if path does not exist returns None
         """
-        head = self.get_head(path)
+        if head is None:
+            head = self.get_head(path)
 
         # get head method can return nothing, in which case the path does not exist
         if head is None:

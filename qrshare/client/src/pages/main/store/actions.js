@@ -14,7 +14,7 @@ import {
  */
 export async function updateStore(path) {
     // get data
-    let data = await requestJson(path + "?json=true");
+    let data = await requestJson(path + "?raw=true");
 
     // overwrite on the current store
     let current = (({ routes, ...others }) => others)(data);
