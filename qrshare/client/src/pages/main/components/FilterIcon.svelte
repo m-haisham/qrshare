@@ -13,11 +13,6 @@
         align-items: center;
     }
 
-    div :global(svg) {
-        width: 2rem;
-        height: 2rem;
-    }
-
     div.active :global(svg) {
         fill: var(--color-primary);
     }

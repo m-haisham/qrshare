@@ -1,4 +1,4 @@
-import { navigateTo } from "../../../module/router";
+import { navigateHome } from "../utils/navigation";
 import { requestJson, requestText } from "../../../request";
 import { Home, Results, Qrcode, More } from "../views";
 import { meta, qrMarkup, updateStore, search, title, subtitle } from "../store";
@@ -62,7 +62,7 @@ const options = {
         url: initialRoute.href,
         state: initialRoute,
         execute: initialId === 1,
-        push: true,
+        push: initialId === 1,
     },
     init: async (route) => {
         /* setting default titles */
@@ -74,15 +74,7 @@ const options = {
            it essentially serves to load initial route data
            
            initial route data is loaded during processing initial route data when id is 1 */
-        if (route.id !== 1)
-            navigateTo({
-                id: 0,
-                state: {
-                    path: "/",
-                    href: "/",
-                },
-                push: false,
-            });
+        if (route.id !== 1) navigateHome(false);
 
         /* these data need to be loaded only once since they are static */
         qrMarkup.set(await requestText("/markup/qr"));

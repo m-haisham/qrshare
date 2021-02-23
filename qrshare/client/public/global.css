@@ -24,6 +24,11 @@ body {
         Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
 }
 
+svg {
+    width: 2rem;
+    height: 2rem;
+}
+
 /* DISPLAY SETTINGS */
 .only-phone {
     display: block;

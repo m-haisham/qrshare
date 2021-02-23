@@ -1,6 +1,7 @@
 <script>
     import { afterUpdate } from "svelte";
     import NavigationElements from "./NavigationElements.svelte";
+    import ActionBar from "./ActionBar.svelte";
 
     export let title;
     export let subtitle = null;
@@ -27,7 +28,7 @@
         </div>
         <nav class="actions">
             {#if actions}
-                <NavigationElements navs={actions} />
+                <ActionBar {actions} />
                 <div class="divider" />
             {/if}
             <div class="static">
@@ -98,8 +99,8 @@
 
     pre {
         margin: 0;
-        padding-top: 0.5rem;
-        padding-bottom: 0.5rem;
+        padding-top: 0.25rem;
+        padding-bottom: 0.25rem;
 
         font-size: 1.4rem;
 

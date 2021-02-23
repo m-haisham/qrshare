@@ -2,7 +2,7 @@
     import { onMount } from "svelte";
     import BaseApp from "../../components/BaseApp.svelte";
     import { List, Search, App, ThreeDots } from "../../module/icons";
-    import { FilterIcon } from "./components";
+    import { FilterIcon, BackHome } from "./components";
     import { Router, init, navigateTo, activeRoute } from "../../module/router";
     import { routes, options, extendPopStateListener } from "./router";
 
@@ -52,12 +52,15 @@
                 updateStore($currentRoute.last);
                 if ($activeRoute.key === 0) return;
 
-                title.apply(0);
-                subtitle.apply(0);
-
                 navigateTo(buildNavigationDefined(0));
             },
             component: List,
+            actions: [
+                {
+                    component: BackHome,
+                    raw: true,
+                },
+            ],
         },
         {
             click: () => {
@@ -68,8 +71,6 @@
                     title.cached(1, "Search");
                     navigateTo(buildNavigation({ id: 2, key: 1 }));
                 } else {
-                    // apply from prior visit
-                    title.apply(1);
                     navigateTo(buildNavigationDefined(1));
                 }
             },
