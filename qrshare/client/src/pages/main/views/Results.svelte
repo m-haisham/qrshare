@@ -30,21 +30,12 @@
     }
 
     onMount(() => {
+        title.apply(1);
         subtitle.set(1, "~" + $currentRoute.path);
     });
 
     function load(e) {
         const route = e.detail;
-
-        const { matches, relevance, ...others } = route;
-
-        const state = {
-            ...others,
-            key: $title.key,
-            title: $title.current,
-            subtitle: $subtitle.current,
-            execute: false,
-        };
 
         /* give titles control back to home/routes view */
         title.setKey(0);
@@ -53,7 +44,7 @@
         navigateTo({
             id: 1,
             url: route.href,
-            state,
+            state: { ...route },
             name: route.name,
         });
     }

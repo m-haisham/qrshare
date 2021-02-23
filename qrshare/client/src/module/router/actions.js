@@ -22,6 +22,7 @@ export async function init({ routes, options }) {
  *
  * @param {object} state a custom object that would also be passed down to `route.on`,
  * this can be used to provided values to the on function that cannot be passed through params
+ * state can also have a `execute` boolean which is used in place of `execute` during popstate events
  *
  * @param {string} name name is just an optional argument that is passed onto pushState
  * @param {boolean} execute determines whether to execute `route.on`
@@ -46,7 +47,6 @@ export async function navigateTo({
 
     /* no more mutations */
     Object.freeze(params);
-    Object.freeze(state);
 
     /* change active route */
     activeRoute.set({ ...route, url, params, state });
@@ -68,6 +68,7 @@ function registerPopStateListener() {
             navigateTo({
                 url: e.target.location.pathname,
                 ...e.state,
+                execute: e.state.state.execute,
                 push: false,
             });
         }

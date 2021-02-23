@@ -1,8 +1,14 @@
 <script>
+    import { onMount } from "svelte";
     import HourglassSplit from "../../../module/icons/HourglassSplit.svelte";
     import { fade } from "svelte/transition";
     import { RouteList } from "../components";
-    import { title, currentRoute } from "../store";
+    import { title, currentRoute, subtitle } from "../store";
+
+    onMount(() => {
+        title.apply(0);
+        subtitle.apply(0);
+    });
 </script>
 
 <svelte:head>

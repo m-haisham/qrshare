@@ -62,7 +62,7 @@ const options = {
         url: initialRoute.href,
         state: initialRoute,
         execute: initialId === 1,
-        push: initialId === 1,
+        push: true,
     },
     init: async (route) => {
         /* setting default titles */
@@ -73,7 +73,7 @@ const options = {
         /* this does not actually change view 0 (home),
            it essentially serves to load initial route data
            
-           initial route data is loaded when processing initial route data when id is 1 */
+           initial route data is loaded during processing initial route data when id is 1 */
         if (route.id !== 1)
             navigateTo({
                 id: 0,

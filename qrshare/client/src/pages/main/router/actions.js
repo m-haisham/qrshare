@@ -10,18 +10,26 @@ function extendPopStateListener() {
     const onpopstate = window.onpopstate;
     window.onpopstate = (e) => {
         if (e.state) {
-            const { key, title, subtitle } = e.state;
+            const { id, key, title, subtitle } = e.state;
 
             /* this block checks for the presence of titles
                in state and applies them */
-            if (key !== undefined) {
-                if (title !== undefined) {
-                    titleStore.cached(key, title);
-                }
+            if (key) {
+                if (!title) titleStore.apply(key);
+                else titleStore.cached(key, title);
 
-                if (subtitle !== undefined) {
-                    subtitleStore.cached(key, subtitle);
-                }
+                if (!subtitle) subtitleStore.apply(key);
+                else subtitleStore.cached(key, subtitle);
+            }
+
+            switch (id) {
+                case 3:
+                case 4:
+                    e.state.execute = false;
+                    break;
+
+                default:
+                    break;
             }
 
             /* call default */

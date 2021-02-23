@@ -106,7 +106,7 @@ export async function search({ path = "/", query, exts, types, limit = 100 }) {
     // console.log({msg: 'start', source})
 
     source.onmessage = (e) => {
-        searchResults.push(Object.freeze(JSON.parse(e.data)));
+        searchResults.push(JSON.parse(e.data));
     };
 
     source.onerror = (e) => {
