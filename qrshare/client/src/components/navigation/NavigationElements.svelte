@@ -16,8 +16,8 @@
 </script>
 
 {#each navs as nav, index}
-    <button on:click={nav.click} class:active={active?.length && active[index]}>
-        <svelte:component this={nav.component} {...nav.props || {}} />
+    <button on:click={nav.click} class:active={index === active}>
+        <svelte:component this={nav.component} {...nav.props ?? {}} />
     </button>
 {/each}
 

@@ -1,7 +1,7 @@
 <script>
     import { BaseApp } from "../../components";
     import { HorizontalProgress } from "../../components/progressbars";
-    import { ExclamationSquareFill, Github } from "../../module/icons";
+    import { ExclamationSquare, Github } from "../../module/icons";
     import { delay, openSource } from "../../helper";
     import { onMount } from "svelte";
 
@@ -80,7 +80,7 @@
     const navs = [
         {
             click: () => {},
-            component: ExclamationSquareFill,
+            component: ExclamationSquare,
         },
         {
             click: openSource,

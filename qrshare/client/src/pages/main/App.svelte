@@ -1,7 +1,8 @@
 <script>
     import { onMount } from "svelte";
     import BaseApp from "../../components/BaseApp.svelte";
-    import { List, Search, App, ThreeDots, Funnel } from "../../module/icons";
+    import { List, Search, App, ThreeDots } from "../../module/icons";
+    import { FilterIcon } from "./components";
     import { Router, init, navigateTo, activeRoute } from "../../module/router";
     import { routes, options, extendPopStateListener } from "./router";
 
@@ -76,7 +77,7 @@
             actions: [
                 {
                     click: searchCollapsed.flip,
-                    component: Funnel,
+                    component: FilterIcon,
                 },
             ],
         },
@@ -102,7 +103,6 @@
     subtitle={$subtitle.current}
     {navs}
     active={$activeRoute.key}
-    actionStates={[!$searchCollapsed]}
     sticky={true}
 >
     <Router {routes} {options} init={false} />

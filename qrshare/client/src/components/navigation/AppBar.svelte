@@ -5,9 +5,7 @@
     export let title;
     export let subtitle = null;
     export let navs;
-    export let navStates;
     export let active = null;
-    export let actionStates = [];
     export let sticky = false;
 
     /* extract actions of the currently active view */
@@ -29,11 +27,11 @@
         </div>
         <nav class="actions">
             {#if actions}
-                <NavigationElements navs={actions} active={actionStates} />
+                <NavigationElements navs={actions} />
                 <div class="divider" />
             {/if}
             <div class="static">
-                <NavigationElements {navs} active={navStates} />
+                <NavigationElements {navs} {active} />
             </div>
         </nav>
     </div>

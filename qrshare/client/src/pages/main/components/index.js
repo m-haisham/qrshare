@@ -3,3 +3,4 @@ export { default as RouteList } from "./RouteList.svelte";
 export { default as RouteListItem } from "./RouteListItem.svelte";
 export { default as Searchbar } from "./Searchbar.svelte";
 export { default as SearchListItem } from "./SearchListItem.svelte";
+export { default as FilterIcon } from "./FilterIcon.svelte";

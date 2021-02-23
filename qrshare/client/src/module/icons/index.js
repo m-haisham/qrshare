@@ -13,7 +13,7 @@ export { default as Search } from "./Search.svelte";
 export { default as ThreeDots } from "./ThreeDots.svelte";
 export { default as Check } from "./Check.svelte";
 export { default as Github } from "./Github.svelte";
-export { default as ExclamationSquareFill } from "./ExclamationSquareFill.svelte";
+export { default as ExclamationSquare } from "./ExclamationSquare.svelte";
 export { default as Key } from "./Key.svelte";
 export { default as DoorClosed } from "./DoorClosed.svelte";
 export { default as Funnel } from "./Funnel.svelte";

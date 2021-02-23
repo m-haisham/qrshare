@@ -23,6 +23,8 @@ function extendPopStateListener() {
             }
 
             switch (id) {
+                /* essentially forces all search popstate events to not execute
+                   provided on state change code */
                 case 3:
                 case 4:
                     e.state.execute = false;
