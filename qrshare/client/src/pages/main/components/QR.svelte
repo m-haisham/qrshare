@@ -15,6 +15,8 @@
     }
 
     div :global(svg) {
+        width: auto;
+        height: auto;
         max-width: 40rem;
     }
 </style>
