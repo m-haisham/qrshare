@@ -142,8 +142,6 @@ class App:
             if route is None:
                 return abort(404)
 
-            route.populate()
-
             return route.zip()
 
         if not self.app.debug:
@@ -165,7 +163,6 @@ class App:
         if route.populate():
             # add newly explored routes to map
             for sub_route in route.sub_routes:
-                # make it english; remove the url specific encoding
                 path = sub_route.general_path(True).lstrip('/')
                 self.route_map[path] = sub_route
 

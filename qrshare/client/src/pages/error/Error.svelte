@@ -5,8 +5,7 @@
     import { delay, openSource } from "../../helper";
     import { onMount } from "svelte";
 
-    /* global values are retrieved
-       these are values provided to html file in flask via jinja2 */
+    /* retrieve global values provided to html file from flask via jinja2 */
     const code = errorCode;
     const name = errorName;
     const message = errorMessage;

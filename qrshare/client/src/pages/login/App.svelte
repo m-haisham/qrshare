@@ -2,19 +2,24 @@
     import { AppBar, BottomNavigationBar } from "../../components/navigation";
     import { openSource } from "../../helper";
     import { DoorClosed, Key, Github } from "../../module/icons";
-    import { requestJson } from "../../request";
+    import { request } from "../../request";
 
     let msg = "";
     let value;
-    function auth(e) {
+    async function auth(e) {
         if (!value) {
             msg = "This field is required";
             return;
         }
 
-        requestJson(`/login?key=${value}`, "POST").then((data) => {
+        const response = await request(`/login?key=${value}`, "POST");
+
+        /* when request redirects it wont return any response
+           this prevents from throwing an error when trying converting to json */
+        if (response) {
+            const data = await response.json();
             msg = data ? data.msg : "The key does not match, try again.";
-        });
+        }
     }
 
     /** when input changes, clear the error */
@@ -53,7 +58,7 @@
                     on:change={change}
                     use:focus
                 />
-                <div class="error">
+                <div class="error-message">
                     {msg}
                 </div>
                 <button class="button-primary">Submit</button>
@@ -106,7 +111,7 @@
         width: 5rem;
     }
 
-    .error {
+    .error-message {
         color: var(--color-warning);
     }
 

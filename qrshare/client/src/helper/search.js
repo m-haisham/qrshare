@@ -12,12 +12,12 @@ export function createSearchUrl({
     const params = [];
 
     // add query
-    if (query !== null && query !== undefined) {
+    if (query != null) {
         params.push("query=" + query);
     }
 
     // add extensions
-    if (exts !== null && exts !== undefined) {
+    if (exts != null) {
         // if the array has no values, return
         if (!exts) return;
 
@@ -25,7 +25,7 @@ export function createSearchUrl({
     }
 
     // add types filtering
-    if (types !== null && types !== undefined) {
+    if (types != null) {
         params.push("types=" + types.join(","));
     }
 

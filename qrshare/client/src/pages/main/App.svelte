@@ -45,8 +45,6 @@
 
     const navs = [
         {
-            /* its not checked for prior visit in home
-           since the routes options calls updateStore onMount which is basically a visit to home */
             click: () => {
                 /* clicking on routes while being there serves as a reload */
                 updateStore($currentRoute.last);
@@ -108,3 +106,9 @@
 >
     <Router {routes} {options} init={false} />
 </BaseApp>
+
+<style>
+    :global(html) {
+        overflow-y: scroll;
+    }
+</style>

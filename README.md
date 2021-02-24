@@ -1,6 +1,15 @@
-# QR share
+# qrshare
 
-[![PyPI version](https://badge.fury.io/py/qrshare.svg)](https://badge.fury.io/py/qrshare)
+![PyPI](https://img.shields.io/pypi/v/qrshare)
+![Python Version](https://img.shields.io/badge/Python-v3.6-blue)
+![Repo Size](https://img.shields.io/github/repo-size/mHaisham/qrshare)
+[![Contributors](https://img.shields.io/github/contributors/mHaisham/qrshare)](https://github.com/mHaisham/qrshare/graphs/contributors)
+![Last Commit](https://img.shields.io/github/last-commit/mHaisham/qrshare/master)
+![Issues](https://img.shields.io/github/issues/mHaisham/qrshare)
+![Pull Requests](https://img.shields.io/github/issues-pr/mHaisham/qrshare)
+[![License](https://img.shields.io/github/license/mHaisham/qrshare)](LICENSE)
+
+Serve files or folders on local network with ease.
 
 <p float="left" align="middle">
   <img title="login screen" src="https://raw.githubusercontent.com/mHaisham/qrshare/master/.github/images/login.png" width="24%" />
@@ -8,8 +17,6 @@
   <img title="search screen" src="https://raw.githubusercontent.com/mHaisham/qrshare/master/.github/images/search.png" width="24%" />
   <img title="qrcode screen" src="https://raw.githubusercontent.com/mHaisham/qrshare/master/.github/images/qr.png" width="24%" />
 </p>
-
-Serve a file on local network and give the url in qrcode form on console
 
 For extra security provide a password `--password [password]`
 
@@ -19,7 +26,39 @@ For extra security provide a password `--password [password]`
 pip install qrshare
 ```
 
+### Termux
+
+1. Install [Termux] from [Google Play].
+
+2. Update packages: `apt update && apt upgrade`
+
+3. Setup storage: `termux-setup-storage`
+
+4. Install Python: `pkg install python`
+
+5. Install qrshare: `pip install qrshare`
+
+6. Use as described below in [Terminal].
+
+[Termux]: https://termux.com/
+[Google Play]: https://play.google.com/store/apps/details?id=com.termux&hl=en&gl=US
+[Terminal]: https://github.com/mHaisham/qrshare#terminal
+
 ## Usage
+
+### Terminal
+
+Serve a specific directory or file
+
+```bash
+qrshare serve path/to/share
+```
+
+Serve the current directory
+
+```bash
+qrshare serve .
+```
 
 ### Send to
 
@@ -41,11 +80,11 @@ Press `Windows` + `r` and enter `shell:sendto`
 
 Create shortcut with command `qrshare serve` in folder
 
-now option qrshare should appear when you right click to a file
+now option qrshare should appear when you right click to a file or folder
 
 ### Commandline
 
-> `qrshare --help`
+#### `qrshare --help`
 
 ```bash
 Usage: __main__.py [OPTIONS] COMMAND [ARGS]...
@@ -58,9 +97,13 @@ Commands:
   serve   serve given list paths as per given options
 ```
 
-> `qrshare serve --help`
+#### `qrshare serve --help`
 
 ```bash
+Usage: __main__.py serve [OPTIONS] PATHS...
+
+  serve given list paths as per given options
+
 Options:
   -p, --password TEXT  when provided every device require authentication
   --port INTEGER       waitress server port
@@ -69,9 +112,13 @@ Options:
 
 - `password` is given preference over global password
 
-> `qrshare config --help`
+#### `qrshare config --help`
 
 ```bash
+Usage: __main__.py config [OPTIONS]
+
+  change user configurations
+
 Options:
   -p, --password TEXT  set a global password
   --remove-password    remove currently set global password
@@ -88,6 +135,6 @@ Options:
 ```python
 from qrshare import App
 
-app = App(paths)
-app.serve(True)
+app = App(paths, debug=True)
+app.serve()
 ```
