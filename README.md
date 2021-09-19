@@ -28,7 +28,7 @@ pip install qrshare
 
 ### Termux
 
-1. Install [Termux] from [Google Play].
+1. Install [Termux] from [F-Droid].
 
 2. Update packages: `apt update && apt upgrade`
 
@@ -41,7 +41,7 @@ pip install qrshare
 6. Use as described below in [Terminal].
 
 [Termux]: https://termux.com/
-[Google Play]: https://play.google.com/store/apps/details?id=com.termux&hl=en&gl=US
+[F-Droid]: https://f-droid.org/en/packages/com.termux/
 [Terminal]: https://github.com/mHaisham/qrshare#terminal
 
 ## Usage
