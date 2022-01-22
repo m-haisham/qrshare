@@ -11,6 +11,9 @@ license = "Apache-2.0"
 [dependencies]
 rocket = { git = "https://github.com/SergioBenitez/Rocket", rev = "c028d63" }
 
+zip = "0.5.13"
+serde = "1.0.134"
+
 [dependencies.rocket_dyn_templates]
 git = "https://github.com/SergioBenitez/Rocket"
 rev = "c028d63"
