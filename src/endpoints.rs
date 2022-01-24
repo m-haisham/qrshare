@@ -18,7 +18,7 @@ struct PathContext<'a> {
 #[get("/")]
 pub fn index(path_state: &State<SharedPathMutex>) -> Template {
     let lock = path_state.lock().expect("lock shared data");
-    let path = lock.paths.get(&String::from(""));
+    let path = lock.paths.get(&PathBuf::from(""));
 
     render_path(path.unwrap(), &lock)
 }
@@ -26,8 +26,7 @@ pub fn index(path_state: &State<SharedPathMutex>) -> Template {
 #[get("/shared/<path..>")]
 pub fn path(path: PathBuf, path_state: &State<SharedPathMutex>) -> Template {
     let lock = path_state.lock().expect("lock shared data");
-    let pathstr = path.into_os_string().into_string().unwrap();
-    let path = lock.paths.get(&pathstr);
+    let path = lock.paths.get(&path);
 
     render_path(path.unwrap(), &lock)
 }

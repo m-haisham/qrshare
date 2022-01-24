@@ -4,8 +4,8 @@ use std::{collections::HashMap, error::Error, fs, io, path::PathBuf, rc::Rc};
 
 #[derive(Debug, Serialize)]
 pub struct SharedPathState {
-    pub root: String,
-    pub paths: HashMap<String, SharedPath>,
+    pub root: PathBuf,
+    pub paths: HashMap<PathBuf, SharedPath>,
 }
 
 impl From<SharedPath> for SharedPathState {
@@ -24,10 +24,10 @@ impl From<SharedPath> for SharedPathState {
             }
         };
 
-        paths.insert(String::from(""), path);
+        paths.insert(PathBuf::from(""), path);
 
         Self {
-            root: String::from(key),
+            root: PathBuf::from(key),
             paths,
         }
     }
@@ -69,7 +69,7 @@ pub struct SharedPath {
 
 impl SharedPath {
     pub fn root(paths: Vec<String>) -> Result<Self, Box<dyn Error>> {
-        let children = paths.iter().cloned().collect();
+        let children = paths.iter().map(|p| PathBuf::from(p)).collect();
         let shared = SharedType::Dir(SharedDir::with(PathBuf::from("~"), Some(children)));
 
         Ok(Self {
@@ -79,7 +79,7 @@ impl SharedPath {
         })
     }
 
-    pub fn with_parent(parent: PathBuf, path: String) -> Result<Self, Box<dyn Error>> {
+    pub fn with_parent(parent: PathBuf, path: PathBuf) -> Result<Self, Box<dyn Error>> {
         let shared = SharedType::from(path)?;
         let relative = parent.join(shared.path().file_name().unwrap());
 
@@ -92,12 +92,8 @@ impl SharedPath {
 }
 
 impl SharedPath {
-    pub fn key(&self) -> String {
-        self.relative
-            .clone()
-            .into_os_string()
-            .to_string_lossy()
-            .into()
+    pub fn key(&self) -> PathBuf {
+        self.relative.clone()
     }
 }
 
@@ -109,7 +105,7 @@ pub enum SharedType {
 }
 
 impl SharedType {
-    pub fn from(path: String) -> Result<Self, Box<dyn Error>> {
+    pub fn from(path: PathBuf) -> Result<Self, Box<dyn Error>> {
         let buf = fs::canonicalize(path)?;
         let md = buf.metadata()?;
 
@@ -133,11 +129,11 @@ impl SharedType {
 #[derive(Debug, Serialize)]
 pub struct SharedDir {
     pub path: PathBuf,
-    pub children: Option<Vec<String>>,
+    pub children: Option<Vec<PathBuf>>,
 }
 
 impl SharedDir {
-    fn with(path: PathBuf, children: Option<Vec<String>>) -> Self {
+    fn with(path: PathBuf, children: Option<Vec<PathBuf>>) -> Self {
         Self { path, children }
     }
 }
@@ -168,46 +164,9 @@ mod tests {
 
     #[test]
     fn new_shared_path_from() {
-        let result = SharedType::from(".".to_string());
+        let result = SharedType::from(PathBuf::from("."));
 
         println!("{:?}", result);
         assert_eq!(result.is_ok(), true);
-    }
-}
-
-// TEST
-
-#[derive(Debug)]
-struct Hold {
-    pub current: String,
-    pub items: HashMap<String, Item>,
-}
-
-#[derive(Debug)]
-struct Item(Rc<i32>);
-
-impl Hold {
-    pub fn from(items: Vec<i32>) -> Self {
-        let items: HashMap<String, Item> = items
-            .into_iter()
-            .map(|i| (i.to_string(), Item(Rc::new(i))))
-            .collect();
-
-        Hold {
-            items,
-            current: "0".to_string(),
-        }
-    }
-}
-
-#[cfg(test)]
-mod temp_tests {
-    use super::*;
-
-    #[test]
-    fn new_hold_from() {
-        let result = Hold::from(vec![0, 1, 2, 3]);
-
-        println!("{:?}", result);
     }
 }
