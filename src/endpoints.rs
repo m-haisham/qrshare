@@ -11,8 +11,9 @@ use rocket::State;
 
 #[derive(Serialize)]
 struct PathContext<'a> {
-    relative: &'a PathBuf,
-    path: &'a SharedType,
+    parent: Option<&'a SharedPath>,
+    path: &'a SharedPath,
+    children: Option<Vec<&'a SharedPath>>,
 }
 
 #[get("/")]
@@ -25,18 +26,36 @@ pub fn index(path_state: &State<SharedPathMutex>) -> Template {
 
 #[get("/shared/<path..>")]
 pub fn path(path: PathBuf, path_state: &State<SharedPathMutex>) -> Template {
-    let lock = path_state.lock().expect("lock shared data");
-    let path = lock.paths.get(&path);
+    let mut lock = path_state.lock().expect("lock shared data");
+    lock.visit(&path).unwrap();
 
-    render_path(path.unwrap(), &lock)
+    let path = lock.paths.get(&path).unwrap();
+
+    render_path(path, &lock)
 }
 
 fn render_path(path: &SharedPath, state: &MutexGuard<SharedPathState>) -> Template {
     println!("{:#?}", state);
 
+    let parent = path.parent.as_ref().map(|p| state.paths.get(p).unwrap());
+
+    let children: Option<Vec<&SharedPath>> = {
+        if let SharedType::Dir(shared) = &path.shared {
+            if let Some(paths) = &shared.children {
+                let children = paths.iter().map(|p| state.paths.get(p).unwrap()).collect();
+                Some(children)
+            } else {
+                None
+            }
+        } else {
+            None
+        }
+    };
+
     let context = PathContext {
-        relative: &path.relative,
-        path: &path.shared,
+        parent,
+        path: &path,
+        children,
     };
 
     Template::render("path", &context)
