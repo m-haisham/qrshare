@@ -1,4 +1,4 @@
-use std::{fs::File, path::PathBuf, sync::MutexGuard};
+use std::{path::PathBuf, sync::MutexGuard};
 
 use rocket_dyn_templates::Template;
 use serde::Serialize;
@@ -17,24 +17,33 @@ struct PathContext<'a> {
 }
 
 #[get("/")]
-pub fn index(path_state: &State<SharedPathMutex>) -> Template {
+pub fn index(path_state: &State<SharedPathMutex>) -> Result<Template, NotFound<String>> {
     let lock = path_state.lock().expect("lock shared data");
-    let path = lock.paths.get(&PathBuf::from(""));
+    let path = PathBuf::from("");
 
-    render_path(path.unwrap(), &lock)
+    render_path(&path, &lock)
 }
 
 #[get("/shared/<path..>")]
-pub fn path(path: PathBuf, path_state: &State<SharedPathMutex>) -> Template {
+pub fn path(
+    path: PathBuf,
+    path_state: &State<SharedPathMutex>,
+) -> Result<Template, NotFound<String>> {
     let mut lock = path_state.lock().expect("lock shared data");
     lock.visit(&path).unwrap();
 
-    let path = lock.paths.get(&path).unwrap();
-
-    render_path(path, &lock)
+    render_path(&path, &lock)
 }
 
-fn render_path(path: &SharedPath, state: &MutexGuard<SharedPathState>) -> Template {
+fn render_path(
+    pathbuf: &PathBuf,
+    state: &MutexGuard<SharedPathState>,
+) -> Result<Template, NotFound<String>> {
+    let path = match state.paths.get(pathbuf) {
+        Some(path) => path,
+        None => return Err(NotFound(String::from("Not found or not cached"))),
+    };
+
     println!("{:#?}", state);
 
     let parent = path.parent.as_ref().map(|p| state.paths.get(p).unwrap());
@@ -58,7 +67,7 @@ fn render_path(path: &SharedPath, state: &MutexGuard<SharedPathState>) -> Templa
         children,
     };
 
-    Template::render("path", &context)
+    Ok(Template::render("path", &context))
 }
 
 #[get("/file/<path..>")]
@@ -70,10 +79,9 @@ pub async fn file(
         let lock = path_state.lock().expect("lock shared data");
         let path = lock.paths.get(&path).unwrap();
 
-        if let SharedType::File(file) = &path.shared {
-            Some(file.path.clone())
-        } else {
-            None
+        match &path.shared {
+            SharedType::File(file) => Some(file.path.clone()),
+            _ => None,
         }
     };
 
