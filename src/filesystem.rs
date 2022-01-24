@@ -1,6 +1,5 @@
-use rocket::figment::value;
 use serde::Serialize;
-use std::{collections::HashMap, error::Error, fs, io, path::PathBuf, rc::Rc};
+use std::{collections::HashMap, fs, io, path::PathBuf};
 
 #[derive(Debug, Serialize)]
 pub struct SharedPathState {

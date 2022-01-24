@@ -1,4 +1,4 @@
-use std::{path::PathBuf, sync::MutexGuard};
+use std::{fs::File, path::PathBuf, sync::MutexGuard};
 
 use rocket_dyn_templates::Template;
 use serde::Serialize;
@@ -7,7 +7,7 @@ use crate::{
     filesystem::{SharedPath, SharedPathState, SharedType},
     state::SharedPathMutex,
 };
-use rocket::State;
+use rocket::{fs::NamedFile, response::status::NotFound, State};
 
 #[derive(Serialize)]
 struct PathContext<'a> {
@@ -59,4 +59,29 @@ fn render_path(path: &SharedPath, state: &MutexGuard<SharedPathState>) -> Templa
     };
 
     Template::render("path", &context)
+}
+
+#[get("/file/<path..>")]
+pub async fn file(
+    path: PathBuf,
+    path_state: &State<SharedPathMutex>,
+) -> Result<NamedFile, NotFound<String>> {
+    let file_path: Option<PathBuf> = {
+        let lock = path_state.lock().expect("lock shared data");
+        let path = lock.paths.get(&path).unwrap();
+
+        if let SharedType::File(file) = &path.shared {
+            Some(file.path.clone())
+        } else {
+            None
+        }
+    };
+
+    if let Some(fp) = file_path {
+        NamedFile::open(fp)
+            .await
+            .map_err(|e| NotFound(e.to_string()))
+    } else {
+        Err(NotFound(String::from("File not found")))
+    }
 }

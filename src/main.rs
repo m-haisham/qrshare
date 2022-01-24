@@ -20,7 +20,7 @@ fn rocket() -> _ {
 
     rocket::build()
         .manage(Mutex::new(path_state))
-        .mount("/", routes![ep::index, ep::path])
+        .mount("/", routes![ep::index, ep::path, ep::file])
         .mount("/public", FileServer::from("static/"))
         .attach(Template::fairing())
 }
