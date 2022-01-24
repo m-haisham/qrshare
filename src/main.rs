@@ -1,8 +1,11 @@
 mod endpoints;
 mod filesystem;
+mod state;
 
-use endpoints::index;
-use filesystem::{SharedPath};
+use std::sync::Mutex;
+
+use endpoints as ep;
+use filesystem::{SharedPath, SharedPathState};
 use rocket::fs::FileServer;
 use rocket_dyn_templates::Template;
 
@@ -12,11 +15,12 @@ extern crate rocket;
 #[launch]
 fn rocket() -> _ {
     let paths = vec![".".to_string()];
-    let shared_path = SharedPath::from(paths).unwrap();
+    let root = SharedPath::root(paths).unwrap();
+    let path_state = SharedPathState::from(root);
 
     rocket::build()
-        .manage(shared_path)
-        .mount("/", routes![index])
+        .manage(Mutex::new(path_state))
+        .mount("/", routes![ep::index, ep::path])
         .mount("/public", FileServer::from("static/"))
         .attach(Template::fairing())
 }
