@@ -9,24 +9,24 @@
     <body>
         <h1>Home</h1>
         {% if path.shared.tag == 'File' %}
-        {{ path.content }}
+            {{ path.shared }}
         {% else %}
-        <div>
-            <h2>{{ path.shared.content.path }}</h2>
-            <p>{{ path.relative }}</p>
-            <ul>
-                {% if path.parent %}
-                <a href="/shared/"></a>
-                {% endif %} {% for child in children |
-                sort(attribute='shared.tag') %}
-                <li>
-                    <a href="/shared/{{ child.relative }}">{{
-                        child.shared.content.name
-                    }}</a>
-                </li>
-                {% endfor %}
-            </ul>
-        </div>
+            <div>
+                <h2>{{ path.shared.content.path }}</h2>
+                <p>{{ path.relative }}</p>
+                <ul>
+                    {% if parent %}
+                        <li><a href="/shared/{{ parent.relative }}">...</a></li>
+                    {% endif %}
+                    {% for child in children | sort(attribute='shared.tag') %}
+                        <li>
+                            <a href="/shared/{{ child.relative }}">
+                                {{ child.shared.content.name }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
         {% endif %}
     </body>
 </html>
