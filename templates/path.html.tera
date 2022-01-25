@@ -8,22 +8,22 @@
     </head>
     <body>
         <h1>Home</h1>
-        {% if path.shared.tag == 'File' %}
-            {{ path.shared.content.name }}
+        {% if path.specific.tag == 'File' %}
+            {{ path.name }}
             <br>
-            <a href="/file/{{ path.relative }}">download</a>
+            <a href="/file/{{ path.key }}">download</a>
         {% else %}
             <div>
-                <h2>{{ path.shared.content.path }}</h2>
-                <p>{{ path.relative }}</p>
+                <h2>{{ path.path }}</h2>
+                <p>{{ path.key }}</p>
                 <ul>
                     {% if parent %}
-                        <li><a href="/shared/{{ parent.relative }}">...</a></li>
+                        <li><a href="/shared/{{ parent.key }}">...</a></li>
                     {% endif %}
-                    {% for child in children | sort(attribute='shared.tag') %}
+                    {% for child in children | sort(attribute='specific.tag') %}
                         <li>
-                            <a href="/shared/{{ child.relative }}">
-                                {{ child.shared.content.name }}
+                            <a href="/shared/{{ child.key }}">
+                                {{ child.name }}
                             </a>
                         </li>
                     {% endfor %}

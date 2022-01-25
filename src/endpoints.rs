@@ -4,7 +4,7 @@ use rocket_dyn_templates::Template;
 use serde::Serialize;
 
 use crate::{
-    filesystem::{SharedPath, SharedPathState, SharedType},
+    filesystem::{PathType, SharedPath, SharedPathState},
     state::SharedPathMutex,
 };
 use rocket::{fs::NamedFile, response::status::NotFound, State};
@@ -46,16 +46,19 @@ fn render_path(
 
     println!("{:#?}", state);
 
-    let parent = path.parent.as_ref().map(|p| state.paths.get(p).unwrap());
+    let parent = path
+        .parent
+        .as_ref()
+        .map(|p| state.paths.get(&p.key).unwrap());
 
     let children: Option<Vec<&SharedPath>> = {
-        if let SharedType::Dir(shared) = &path.shared {
-            if let Some(paths) = &shared.children {
-                let children = paths.iter().map(|p| state.paths.get(p).unwrap()).collect();
-                Some(children)
-            } else {
-                None
-            }
+        if let PathType::Dir(children) = &path.specific {
+            children.as_ref().map(|paths| {
+                paths
+                    .iter()
+                    .map(|p| state.paths.get(&p.key).unwrap())
+                    .collect()
+            })
         } else {
             None
         }
@@ -77,11 +80,12 @@ pub async fn file(
 ) -> Result<NamedFile, NotFound<String>> {
     let file_path: Option<PathBuf> = {
         let lock = path_state.lock().expect("lock shared data");
-        let path = lock.paths.get(&path).unwrap();
+        let shared = lock.paths.get(&path).unwrap();
 
-        match &path.shared {
-            SharedType::File(file) => Some(file.path.clone()),
-            _ => None,
+        if let PathType::File = shared.specific {
+            Some(shared.path.clone())
+        } else {
+            None
         }
     };
 

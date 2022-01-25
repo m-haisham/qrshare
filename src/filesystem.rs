@@ -8,30 +8,21 @@ pub struct SharedPathState {
 }
 
 impl From<SharedPath> for SharedPathState {
-    fn from(mut path: SharedPath) -> Self {
+    fn from(path: SharedPath) -> Self {
         let key = "~";
 
         let mut paths = HashMap::new();
-        if let SharedType::Dir(dir) = &mut path.shared {
+        if let PathType::Dir(children) = &path.specific {
             // populate child paths into the cache
-            if let Some(children) = &dir.children {
+            if let Some(children) = &children {
                 for child in children {
                     let value =
-                        SharedPath::with_parent(path.relative.clone(), child.clone()).unwrap();
+                        SharedPath::with_parent(PartialPath::from(&path), child.path.clone())
+                            .unwrap();
 
-                    paths.insert(value.key(), value);
+                    paths.insert(value.key.clone(), value);
                 }
             }
-
-            // the previous children are not normalized and can have
-            // relative path such as "." and ".."
-            // these woudnt map correctly in the cache
-            dir.children = Some(
-                paths
-                    .iter()
-                    .map(|(_, v)| PathBuf::from(v.shared.name()))
-                    .collect(),
-            );
         };
 
         // add home to cache
@@ -46,31 +37,35 @@ impl From<SharedPath> for SharedPathState {
 
 impl SharedPathState {
     pub fn visit(&mut self, path: &PathBuf) -> io::Result<()> {
-        let result = {
-            let path = match self.paths.get_mut(path) {
+        let result: Option<(PartialPath, Vec<PathBuf>)> = {
+            let shared = match self.paths.get_mut(path) {
                 Some(shared) => shared,
                 None => return Ok(()),
             };
 
-            if let SharedType::Dir(dir) = &mut path.shared {
-                if let Some(_) = dir.children {
+            if let PathType::Dir(paths) = &mut shared.specific {
+                if let Some(_) = &paths {
                     return Ok(());
                 }
 
-                let read_result = fs::read_dir(&dir.path)?;
+                let read_result = fs::read_dir(&shared.path)?;
 
-                let mut children: Vec<PathBuf> = vec![];
+                let mut children = vec![];
                 let mut subpaths = vec![];
                 for entry in read_result {
                     let entry_path = entry?.path();
 
-                    children.push(path.relative.join(entry_path.file_name().unwrap()));
+                    children.push(PartialPath {
+                        key: shared.key.join(entry_path.file_name().unwrap()),
+                        path: entry_path.clone(),
+                    });
+
                     subpaths.push(entry_path);
                 }
 
-                dir.children = Some(children);
+                shared.specific = PathType::Dir(Some(children));
 
-                Some((path.relative.clone(), subpaths))
+                Some((shared.into(), subpaths))
             } else {
                 None
             }
@@ -81,7 +76,7 @@ impl SharedPathState {
             println!("Visit {:?}: {} children", parent, subpaths.len());
             for subpath in subpaths {
                 let value = SharedPath::with_parent(parent.clone(), subpath)?;
-                self.paths.insert(value.key(), value);
+                self.paths.insert(value.key.clone(), value);
             }
         }
 
@@ -91,131 +86,87 @@ impl SharedPathState {
 
 #[derive(Debug, Serialize)]
 pub struct SharedPath {
-    pub parent: Option<PathBuf>,
-    pub shared: SharedType,
-    pub relative: PathBuf,
-}
-
-impl SharedPath {
-    pub fn root(paths: Vec<String>) -> io::Result<Self> {
-        let children = paths.iter().map(|p| PathBuf::from(p)).collect();
-        let shared = SharedType::Dir(SharedDir::with(PathBuf::from("~"), Some(children)));
-
-        Ok(Self {
-            parent: None,
-            relative: PathBuf::from(""),
-            shared,
-        })
-    }
-
-    pub fn with_parent(parent: PathBuf, path: PathBuf) -> io::Result<Self> {
-        let shared = SharedType::from(path)?;
-        let relative = parent.join(shared.path().file_name().unwrap());
-
-        Ok(Self {
-            parent: Some(parent),
-            shared,
-            relative,
-        })
-    }
-}
-
-impl SharedPath {
-    pub fn key(&self) -> PathBuf {
-        self.relative.clone()
-    }
+    pub parent: Option<PartialPath>,
+    pub name: String,
+    pub path: PathBuf,
+    pub specific: PathType,
+    pub key: PathBuf,
 }
 
 #[derive(Debug, Serialize)]
 #[serde(tag = "tag", content = "content")]
-pub enum SharedType {
-    File(SharedFile),
-    Dir(SharedDir),
+pub enum PathType {
+    File,
+    Dir(Option<Vec<PartialPath>>),
 }
 
-impl SharedType {
-    pub fn from(path: PathBuf) -> io::Result<Self> {
-        let buf = fs::canonicalize(path)?;
-        let md = buf.metadata()?;
+#[derive(Debug, Serialize, Clone)]
+pub struct PartialPath {
+    pub key: PathBuf,
+    pub path: PathBuf,
+}
 
-        let path = if md.is_dir() {
-            Self::Dir(SharedDir::from(buf))
+impl From<&SharedPath> for PartialPath {
+    fn from(path: &SharedPath) -> Self {
+        Self {
+            key: path.key.clone(),
+            path: path.path.clone(),
+        }
+    }
+}
+
+impl From<&mut SharedPath> for PartialPath {
+    fn from(path: &mut SharedPath) -> Self {
+        Self {
+            key: path.key.clone(),
+            path: path.path.clone(),
+        }
+    }
+}
+
+impl SharedPath {
+    pub fn root(paths: Vec<String>) -> io::Result<Self> {
+        let children = Self::root_children(paths)?;
+
+        Ok(Self {
+            parent: None,
+            name: String::from("~"),
+            key: PathBuf::from(""),
+            path: PathBuf::from("~"),
+            specific: PathType::Dir(Some(children)),
+        })
+    }
+
+    fn root_children(children: Vec<String>) -> io::Result<Vec<PartialPath>> {
+        let mut child_paths = Vec::with_capacity(children.len());
+        for child in children {
+            let path = fs::canonicalize(child)?;
+            let key = PathBuf::from(path.file_name().unwrap());
+
+            child_paths.push(PartialPath { key, path });
+        }
+
+        Ok(child_paths)
+    }
+
+    pub fn with_parent(parent: PartialPath, path: PathBuf) -> io::Result<Self> {
+        let path = fs::canonicalize(path)?;
+        let name = path.file_name().unwrap().to_string_lossy().to_string();
+        let key = parent.key.join(path.file_name().unwrap());
+
+        let md = path.metadata()?;
+        let specific = if md.is_dir() {
+            PathType::Dir(None)
         } else {
-            Self::File(SharedFile::from(buf))
+            PathType::File
         };
 
-        Ok(path)
-    }
-
-    pub fn path(&self) -> &PathBuf {
-        match self {
-            SharedType::File(file) => &file.path,
-            SharedType::Dir(dir) => &dir.path,
-        }
-    }
-
-    pub fn name(&self) -> &String {
-        match self {
-            SharedType::File(file) => &file.name,
-            SharedType::Dir(dir) => &dir.name,
-        }
-    }
-}
-
-#[derive(Debug, Serialize)]
-pub struct SharedDir {
-    pub name: String,
-    pub path: PathBuf,
-    pub children: Option<Vec<PathBuf>>,
-}
-
-impl SharedDir {
-    fn with(path: PathBuf, children: Option<Vec<PathBuf>>) -> Self {
-        let name = path.file_name().unwrap().to_string_lossy().to_string();
-
-        Self {
-            path,
+        Ok(Self {
+            parent: Some(parent),
             name,
-            children,
-        }
-    }
-}
-
-impl From<PathBuf> for SharedDir {
-    fn from(path: PathBuf) -> Self {
-        let name = path.file_name().unwrap().to_string_lossy().to_string();
-
-        Self {
             path,
-            name,
-            children: None,
-        }
-    }
-}
-
-#[derive(Debug, Serialize)]
-pub struct SharedFile {
-    pub name: String,
-    pub path: PathBuf,
-}
-
-impl From<PathBuf> for SharedFile {
-    fn from(path: PathBuf) -> Self {
-        let name = path.file_name().unwrap().to_string_lossy().to_string();
-
-        Self { path, name }
-    }
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn new_shared_path_from() {
-        let result = SharedType::from(PathBuf::from("."));
-
-        println!("{:?}", result);
-        assert_eq!(result.is_ok(), true);
+            key,
+            specific,
+        })
     }
 }
