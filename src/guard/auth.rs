@@ -6,8 +6,8 @@ use rocket::{
 };
 
 use crate::{
-    config::{Config, Protection},
-    forms::LoginForm,
+    form::LoginForm,
+    state::config::{Config, Protection},
 };
 
 const AUTH_KEY: &'static str = "auth";

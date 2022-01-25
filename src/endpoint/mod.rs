@@ -1,14 +1,16 @@
 use std::{collections::HashMap, path::PathBuf, sync::MutexGuard};
 
 use rocket_dyn_templates::Template;
-use serde::Serialize;
 
 use crate::{
-    auth::Auth,
-    config::Config,
-    filesystem::{PathType, SharedPath, SharedPathState},
-    forms::LoginForm,
-    state::SharedPathMutex,
+    context::PathContext,
+    form::LoginForm,
+    guard::auth::Auth,
+    state::{
+        config::Config,
+        filesystem::{PathType, SharedPath, SharedPathState},
+        SharedPathMutex,
+    },
 };
 use rocket::{
     form::Form,
@@ -18,13 +20,6 @@ use rocket::{
     State,
 };
 
-#[derive(Serialize)]
-struct PathContext<'a> {
-    parent: Option<&'a SharedPath>,
-    path: &'a SharedPath,
-    children: Option<Vec<&'a SharedPath>>,
-}
-
 #[get("/")]
 pub fn index(
     path_state: &State<SharedPathMutex>,
@@ -32,7 +27,6 @@ pub fn index(
 ) -> Result<Template, NotFound<String>> {
     let lock = path_state.lock().expect("lock shared data");
     let path = PathBuf::from("");
-    println!("{_auth:?}");
 
     render_path(&path, &lock)
 }

@@ -1,19 +1,18 @@
-mod auth;
 mod cli;
-mod config;
-mod endpoints;
-mod filesystem;
-mod forms;
+mod context;
+mod endpoint;
+mod form;
+mod guard;
 mod state;
 
 use std::sync::Mutex;
 
 use clap::StructOpt;
-use config::Config;
-use endpoints as ep;
-use filesystem::{SharedPath, SharedPathState};
+use endpoint as ep;
 use rocket::fs::FileServer;
 use rocket_dyn_templates::Template;
+use state::config::Config;
+use state::filesystem::{SharedPath, SharedPathState};
 
 #[macro_use]
 extern crate rocket;
