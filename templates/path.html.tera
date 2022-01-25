@@ -11,7 +11,7 @@
         {% if path.shared.tag == 'File' %}
             {{ path.shared.content.name }}
             <br>
-            <a href="/file/{{ path.relative |  }}">download</a>
+            <a href="/file/{{ path.relative }}">download</a>
         {% else %}
             <div>
                 <h2>{{ path.shared.content.path }}</h2>
