@@ -44,8 +44,6 @@ fn render_path(
         None => return Err(NotFound(String::from("Not found or not cached"))),
     };
 
-    println!("{:#?}", state);
-
     let parent = path
         .parent
         .as_ref()

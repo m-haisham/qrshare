@@ -1,9 +1,11 @@
+mod cli;
 mod endpoints;
 mod filesystem;
 mod state;
 
 use std::sync::Mutex;
 
+use clap::StructOpt;
 use endpoints as ep;
 use filesystem::{SharedPath, SharedPathState};
 use rocket::fs::FileServer;
@@ -14,8 +16,8 @@ extern crate rocket;
 
 #[launch]
 fn rocket() -> _ {
-    let paths = vec![".".to_string()];
-    let root = SharedPath::root(paths).unwrap();
+    let args = cli::Args::parse();
+    let root = SharedPath::root(args.paths).unwrap();
     let path_state = SharedPathState::from(root);
 
     rocket::build()

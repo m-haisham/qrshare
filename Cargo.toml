@@ -13,6 +13,7 @@ rocket = { git = "https://github.com/SergioBenitez/Rocket", rev = "c028d63" }
 
 zip = "0.5.13"
 serde = "1.0.134"
+clap = { version = "3.0.12", features = ["derive"] }
 
 [dependencies.rocket_dyn_templates]
 git = "https://github.com/SergioBenitez/Rocket"
