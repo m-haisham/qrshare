@@ -8,7 +8,6 @@ mod state;
 use std::sync::Mutex;
 
 use clap::StructOpt;
-use endpoint as ep;
 use rocket::fs::FileServer;
 use rocket_dyn_templates::Template;
 use state::config::Config;
@@ -30,14 +29,14 @@ fn rocket() -> _ {
         .mount(
             "/",
             routes![
-                ep::index,
-                ep::index_redirect_login,
-                ep::path,
-                ep::path_redirect_login,
-                ep::file,
-                ep::file_redirect_login,
-                ep::login,
-                ep::login_post
+                endpoint::login_view,
+                endpoint::login_form_submit,
+                endpoint::home_view,
+                endpoint::home_login_redirect,
+                endpoint::path_view,
+                endpoint::path_login_redirect,
+                endpoint::file_serve,
+                endpoint::file_login_redirect,
             ],
         )
         .mount("/public", FileServer::from("static/"))
