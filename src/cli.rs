@@ -5,4 +5,8 @@ use clap::Parser;
 pub struct Args {
     /// Relative or absolute paths to share
     pub paths: Vec<String>,
+
+    /// Login password for the session
+    #[clap(short, long)]
+    pub password: Option<String>,
 }

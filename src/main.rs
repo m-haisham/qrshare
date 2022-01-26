@@ -22,7 +22,7 @@ fn rocket() -> _ {
     let args = cli::Args::parse();
     let root = SharedPath::root(args.paths).unwrap();
     let path_state = SharedPathState::from(root);
-    let config = Config::new(Some(String::from("123")));
+    let config = Config::new(args.password);
 
     rocket::build()
         .manage(Mutex::new(path_state))
