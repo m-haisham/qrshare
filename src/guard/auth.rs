@@ -45,7 +45,7 @@ impl<'r> FromRequest<'r> for Auth {
         let password = match need_auth_outcome {
             Outcome::Success(s) => s.protection,
             Outcome::Failure(f) => return Outcome::Failure(f),
-            Outcome::Forward(f) => return Outcome::Forward(f),
+            Outcome::Forward(_) => return Outcome::Success(Auth),
         };
 
         let cookie = match req.cookies().get_private(AUTH_KEY) {
