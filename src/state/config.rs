@@ -3,36 +3,27 @@ use uuid::Uuid;
 
 #[derive(Debug, Serialize)]
 pub struct Config {
-    pub protection: Protection,
+    pub protection: Option<Protection>,
 }
 
 #[derive(Debug, Serialize)]
-pub enum Protection {
-    Protected(PasswordConfig),
-    None,
-}
-
-#[derive(Debug, Serialize)]
-pub struct PasswordConfig {
+pub struct Protection {
     password: String,
     key: Uuid,
 }
 
 impl Config {
     pub fn new(password_option: Option<String>) -> Self {
-        let protection = match password_option {
-            Some(password) => Protection::Protected(PasswordConfig {
-                password,
-                key: Uuid::new_v4(),
-            }),
-            None => Protection::None,
-        };
+        let protection = password_option.map(|password| Protection {
+            password,
+            key: Uuid::new_v4(),
+        });
 
         Config { protection }
     }
 }
 
-impl PasswordConfig {
+impl Protection {
     pub fn key_str(&self) -> String {
         self.key.to_hyphenated().to_string()
     }
@@ -52,7 +43,7 @@ mod tests {
 
     #[test]
     fn test_key_str() {
-        let password = PasswordConfig {
+        let password = Protection {
             password: String::from(""),
             key: Uuid::parse_str("5d7fde23-b2be-4833-9693-5e8e8a308c17").unwrap(),
         };
@@ -63,7 +54,7 @@ mod tests {
 
     #[test]
     fn test_password_matches() {
-        let password = PasswordConfig {
+        let password = Protection {
             password: String::from("123"),
             key: Uuid::new_v4(),
         };
@@ -74,7 +65,7 @@ mod tests {
 
     #[test]
     fn test_key_matches() {
-        let password = PasswordConfig {
+        let password = Protection {
             password: String::from(""),
             key: Uuid::parse_str("5d7fde23-b2be-4833-9693-5e8e8a308c17").unwrap(),
         };

@@ -5,10 +5,7 @@ use rocket::{
     State,
 };
 
-use crate::{
-    form::LoginForm,
-    state::config::{Config, Protection},
-};
+use crate::{form::LoginForm, state::config::Config};
 
 const AUTH_KEY: &'static str = "auth";
 
@@ -23,8 +20,8 @@ pub enum AuthError {
 impl Auth {
     pub fn login(form: &LoginForm, cookiejar: &CookieJar, config: &Config) -> bool {
         let password = match &config.protection {
-            Protection::Protected(password_config) => password_config,
-            Protection::None => return true,
+            Some(password_config) => password_config,
+            None => return true,
         };
 
         if password.matches_password(form.password) {
@@ -48,8 +45,8 @@ impl<'r> FromRequest<'r> for Auth {
         };
 
         let password = match &config.protection {
-            Protection::Protected(password_config) => password_config,
-            Protection::None => return Outcome::Success(Auth),
+            Some(password_config) => password_config,
+            None => return Outcome::Success(Auth),
         };
 
         let cookie = match req.cookies().get_private(AUTH_KEY) {
