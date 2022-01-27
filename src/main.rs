@@ -30,6 +30,7 @@ fn rocket() -> _ {
             "/",
             routes![
                 endpoint::login_view,
+                endpoint::logged_in,
                 endpoint::login_form_submit,
                 endpoint::home_view,
                 endpoint::home_login_redirect,
@@ -39,6 +40,6 @@ fn rocket() -> _ {
                 endpoint::file_login_redirect,
             ],
         )
-        .mount("/public", FileServer::from("static/"))
+        .mount("/static", FileServer::from("static/"))
         .attach(Template::fairing())
 }
