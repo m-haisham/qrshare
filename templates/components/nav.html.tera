@@ -1,0 +1,31 @@
+<nav class="navigation">
+    <div class="container">
+        <i class="fa-solid fa-qrcode"></i>
+        <a href="/" class="navigation-title">
+            <h1 class="title">qrshare</h1>
+        </a>
+        <ul class="navigation-list float-right">
+            <li class="navigation-item">
+                <a href="#share-tippy" class="navigation-link" data-tippy>
+                    <i class="fa-solid fa-share"></i> <span class="text">Share</span>
+                </a>
+                <div id="share-tippy"  style="display: none;">
+                    <img
+                        src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/Qr-1.svg/220px-Qr-1.svg.png"
+                        alt="Qrcode of local ipaddress"
+                    >
+                </div>
+            </li>
+            <li class="navigation-item">
+                <a href="#nil" class="navigation-link" data-tippy="About">
+                    <i class="fa-solid fa-question"></i> <span class="text">About</span>
+                </a>
+            </li>
+            <li class="navigation-item">
+                <a href="#nil" class="navigation-link" data-tippy="Help">
+                    <i class="fa-solid fa-info"></i> <span class="text">Help</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</nav>
