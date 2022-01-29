@@ -3,7 +3,7 @@ use std::{path::PathBuf, sync::MutexGuard};
 use rocket_dyn_templates::Template;
 
 use crate::{
-    context::PathContext,
+    context::{BaseContext, PathContext},
     guard::auth::Auth,
     state::{
         filesystem::{PathType, SharedPath, SharedPathState},
@@ -67,6 +67,8 @@ pub fn render_path(
         path: &path,
         children,
     };
+
+    let context = BaseContext::from(&context);
 
     Ok(Template::render("path", &context))
 }

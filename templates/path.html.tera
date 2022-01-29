@@ -9,22 +9,22 @@
         {% include "components/nav" %}
         <div class="container">
             <h1>Home</h1>
-            {% if path.specific.tag == 'File' %}
-                {{ path.name }}
+            {% if data.path.specific.tag == 'File' %}
+                {{ data.path.name }}
                 <br>
-                <a href="/file/{{ path.key }}">download</a>
+                <a href="/file/{{ data.path.key }}">download</a>
             {% else %}
                 <div>
-                    <h2>{{ path.path }}</h2>
-                    <p>{{ path.key }}</p>
+                    <h2>{{ data.path.path }}</h2>
+                    <p>{{ data.path.key }}</p>
                     <ul>
-                        {% if parent %}
+                        {% if data.parent %}
                             <li><a href="/shared/{{ parent.key }}">...</a></li>
                         {% endif %}
-                        {% for child in children | sort(attribute='specific.tag') %}
+                        {% for child in data.children | sort(attribute='specific.tag') %}
                             <li>
                                 <a href="/shared/{{ child.key }}">
-                                    {{ child.name }}
+                                    {{ data.child.name }}
                                 </a>
                             </li>
                         {% endfor %}

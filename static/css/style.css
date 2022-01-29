@@ -85,10 +85,25 @@
     display: none;
 }
 
+.navigation-link i {
+    margin-right: 0.5rem;
+}
+
 @media (min-width: 40rem) {
     .navigation-link .text {
         display: inline-block;
     }
+}
+
+.share-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-bottom: 2rem;
+}
+
+share-tippy .address {
+    width: 100%;
 }
 
 /* Utilities */

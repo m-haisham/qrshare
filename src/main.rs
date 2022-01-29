@@ -38,9 +38,9 @@ fn rocket() -> _ {
                 endpoint::path_login_redirect,
                 endpoint::file_serve,
                 endpoint::file_login_redirect,
-                endpoint::qr_code,
             ],
         )
+        .mount("/host", routes![endpoint::qr_code])
         .mount("/static", FileServer::from("static/"))
         .attach(Template::fairing())
 }

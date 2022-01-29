@@ -4,10 +4,14 @@
         <meta charset="UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        
+
         <link rel="stylesheet" href="/static/vendor/normalize.css" />
-        <link rel="stylesheet" href="/static/vendor/milligram.min.css" />
-        <link rel="stylesheet" href="/static/vendor/fontawesome/css/all.min.css">
+        <link rel="stylesheet" href="/static/vendor/milligram/milligram.min.css" />
+        <link rel="stylesheet" href="/static/vendor/tippy/light.css" />
+        <link
+            rel="stylesheet"
+            href="/static/vendor/fontawesome/css/all.min.css"
+        />
 
         {% block head %} {% endblock head %}
     </head>
@@ -15,7 +19,7 @@
         {% block body %} {% endblock body %}
 
         <script src="/static/vendor/popper.min.js"></script>
-        <script src="/static/vendor/tippy-bundle.umd.js"></script>
+        <script src="/static/vendor/tippy/tippy-bundle.umd.js"></script>
         <script src="/static/js/script.js"></script>
         {% block scripts %} {% endblock scripts %}
     </body>

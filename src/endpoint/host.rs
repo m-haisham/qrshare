@@ -4,10 +4,10 @@ use qrcode::QrCode;
 
 #[derive(Responder)]
 #[response(content_type = "image/png")]
-pub struct CodeResponse(Vec<u8>);
+pub struct QrImage(Vec<u8>);
 
 #[get("/qrcode")]
-pub fn qr_code() -> CodeResponse {
+pub fn qr_code() -> QrImage {
     let local_ip = local_ip().unwrap();
     let code = QrCode::new(local_ip.to_string().as_bytes()).unwrap();
     let image = code.render::<Luma<u8>>().build();
@@ -18,5 +18,5 @@ pub fn qr_code() -> CodeResponse {
         .write_to(&mut bytes, ImageOutputFormat::from(ImageFormat::Png))
         .unwrap();
 
-    CodeResponse(bytes)
+    QrImage(bytes)
 }
