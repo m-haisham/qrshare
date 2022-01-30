@@ -8,28 +8,37 @@
     <div class="wrapper">
         {% include "components/nav" %}
         <div class="container">
-            <h1>Home</h1>
             {% if data.path.specific.tag == 'File' %}
                 {{ data.path.name }}
                 <br>
                 <a href="/file/{{ data.path.key }}">download</a>
             {% else %}
-                <div>
-                    <h2>{{ data.path.path }}</h2>
-                    <p>{{ data.path.key }}</p>
-                    <ul>
-                        {% if data.parent %}
-                            <li><a href="/shared/{{ parent.key }}">...</a></li>
+                {% if data.path.key == "" %}
+                    <h3>{{ data.path.path }}</h3>
+                {% else %}
+                    <h3>{{ data.path.key }}</h3>
+                {% endif %}
+
+                {% if data.parent %}
+                    <div class="card path-tile">
+                        {% if data.parent.specific.tag == 'File' %}
+                            <i class="fa-solid fa-file"></i>
+                        {% else %}
+                            <i class="fa-solid fa-folder"></i>
                         {% endif %}
-                        {% for child in data.children | sort(attribute='specific.tag') %}
-                            <li>
-                                <a href="/shared/{{ child.key }}">
-                                    {{ data.child.name }}
-                                </a>
-                            </li>
-                        {% endfor %}
-                    </ul>
-                </div>
+                        <a href="/shared/{{ data.parent.key }}">...</a>
+                    </div>
+                {% endif %}
+                {% for child in data.children | sort(attribute='specific.tag') %}
+                    <div class="card path-tile">
+                        {% if child.specific.tag == 'File' %}
+                            <i class="fa-solid fa-file"></i>
+                        {% else %}
+                            <i class="fa-solid fa-folder"></i>
+                        {% endif %}
+                        <a href="/shared/{{ child.key }}">{{ child.name }}</a>
+                    </div>
+                {% endfor %}
             {% endif %}
         </div>
     </div>
