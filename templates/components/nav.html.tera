@@ -1,7 +1,7 @@
 <nav class="navigation">
     <div class="container">
         <a href="/" class="navigation-title">
-            <i class="fa-solid fa-qrcode"></i>
+            <i class="fa-solid fa-qrcode fa-lg"></i>
             <h1 class="title">share</h1>
         </a>
         <ul class="navigation-list float-right">

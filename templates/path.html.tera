@@ -1,3 +1,4 @@
+{% import "macros/render" as render %}
 {% extends "base/base" %}
 
 {% block head %}
@@ -9,36 +10,9 @@
         {% include "components/nav" %}
         <div class="container">
             {% if data.path.specific.tag == 'File' %}
-                {{ data.path.name }}
-                <br>
-                <a href="/file/{{ data.path.key }}">download</a>
+                {{ render::file(data=data) }}
             {% else %}
-                {% if data.path.key == "" %}
-                    <h3>{{ data.path.path }}</h3>
-                {% else %}
-                    <h3>{{ data.path.key }}</h3>
-                {% endif %}
-
-                {% if data.parent %}
-                    <div class="card path-tile">
-                        {% if data.parent.specific.tag == 'File' %}
-                            <i class="fa-solid fa-file"></i>
-                        {% else %}
-                            <i class="fa-solid fa-folder"></i>
-                        {% endif %}
-                        <a href="/shared/{{ data.parent.key }}">...</a>
-                    </div>
-                {% endif %}
-                {% for child in data.children | sort(attribute='specific.tag') %}
-                    <div class="card path-tile">
-                        {% if child.specific.tag == 'File' %}
-                            <i class="fa-solid fa-file"></i>
-                        {% else %}
-                            <i class="fa-solid fa-folder"></i>
-                        {% endif %}
-                        <a href="/shared/{{ child.key }}">{{ child.name }}</a>
-                    </div>
-                {% endfor %}
+                {{ render::path(data=data) }}
             {% endif %}
         </div>
     </div>

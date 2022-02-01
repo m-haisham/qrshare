@@ -1,0 +1,48 @@
+{% macro file(data) %}
+    <h3>{{ data.path.key }}</h3>
+    <div class="row">
+        <div class="column">
+            <i class="fa-solid fa-file"></i>
+        </div>
+    </div>
+{% endmacro file %}
+
+{% macro path(data) %}
+    {% if data.path.key == "" %}
+        <h3>{{ data.path.path }}</h3>
+    {% else %}
+        <h3>{{ data.path.key }}</h3>
+    {% endif %}
+
+    {% if data.parent %}
+        <a class="tile" href="/shared/{{ data.parent.key }}">
+            {% if data.parent.specific.tag == 'File' %}
+                <i class="fa-solid fa-file"></i>
+            {% else %}
+                <i class="fa-solid fa-folder"></i>
+            {% endif %}
+            <span>...</span>
+        </a>
+    {% endif %}
+    {% for child in data.children | sort(attribute='specific.tag') %}
+        <div class="horizontal">
+            <a class="tile" href="/shared/{{ child.key }}">
+                {% if child.specific.tag == 'File' %}
+                    <i class="fa-solid fa-file"></i>
+                {% else %}
+                    <i class="fa-solid fa-folder"></i>
+                {% endif %}
+                <span>{{ child.name }}</span>
+            </a>
+            {% if child.specific.tag == 'File' %}
+                <a href="this" class="tile" tooltip="Download file">
+                    <i class="fa-solid fa-download"></i>
+                </a>
+            {% else %}
+                <a href="this" class="tile" tooltip="Download archive">
+                    <i class="fa-solid fa-archive"></i>
+                </a>
+            {% endif %}
+        </div>
+    {% endfor %}
+{% endmacro path %}
