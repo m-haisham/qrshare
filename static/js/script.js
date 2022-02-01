@@ -23,5 +23,6 @@ document.querySelectorAll("[tooltip]").forEach((element) => {
     tippy(element, {
         content: tooltip,
         theme: "light",
+        placement: element.dataset.placement,
     });
 });
