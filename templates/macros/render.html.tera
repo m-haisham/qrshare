@@ -35,11 +35,11 @@
                 <span>{{ child.name }}</span>
             </a>
             {% if child.specific.tag == 'File' %}
-                <a href="this" class="tile" tooltip="Download file">
+                <a href="/file/{{ child.key }}" class="tile" tooltip="Download file" data-placement="left">
                     <i class="fa-solid fa-download"></i>
                 </a>
             {% else %}
-                <a href="this" class="tile" tooltip="Download archive">
+                <a href="this" class="tile" tooltip="Download archive" data-placement="left">
                     <i class="fa-solid fa-archive"></i>
                 </a>
             {% endif %}
