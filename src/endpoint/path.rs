@@ -4,7 +4,7 @@ use rocket_dyn_templates::Template;
 
 use crate::{
     context::{BaseContext, PathContext},
-    guard::auth::Auth,
+    guard::{auth::Auth, RelativePath},
     state::{
         filesystem::{PathType, SharedPath, SharedPathState},
         SharedPathMutex,
@@ -19,11 +19,13 @@ use super::login::rocket_uri_macro_login_view;
 
 #[get("/shared/<path..>")]
 pub fn path_view(
-    path: PathBuf,
+    path: RelativePath,
     path_state: &State<SharedPathMutex>,
     _auth: Auth,
 ) -> Result<Template, NotFound<String>> {
     let mut lock = path_state.lock().expect("lock shared data");
+    let path = PathBuf::from(path);
+
     lock.visit(&path).unwrap();
 
     render_path(&path, &lock)
