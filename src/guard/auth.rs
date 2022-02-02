@@ -105,9 +105,9 @@ impl<'r> FromRequest<'r> for NeedAuth<'r> {
             _ => return Outcome::Failure((Status::Conflict, AuthError::BadConfigOutcome)),
         };
 
-        let password = match &config.protection {
-            Some(protection) => return Outcome::Success(NeedAuth { protection }),
-            None => return Outcome::Forward(()),
-        };
+        match &config.protection {
+            Some(protection) => Outcome::Success(NeedAuth { protection }),
+            None => Outcome::Forward(()),
+        }
     }
 }

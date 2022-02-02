@@ -9,13 +9,14 @@ license = "Apache-2.0"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-zip = "0.5.13"
+zip = { version = "0.5.13", default-features = false, features = ["deflate"] }
 serde = "1.0.134"
 clap = { version = "3.0.12", features = ["derive"] }
 uuid = { version = "0.8.2", features = ["v4", "serde"] }
 local-ip-address = "0.4.4"
 qrcode = "0.12.0"
 image = "0.23.14"
+walkdir = "2.3.2"
 
 [dependencies.rocket]
 git = "https://github.com/SergioBenitez/Rocket"

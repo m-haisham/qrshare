@@ -4,6 +4,7 @@ mod endpoint;
 mod form;
 mod guard;
 mod state;
+mod utils;
 
 use std::sync::Mutex;
 
@@ -38,6 +39,7 @@ fn rocket() -> _ {
                 endpoint::path_login_redirect,
                 endpoint::file_serve,
                 endpoint::file_login_redirect,
+                endpoint::archive_dir,
             ],
         )
         .mount("/host", routes![endpoint::qr_code])

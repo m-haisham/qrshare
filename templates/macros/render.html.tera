@@ -39,7 +39,7 @@
                     <i class="fa-solid fa-download"></i>
                 </a>
             {% else %}
-                <a href="this" class="tile" tooltip="Download archive" data-placement="left">
+                <a href="/archive/{{ child.key }}" class="tile" tooltip="Download archive" data-placement="left">
                     <i class="fa-solid fa-archive"></i>
                 </a>
             {% endif %}

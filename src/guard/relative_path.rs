@@ -1,7 +1,7 @@
 use std::path::PathBuf;
 
 use rocket::{
-    http::uri::{fmt::Path, Origin, Segments},
+    http::uri::{fmt::Path, Segments},
     request::FromSegments,
 };
 
