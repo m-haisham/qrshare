@@ -3,6 +3,7 @@ mod context;
 mod endpoint;
 mod form;
 mod guard;
+mod models;
 mod state;
 mod utils;
 

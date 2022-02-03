@@ -1,6 +1,8 @@
 use serde::Serialize;
 use std::{collections::HashMap, fs, io, path::PathBuf};
 
+use crate::models::mimetype::MimeType;
+
 #[derive(Debug, Serialize)]
 pub struct SharedPathState {
     pub root: PathBuf,
@@ -96,7 +98,7 @@ pub struct SharedPath {
 #[derive(Debug, Serialize)]
 #[serde(tag = "tag", content = "content")]
 pub enum PathType {
-    File,
+    File(FileData),
     Dir(Option<Vec<PartialPath>>),
 }
 
@@ -104,6 +106,11 @@ pub enum PathType {
 pub struct PartialPath {
     pub key: PathBuf,
     pub path: PathBuf,
+}
+
+#[derive(Debug, Serialize)]
+pub struct FileData {
+    mime_type: MimeType,
 }
 
 impl From<&SharedPath> for PartialPath {
@@ -158,7 +165,9 @@ impl SharedPath {
         let specific = if md.is_dir() {
             PathType::Dir(None)
         } else {
-            PathType::File
+            PathType::File(FileData {
+                mime_type: MimeType::from(&path),
+            })
         };
 
         Ok(Self {

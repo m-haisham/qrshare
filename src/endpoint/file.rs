@@ -22,7 +22,7 @@ pub async fn file_serve(
         let lock = path_state.lock().expect("lock shared data");
         let shared = lock.paths.get(&PathBuf::from(path)).unwrap();
 
-        if let PathType::File = shared.specific {
+        if let PathType::File(_) = shared.specific {
             Some(shared.path.clone())
         } else {
             None

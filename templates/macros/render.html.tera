@@ -1,10 +1,27 @@
 {% macro file(data) %}
+    {% set mime_type = data.path.specific.content.mime_type %}
+
     <h3>{{ data.path.key }}</h3>
-    <div class="row">
-        <div class="column">
+
+    <a class="tile active-tile" href="/shared/{{ data.parent.key }}">
+        {% if data.parent.specific.tag == 'File' %}
             <i class="fa-solid fa-file"></i>
-        </div>
-    </div>
+        {% else %}
+            <i class="fa-solid fa-folder"></i>
+        {% endif %}
+        <span>...</span>
+    </a>
+    
+    <hr>
+    <h4>Meta</h4>
+    <div class="button button-outline button-inactive">{{ mime_type.main }}/{{ mime_type.sub }}</div>
+    <a class="button button-outline" href="/file/{{ data.path.key }}"><i class="fa-solid fa-download"></i> Download</a>
+    {% if mime_type.main == 'text' %}
+        <object data="/file/{{ data.path.key }}" class="textview">
+            Not supported
+        </object>
+    {% else %}
+    {% endif %}
 {% endmacro file %}
 
 {% macro path(data) %}
@@ -15,7 +32,7 @@
     {% endif %}
 
     {% if data.parent %}
-        <a class="tile" href="/shared/{{ data.parent.key }}">
+        <a class="tile active-tile" href="/shared/{{ data.parent.key }}">
             {% if data.parent.specific.tag == 'File' %}
                 <i class="fa-solid fa-file"></i>
             {% else %}
@@ -26,7 +43,7 @@
     {% endif %}
     {% for child in data.children | sort(attribute='specific.tag') %}
         <div class="horizontal">
-            <a class="tile" href="/shared/{{ child.key }}">
+            <a class="tile active-tile" href="/shared/{{ child.key }}">
                 {% if child.specific.tag == 'File' %}
                     <i class="fa-solid fa-file"></i>
                 {% else %}

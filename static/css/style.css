@@ -15,6 +15,7 @@
 :root {
     --color-light: #f4f5f6;
     --color-dark: #606c76;
+    --color-primary: #9b4dca;
 }
 
 .wrapper > .container {
@@ -156,6 +157,19 @@
     margin-right: 2rem;
 }
 
+.button.button-inactive {
+    cursor: default;
+}
+
+.textview {
+    height: calc(100vh - 10rem);
+    max-height: calc(100vh - 10rem);
+    width: 100%;
+    border: 1px solid var(--color-primary);
+    border-radius: 0.5rem;
+    box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
+}
+
 /* Utilities */
 .hidden {
     display: none;
@@ -183,4 +197,8 @@
     width: auto;
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
+}
+
+.mb-3 {
+    margin-bottom: 3rem;
 }
