@@ -13,6 +13,7 @@ use rocket::fs::FileServer;
 use rocket_dyn_templates::Template;
 use state::config::Config;
 use state::filesystem::{SharedPath, SharedPathState};
+use utils::TEMPLATES;
 
 #[macro_use]
 extern crate rocket;
@@ -40,9 +41,22 @@ fn rocket() -> _ {
                 endpoint::file_serve,
                 endpoint::file_login_redirect,
                 endpoint::archive_dir,
+                endpoint::static_file_server,
             ],
         )
         .mount("/host", routes![endpoint::qr_code])
-        .mount("/static", FileServer::from("static/"))
-        .attach(Template::fairing())
+        .attach(Template::try_custom(|engine| {
+            let raw_templates = TEMPLATES
+                .files()
+                .map(|file| {
+                    (
+                        file.path().to_string_lossy().to_string(),
+                        file.contents_utf8().unwrap_or(""),
+                    )
+                })
+                .collect::<Vec<_>>();
+
+            engine.tera.add_raw_templates(raw_templates)?;
+            Ok(())
+        }))
 }

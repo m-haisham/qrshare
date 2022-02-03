@@ -10,13 +10,15 @@ license = "Apache-2.0"
 
 [dependencies]
 zip = { version = "0.5.13", default-features = false, features = ["deflate"] }
-serde = "1.0.134"
-clap = { version = "3.0.12", features = ["derive"] }
+serde = "1.0.136"
+clap = { version = "3.0.14", features = ["derive"] }
 uuid = { version = "0.8.2", features = ["v4", "serde"] }
 local-ip-address = "0.4.4"
 qrcode = "0.12.0"
 image = "0.23.14"
 walkdir = "2.3.2"
+include_dir = "0.7.2"
+mime_guess = "2.0.3"
 
 [dependencies.rocket]
 git = "https://github.com/SergioBenitez/Rocket"
