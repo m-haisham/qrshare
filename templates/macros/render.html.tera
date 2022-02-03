@@ -15,12 +15,11 @@
     <hr>
     <h4>Meta</h4>
     <div class="button button-outline button-inactive">{{ mime_type.main }}/{{ mime_type.sub }}</div>
-    <a class="button button-outline" href="/file/{{ data.path.key }}"><i class="fa-solid fa-download"></i> Download</a>
+    <a class="button" href="/file/{{ data.path.key }}"><i class="fa-solid fa-download"></i> Download</a>
     {% if mime_type.main == 'text' %}
         <object data="/file/{{ data.path.key }}" class="textview">
             Not supported
         </object>
-    {% else %}
     {% endif %}
 {% endmacro file %}
 
