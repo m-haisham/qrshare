@@ -1,9 +1,14 @@
-use std::collections::HashMap;
-
-use rocket::{form::Form, http::CookieJar, response::Redirect, State};
+use rocket::{
+    form::Form,
+    http::CookieJar,
+    request::FlashMessage,
+    response::{Flash, Redirect},
+    State,
+};
 use rocket_dyn_templates::Template;
 
 use crate::{
+    context::LoginContext,
     form::LoginForm,
     guard::auth::{Auth, NotLoggedIn},
     state::config::Config,
@@ -12,8 +17,8 @@ use crate::{
 use super::home::rocket_uri_macro_home_view;
 
 #[get("/login")]
-pub fn login_view(_not: NotLoggedIn) -> Template {
-    let context: HashMap<String, String> = HashMap::new();
+pub fn login_view(_not: NotLoggedIn, flash: Option<FlashMessage<'_>>) -> Template {
+    let context = LoginContext::with(flash.as_ref().map(|m| m.message()));
     Template::render("login", context)
 }
 
@@ -27,10 +32,13 @@ pub fn login_form_submit(
     config: &State<Config>,
     cookiejar: &CookieJar<'_>,
     login_form: Form<LoginForm<'_>>,
-) -> Redirect {
+) -> Flash<Redirect> {
     if Auth::login(&login_form, cookiejar, config) {
-        Redirect::to(uri!(home_view))
+        Flash::success(Redirect::to(uri!(home_view)), "Login successful!")
     } else {
-        Redirect::to(uri!(login_view))
+        Flash::error(
+            Redirect::to(uri!(login_view)),
+            "Password provided does not match, try again.",
+        )
     }
 }

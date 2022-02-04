@@ -41,8 +41,7 @@ impl<'r> FromRequest<'r> for Auth {
     type Error = AuthError;
 
     async fn from_request(req: &'r Request<'_>) -> request::Outcome<Self, Self::Error> {
-        let need_auth_outcome = req.guard::<NeedAuth>().await;
-        let password = match need_auth_outcome {
+        let password = match req.guard::<NeedAuth>().await {
             Outcome::Success(s) => s.protection,
             Outcome::Failure(f) => return Outcome::Failure(f),
             Outcome::Forward(_) => return Outcome::Success(Auth),
@@ -69,16 +68,15 @@ impl<'r> FromRequest<'r> for NotLoggedIn {
     type Error = AuthError;
 
     async fn from_request(req: &'r Request<'_>) -> request::Outcome<Self, Self::Error> {
-        let need_auth_outcome = req.guard::<NeedAuth>().await;
-        let password = match need_auth_outcome {
+        let password = match req.guard::<NeedAuth>().await {
             Outcome::Success(s) => s.protection,
             Outcome::Failure(f) => return Outcome::Failure(f),
-            Outcome::Forward(_) => return Outcome::Success(NotLoggedIn),
+            Outcome::Forward(_) => return Outcome::Forward(()),
         };
 
         let cookie = match req.cookies().get_private(AUTH_KEY) {
             Some(cookie) => cookie,
-            None => return Outcome::Forward(()),
+            None => return Outcome::Success(NotLoggedIn),
         };
 
         if password.matches_key(cookie.value()) {

@@ -6,8 +6,9 @@
     height: 100vh;
     width: 100vw;
     max-width: 100vw;
+    padding: 0 2rem;
 }
 
 .wrapped {
-    max-width: 40rem;
+    width: clamp(40rem, 40rem, 100%);
 }
