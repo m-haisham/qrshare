@@ -9,4 +9,8 @@ pub struct Args {
     /// Login password for the session
     #[clap(short, long)]
     pub password: Option<String>,
+
+    /// Server port
+    #[clap(long)]
+    pub port: Option<u16>,
 }

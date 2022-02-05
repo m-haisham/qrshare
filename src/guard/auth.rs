@@ -7,7 +7,7 @@ use rocket::{
 
 use crate::{
     form::LoginForm,
-    state::config::{Config, Protection},
+    state::config::{AppConfig, Protection},
 };
 
 const AUTH_KEY: &'static str = "auth";
@@ -21,7 +21,7 @@ pub enum AuthError {
 }
 
 impl Auth {
-    pub fn login(form: &LoginForm, cookiejar: &CookieJar, config: &Config) -> bool {
+    pub fn login(form: &LoginForm, cookiejar: &CookieJar, config: &AppConfig) -> bool {
         let password = match &config.protection {
             Some(password_config) => password_config,
             None => return true,
@@ -97,7 +97,7 @@ impl<'r> FromRequest<'r> for NeedAuth<'r> {
     type Error = AuthError;
 
     async fn from_request(req: &'r Request<'_>) -> request::Outcome<Self, Self::Error> {
-        let config_outcome = req.guard::<&State<Config>>().await;
+        let config_outcome = req.guard::<&State<AppConfig>>().await;
         let config = match config_outcome {
             Outcome::Success(config) => config,
             _ => return Outcome::Failure((Status::Conflict, AuthError::BadConfigOutcome)),

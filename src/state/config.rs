@@ -2,7 +2,7 @@ use serde::Serialize;
 use uuid::Uuid;
 
 #[derive(Debug, Serialize)]
-pub struct Config {
+pub struct AppConfig {
     pub protection: Option<Protection>,
 }
 
@@ -12,14 +12,14 @@ pub struct Protection {
     key: Uuid,
 }
 
-impl Config {
+impl AppConfig {
     pub fn new(password_option: Option<String>) -> Self {
         let protection = password_option.map(|password| Protection {
             password,
             key: Uuid::new_v4(),
         });
 
-        Config { protection }
+        AppConfig { protection }
     }
 }
 

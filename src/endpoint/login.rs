@@ -11,7 +11,7 @@ use crate::{
     context::LoginContext,
     form::LoginForm,
     guard::auth::{Auth, NotLoggedIn},
-    state::config::Config,
+    state::config::AppConfig,
 };
 
 use super::home::rocket_uri_macro_home_view;
@@ -29,7 +29,7 @@ pub fn logged_in() -> Redirect {
 
 #[post("/login", data = "<login_form>")]
 pub fn login_form_submit(
-    config: &State<Config>,
+    config: &State<AppConfig>,
     cookiejar: &CookieJar<'_>,
     login_form: Form<LoginForm<'_>>,
 ) -> Flash<Redirect> {

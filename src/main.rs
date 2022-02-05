@@ -10,9 +10,10 @@ mod utils;
 use std::sync::Mutex;
 
 use clap::StructOpt;
+use rocket::config::Config;
 use rocket::fs::FileServer;
 use rocket_dyn_templates::Template;
-use state::config::Config;
+use state::config::AppConfig;
 use state::filesystem::{SharedPath, SharedPathState};
 
 #[macro_use]
@@ -23,9 +24,11 @@ fn rocket() -> _ {
     let args = cli::Args::parse();
     let root = SharedPath::root(args.paths).unwrap();
     let path_state = SharedPathState::from(root);
-    let config = Config::new(args.password);
+    let config = AppConfig::new(args.password);
 
-    rocket::build()
+    let figment = Config::figment().merge(("port", args.port.unwrap_or(8000)));
+
+    rocket::custom(figment)
         .manage(Mutex::new(path_state))
         .manage(config)
         .mount(
