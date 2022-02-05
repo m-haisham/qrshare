@@ -3,6 +3,11 @@
 
 {% block head %}
     <link rel="stylesheet" href="/static/css/style.css">
+    {% if data.path.key == "" %}
+        <title>Home | Qrshare</title>
+    {% else %}
+        <title>{{ data.path.key }} | Qrshare</title>
+    {% endif %}
 {% endblock head %}
 
 {% block body %}
