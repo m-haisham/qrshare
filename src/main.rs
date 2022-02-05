@@ -10,6 +10,7 @@ mod utils;
 use std::sync::Mutex;
 
 use clap::StructOpt;
+use ring::rand::{SecureRandom, SystemRandom};
 use rocket::config::Config;
 use rocket::fs::FileServer;
 use rocket_dyn_templates::Template;
@@ -19,6 +20,14 @@ use state::filesystem::{SharedPath, SharedPathState};
 #[macro_use]
 extern crate rocket;
 
+fn secret_key() -> Vec<u8> {
+    let mut key = vec![0; 256];
+    let sr = SystemRandom::new();
+    sr.fill(&mut key).expect("Failed to generate secret key");
+
+    key
+}
+
 #[launch]
 fn rocket() -> _ {
     let args = cli::Args::parse();
@@ -26,7 +35,9 @@ fn rocket() -> _ {
     let path_state = SharedPathState::from(root);
     let config = AppConfig::new(args.password);
 
-    let figment = Config::figment().merge(("port", args.port.unwrap_or(8000)));
+    let figment = Config::figment()
+        .merge(("port", args.port.unwrap_or(8000)))
+        .merge(("secret_key", secret_key()));
 
     rocket::custom(figment)
         .manage(Mutex::new(path_state))
