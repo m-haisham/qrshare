@@ -8,7 +8,6 @@
             <li class="navigation-item">
                 <a href="#share-tippy" class="navigation-link" data-tippy>
                     <i class="fa-solid fa-share"></i>
-                    <span class="text">Share</span>
                 </a>
                 <div id="share-tippy" style="display: none">
                     <div class="share-content">
@@ -21,18 +20,23 @@
                     </div>
                 </div>
             </li>
-            <li class="navigation-item">
-                <a href="#nil" class="navigation-link" data-tippy="About">
+            <li class="navigation-item" >
+                <a href="#nil" class="navigation-link" tooltip="About">
                     <i class="fa-solid fa-question"></i>
-                    <span class="text">About</span>
                 </a>
             </li>
             <li class="navigation-item">
-                <a href="#nil" class="navigation-link" data-tippy="Help">
+                <a href="#nil" class="navigation-link" tooltip="Help">
                     <i class="fa-solid fa-info"></i>
-                    <span class="text">Help</span>
                 </a>
             </li>
+            {% if not protection %}
+                <li class="navigation-item">
+                    <a href="/logout" class="navigation-link" tooltip="Logout">
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                    </a>
+                </li>
+            {% endif %}
         </ul>
     </div>
 </nav>

@@ -10,7 +10,7 @@ use crate::{
     state::config::{AppConfig, Protection},
 };
 
-const AUTH_KEY: &'static str = "auth";
+const AUTH_KEY: &str = "auth";
 
 #[derive(Debug)]
 pub struct Auth;
@@ -33,6 +33,10 @@ impl Auth {
         } else {
             false
         }
+    }
+
+    pub fn logout(cookiejar: &CookieJar) {
+        cookiejar.remove_private(Cookie::named(AUTH_KEY))
     }
 }
 

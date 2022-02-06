@@ -55,6 +55,7 @@ fn rocket() -> _ {
                 endpoint::file_serve,
                 endpoint::file_login_redirect,
                 endpoint::archive_dir,
+                endpoint::logout,
             ],
         )
         .mount("/host", routes![endpoint::qr_code])

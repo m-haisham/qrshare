@@ -6,6 +6,7 @@ use crate::{
     context::{BaseContext, PathContext},
     guard::{auth::Auth, RelativePath},
     state::{
+        config::AppConfig,
         filesystem::{PathType, SharedPath, SharedPathState},
         SharedPathMutex,
     },
@@ -21,6 +22,7 @@ use super::login::rocket_uri_macro_login_view;
 pub fn path_view(
     path: RelativePath,
     path_state: &State<SharedPathMutex>,
+    config: &State<AppConfig>,
     _auth: Auth,
 ) -> Result<Template, NotFound<String>> {
     let mut lock = path_state.lock().expect("lock shared data");
@@ -28,7 +30,7 @@ pub fn path_view(
 
     lock.visit(&path).unwrap();
 
-    render_path(&path, &lock)
+    render_path(&path, &lock, &config)
 }
 
 #[get("/shared/<path..>", rank = 2)]
@@ -40,6 +42,7 @@ pub fn path_login_redirect(path: PathBuf) -> Redirect {
 pub fn render_path(
     pathbuf: &PathBuf,
     state: &MutexGuard<SharedPathState>,
+    config: &AppConfig,
 ) -> Result<Template, NotFound<String>> {
     let path = match state.paths.get(pathbuf) {
         Some(path) => path,
@@ -70,7 +73,7 @@ pub fn render_path(
         children,
     };
 
-    let context = BaseContext::from(&context);
+    let context = BaseContext::from(&context, config);
 
     Ok(Template::render("path", &context))
 }

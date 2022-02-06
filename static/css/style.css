@@ -74,6 +74,10 @@
     position: relative;
 }
 
+.navigation .navigation-item form {
+    cursor: pointer;
+}
+
 .navigation .img {
     fill: #9b4dca;
     height: 2rem;

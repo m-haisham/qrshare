@@ -34,11 +34,17 @@ pub fn login_form_submit(
     login_form: Form<LoginForm<'_>>,
 ) -> Flash<Redirect> {
     if Auth::login(&login_form, cookiejar, config) {
-        Flash::success(Redirect::to(uri!(home_view)), "Login successful!")
+        Flash::success(Redirect::to(uri!(home_view)), "")
     } else {
         Flash::error(
             Redirect::to(uri!(login_view)),
             "Password provided does not match, try again.",
         )
     }
+}
+
+#[get("/logout")]
+pub fn logout(cookiejar: &CookieJar<'_>) -> Redirect {
+    Auth::logout(cookiejar);
+    Redirect::to(uri!(login_view))
 }
