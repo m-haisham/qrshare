@@ -30,7 +30,7 @@
                     <i class="fa-solid fa-info"></i>
                 </a>
             </li>
-            {% if not protection %}
+            {% if config.protection %}
                 <li class="navigation-item">
                     <a href="/logout" class="navigation-link" tooltip="Logout">
                         <i class="fa-solid fa-right-from-bracket"></i>
