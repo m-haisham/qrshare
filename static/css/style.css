@@ -176,6 +176,19 @@
     box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
 }
 
+.title-bar {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    gap: 2rem;
+}
+
+.title-bar .button {
+    padding: 0 1.5rem;
+}
+
 /* Utilities */
 .hidden {
     display: none;

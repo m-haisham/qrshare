@@ -1,7 +1,12 @@
 {% macro file(data) %}
     {% set mime_type = data.path.specific.content.mime_type %}
 
-    <h3>{{ data.path.key }}</h3>
+    <div class="title-bar">
+        <h3>{{ data.path.key }}</h3>
+        <a href="/file/{{ data.path.key }}" class="button" tooltip="Download file" data-placement="left">
+            <i class="fa-solid fa-download"></i>
+        </a>
+    </div>
 
     <a class="tile active-tile" href="/shared/{{ data.parent.key }}">
         {% if data.parent.specific.tag == 'File' %}
@@ -15,7 +20,6 @@
     <hr>
     <h4>Meta</h4>
     <div class="button button-outline button-inactive">{{ mime_type.main }}/{{ mime_type.sub }}</div>
-    <a class="button" href="/file/{{ data.path.key }}"><i class="fa-solid fa-download"></i> Download</a>
     {% if mime_type.main == 'text' %}
         <object data="/file/{{ data.path.key }}" class="textview">
             Not supported
@@ -24,11 +28,22 @@
 {% endmacro file %}
 
 {% macro path(data) %}
-    {% if data.path.key == "" %}
-        <h3>{{ data.path.path }}</h3>
-    {% else %}
-        <h3>{{ data.path.key }}</h3>
-    {% endif %}
+    <div class="title-bar">
+        {% if data.path.key == "" %}
+            <h3>{{ data.path.path }}</h3>
+        {% else %}
+            <h3>{{ data.path.key }}</h3>
+        {% endif %}
+        {% if data.path.specific.tag == 'File' %}
+            <a href="/file/{{ data.path.key }}" class="button" tooltip="Download file" data-placement="left">
+                <i class="fa-solid fa-download"></i>
+            </a>
+        {% else %}
+            <a href="/archive/{{ data.path.key }}" class="button" tooltip="Download archive" data-placement="left">
+                <i class="fa-solid fa-archive"></i>
+            </a>
+        {% endif %}
+    </div>
 
     {% if data.parent %}
         <a class="tile active-tile" href="/shared/{{ data.parent.key }}">
